@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+<title>Education-X Questionaire Selection</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+</head>
+<body>
+    This is the home page for Questionaire Selection
+    <div>
+        {% for questionaire in questionaires %}
+            <a href="{% url 'questionaire_page' questionaire.theme %}">
+            {{questionaire.theme}}
+            </a>
+        {% endfor %}
+    </div>
+</body>
+</html>

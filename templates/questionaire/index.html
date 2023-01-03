@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+<title>Education-X Questionaire Detail</title>
+<meta name="description" content="Our first page">
+<meta name="keywords" content="html tutorial template">
+</head>
+<body>
+<form action="" method="post">
+{% csrf_token %}
+<h1>{{theme.theme}}</h1>
+<div>
+    {% for q, ch_lst in choices.items %}
+        <div>
+            <p>{{q.description}}</p>
+            {% for ch in ch_lst %}
+                <input type="radio" id="{{ch.pk}}" name="{{q.pk}}" value="{{ch.option}}">
+                <label for="{{ch.option}}">{{ch.option}}</label>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    <input type="submit" value="提交">
+</div>
+</form>
+</body>
+</html>
