@@ -1,38 +1,27 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
-
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+<!-- Please search existing issues to avoid creating duplicates, and review our troubleshooting tips: https://code.visualstudio.com/docs/remote/troubleshooting -->
+<!-- Please attach logs to help us diagnose your issue. Learn more here: https://code.visualstudio.com/docs/remote/troubleshooting#_reporting-issues and here: https://code.visualstudio.com/docs/remote/vscode-server#_where-can-i-provide-feedback-or-report-an-issue -->
+<!-- Also please test using the latest insiders build to make sure your issue has not already been fixed: https://code.visualstudio.com/insiders/ -->
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+- Python Version:
+- Local OS Version:
+- Remote OS Version:
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+<!-- If your bug is related to Remote-SSH, please use the SSH-specific reporter: https://github.com/microsoft/vscode-remote-release/issues/new?assignees=eleanorjboyd&labels=ssh&template=a_remote_ssh_bug_form.yml&title=%5BRemote-SSH+Bug%5D%3A+ -->
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+- Logs:
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+Steps to Reproduce:
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+1.
+2.
 
-**Additional context**
-Add any other context about the problem here.
+<!-- Check to see if the problem is general, with a specific extension, or only happens when remote -->
+Does this issue occur when you try this locally?: Yes/No
+Does this issue occur when you try this locally and all extensions are disabled?: Yes/No
+
+<!-- If your issue only appears in Codespaces, please visit: https://github.com/github/feedback/discussions/categories/codespaces-feedback -->
