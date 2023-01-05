@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+<title>Education-X Code Question List</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+</head>
+<body>
+    <h1>Code Question List</h1>
+    <form action="{% url 'search_question' %}" method="GET">
+        <input name="query" type="text" placeholder="Search...">
+        <input type="submit" value="Search">
+    </form>
+    <ul>
+        {% for q in questions %}
+            <li>
+                <a href="{% url 'update_question_status' q.id %}">Update</a>
+                <p>{{q.title}}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
