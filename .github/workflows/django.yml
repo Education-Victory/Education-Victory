@@ -6,11 +6,12 @@ on:
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
+    # need run on ubuntu-latest and 20.04
+    runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 4
       matrix:
+        os: [ubuntu-latest, ubuntu-20.04]
         python-version: [3.11]
 
     steps:
