@@ -1,3 +1,7 @@
+# .DS_Store stores custom folder attributes on Macs, such as the position of icons or the choice of a background
+.DS_Store
+**/.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
