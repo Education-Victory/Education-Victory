@@ -1,10 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% load static %}
+{% load socialaccount %}
 
-</body>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block title %}
+    <title>Education-X</title>
+    {% endblock %}
+    <link rel="stylesheet" href="{% static 'css/bulma0.9.4.min.css' %}">
+    {% block extra_css %}
+    {% endblock %}
+  </head>
+  <body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
+          <img src="" width="112" height="28">
+        </a>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-end">
+        <div class="navbar-item">
+          {% if user.is_authenticated %}
+            {{ user.username }}
+          {% else %}
+          <div class="buttons">
+            <a href="{% url 'account_signup' %}" class="button is-primary">
+              <strong>Sign up</strong>
+            </a>
+            <a href="{% url 'account_login' %}" class="button is-light">
+              Sign in
+            </a>
+          {% endif %}
+          </div> <!-- end buttons -->
+        </div> <!-- end navbar-item -->
+      </div> <!-- end navbar-end -->
+    </nav>
+  </body>
+  {% block content %}
+  {% endblock %}
+  </body>
+  {% block footer %}
+  {% endblock %}
 </html>
