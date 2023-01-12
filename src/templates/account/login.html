@@ -1,0 +1,14 @@
+
+{% load socialaccount %}
+<h2>Log In</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Log In</button>
+</form>
+<br/><br/>
+<a href = "{% provider_login_url 'google' %}"> Login with Google</a>
+<br/><br/>
+<a href="{% provider_login_url 'github' %}">Sign Up with GitHub</a>
+
+
