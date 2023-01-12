@@ -12,6 +12,9 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+Example of CRUD for model Question
+    `router = routers.DefaultRouter()`
+    `router.register(r'question', views.QuestionViewSet, basename='Question')`
 """
 from django.contrib import admin
 from django.urls import path
