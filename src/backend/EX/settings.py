@@ -46,8 +46,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     #'bootstrap4',
     # Local
-    'accounts',
-    'pages',
+   # 'accounts',
+   # 'pages',
 ]
 
 MIDDLEWARE = [
@@ -134,7 +134,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = 'accounts.CustomUser'
+#AUTH_USER_MODEL = 'accounts.CustomUser'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
