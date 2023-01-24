@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     #'bootstrap4',
     # Local
     'accounts',
-   # 'pages',
+    'pages',
 ]
 
 MIDDLEWARE = [
