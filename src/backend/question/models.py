@@ -33,3 +33,10 @@ class Question(models.Model):
 
 class QuestionTopic(models.Model):
     topic = models.CharField(max_length=20)
+    
+class UserSubmission(models.Model):
+    # TODO: foreign keys : user id 
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    upload_time = models.DateTimeField(auto_now_add=True)
+    content = models.JSONField(blank=True, null=True)
+    completeness = models.JSONField(blank=True, null=True)
