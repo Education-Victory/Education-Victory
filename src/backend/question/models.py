@@ -29,3 +29,7 @@ class Question(models.Model):
     choice = models.JSONField(blank=True, null=True)
     answer = models.JSONField(blank=True, null=True)
     label = models.JSONField(blank=True, null=True)
+
+
+class QuestionTopic(models.Model):
+    topic = models.CharField(max_length=20)
