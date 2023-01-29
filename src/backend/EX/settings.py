@@ -127,7 +127,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -161,3 +160,17 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
     }
 }
+
+# Email
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+
+# Enhance
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
+
+# Other
+LOGIN_REDIRECT_URL = 'home'
+ACCOUNT_LOGOUT_REDIRECT_URL = 'home'
