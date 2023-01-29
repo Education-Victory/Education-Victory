@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'question.apps.QuestionConfig',
+    'public.apps.PublicConfig',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
