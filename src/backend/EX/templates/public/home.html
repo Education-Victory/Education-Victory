@@ -1,5 +1,11 @@
-{% extends "../basic.html" %}
+{% extends "basic.html" %}
 
+{% block head %}
+{% load socialaccount %}
+{% endblock %}
+
+
+{% block content %}
 {% if user.is_authenticated %}
   Hi {{ user.email }}!
   <p><a href="{% url 'account_logout' %}">Log Out</a></p>
@@ -8,3 +14,4 @@
   <a href="{% url 'account_login' %}">Log In</a> |
   <a href="{% url 'account_signup' %}">Sign Up</a>
 {% endif %}
+{% endblock %}
