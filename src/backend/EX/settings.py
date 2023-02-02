@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
     'rest_framework',
     'accounts',
-    'informSet'
+    'informSet',
 ]
 
 MIDDLEWARE = [
@@ -168,17 +168,3 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
     }
 }
-
-# Email
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
-
-# Enhance
-ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
-
-# Other
-LOGIN_REDIRECT_URL = 'home'
-ACCOUNT_LOGOUT_REDIRECT_URL = 'home'
