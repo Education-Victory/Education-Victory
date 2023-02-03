@@ -42,12 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'question.apps.QuestionConfig',
     'public.apps.PublicConfig',
+    'informSet.apps.InformsetConfig',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
     'rest_framework',
+    
 ]
 
 MIDDLEWARE = [
