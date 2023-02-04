@@ -19,9 +19,12 @@ Example of CRUD for model Question
 from django.contrib import admin
 from django.urls import path, include
 from public import views
+from informSet import urls as inform_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', views.home, name='home'),
+    path('api_auth', include('rest_framework.urls')),
+    path('informSet/', include(inform_urls)),
 ]

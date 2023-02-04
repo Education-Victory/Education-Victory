@@ -4,9 +4,9 @@ from django.contrib.auth.models import AbstractUser
 
 class WebUser(AbstractUser):
 	avatar = models.ImageField(max_length = 200, null = True)
-	extra_data = models.JSONField(blank = True)
+	extra_data = models.JSONField(blank = True, null = True)
 	def __str__(self):
-		return self.name
+		return self.username
 
 class UserScore(models.Model):
 	uniqueId = models.IntegerField(primary_key = True)
