@@ -32,6 +32,22 @@ class UserScoreListApiView(mixins.ListModelMixin,
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
+class UserScoreDetailApiView(mixins.RetrieveModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin,
+                            generics.GenericAPIView):
+    queryset = UserScore.objects.all()
+    serializer_class = UserScoreSerializer
+    
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+    
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+    
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
 class UserFavListApiView(mixins.ListModelMixin,
                             mixins.CreateModelMixin,
                             generics.GenericAPIView):
@@ -43,3 +59,19 @@ class UserFavListApiView(mixins.ListModelMixin,
     
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+class UserFavDetailApiView(mixins.RetrieveModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin,
+                            generics.GenericAPIView):
+    queryset = UserFav.objects.all()
+    serializer_class = UserFavSerializer
+    
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+    
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+    
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
