@@ -9,11 +9,16 @@ class WebUser(AbstractUser):
 		return self.username
 
 class UserScore(models.Model):
-	uniqueId = models.IntegerField(primary_key = True)
 	user_id	 = models.ForeignKey(WebUser, on_delete = models.CASCADE)
-	score_list = models.JSONField(blank = True)
+	score_category = models.IntegerField()
+	score = models.IntegerField()
+	def __str__(self):
+		return self.id
+	
 
 class UserFav(models.Model):
 	user_id = models.ForeignKey(WebUser, on_delete = models.CASCADE)
 	type =  models.CharField(max_length = 200)
 	content = models.JSONField()
+	def __str__(self):
+		return self.id
