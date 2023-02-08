@@ -1,18 +1,6 @@
 from django.db import models
 
 
-class QuestionCategory(models.Model):
-    category = models.CharField(
-        max_length=20, help_text="Category of a question")
-
-    def __str__(self):
-        return self.category
-
-    class Meta:
-        verbose_name = "Categroy"
-        verbose_name_plural = "Categories"
-
-
 class Question(models.Model):
     class QuestionTypeChoice(models.TextChoices):
         # Choices for types of a question
@@ -29,22 +17,14 @@ class Question(models.Model):
 
     name = models.CharField(max_length=100, blank=True,
                             help_text="Question Name(Optional)")
-    description = models.TextField(
-        max_length=200, blank=True, help_text="Detailed Description of Question(Optional)")
+    description = models.JSONField(
+        help_text="Detailed Description of Question")
     url = models.URLField(max_length=20, blank=True,
                           null=True, help_text="URL source of question")
-    parent = models.ForeignKey(
-        'self', on_delete=models.SET_NULL, null=True, blank=True)
-
     type = models.CharField(
         max_length=2, choices=QuestionTypeChoice.choices, help_text="Type of question")
-    category = models.ForeignKey(QuestionCategory, on_delete=models.CASCADE)
-    followUp = models.JSONField(
-        blank=True, null=True, help_text="follow-up of question")
-    resource = models.JSONField(
-        blank=True, null=True, help_text="resource to study for this question")
-    choice = models.JSONField(blank=True, null=True,
-                              help_text="multiple choices")
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -56,33 +36,39 @@ class Question(models.Model):
 
 class Solution(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    solution = models.TextField(help_text="Solution to a specified question")
+    answer = models.JSONField(
+        help_text="detailed solution", default={"solutions": ""})
+    # follow up for similar questions/mutated versions, resources for better understanding
+    followUp = models.JSONField(
+        default={"followup": [], "resources": []}, help_text="follow-up of question")
+    keypoints = models.JSONField(
+        default={"keypoints": []}, help_text="list of keypoints'id")
 
     def __str__(self):
-        return f"{self.question} - {self.solution}"
+        return f"{self.question} - {self.pk}"
+
+
+class Category(models.Model):
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    name = models.CharField(max_length=30, default="question category")
 
 
 class Keypoint(models.Model):
     difficulty = models.IntegerField(
         default=1, help_text="Difficulty of a keypoint")
     name = models.CharField(max_length=50, help_text="Name of the keypoint")
-    category = models.ForeignKey(QuestionCategory, on_delete=models.CASCADE)
     requirements = models.JSONField(
         blank=True, null=True, help_text="requirements of a keypoint")
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.category} - {self.name}"
+        return f"{self.name}"
 
 
-class Question_Keypoint_Mapping(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    keypoint = models.ForeignKey(Keypoint, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.question} - {self.keypoint}"
-
-
-class User_Keypoint_Score(models.Model):
+class UserKeypointScore(models.Model):
     # TODO: foreign keys : user id
     keypoint = models.ForeignKey(Keypoint, on_delete=models.CASCADE)
     score = models.FloatField()
@@ -90,8 +76,11 @@ class User_Keypoint_Score(models.Model):
 
 class UserSubmission(models.Model):
     # TODO: foreign keys : user id
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    upload_time = models.DateTimeField(auto_now_add=True)
+    solution = models.ForeignKey(Solution, on_delete=models.CASCADE, null=True)
     content = models.JSONField(blank=True, null=True)
+    # same fields in Keypoint's requirements
     completeness = models.JSONField(blank=True, null=True)
-    points = models.FloatField(help_text="score added by this submission")
+    points = models.FloatField(
+        help_text="score added by this submission", default=0.0)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
