@@ -131,3 +131,46 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# vue
+node_modules/
+/dist/
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
+
+## bulma
+# Files
+
+.ruby-version
+npm-debug.log
+test.css
+test.css.map
+test.html
+test.sass
+test.css
+test.css.map
+
+# Folders
+
+.idea/
+.sass-cache
+_gh_pages
+_site
+dev
+test/output/
