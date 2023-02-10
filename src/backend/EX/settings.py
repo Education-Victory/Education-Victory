@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
     'rest_framework',
-    
 ]
 
 MIDDLEWARE = [
@@ -94,6 +93,7 @@ DATABASES = {
 }
 AUTH_USER_MODEL = "informSet.WebUser"
 
+REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema'}
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
