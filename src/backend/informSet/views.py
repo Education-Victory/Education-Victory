@@ -7,7 +7,7 @@ from rest_framework import viewsets
 from rest_framework import permissions, status
 from .models import *
 from .serializers import *
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # User Views
 class UserViewSet(viewsets.ModelViewSet):
@@ -20,7 +20,10 @@ class UserScoreViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]                        
     queryset = UserScore.objects.all()
     serializer_class = UserScoreSerializer
-
+    def get(self, request, *args, **kwargs):
+        queryset = UserScore.objects.filter(user_id = request.user.id)
+        serializer = UserFavSerializer(queryset, many = True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class UserScoreModifyApiView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -68,7 +71,29 @@ class UserScoreModifyApiView(APIView):
 #UserFav views
 class UserFavViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
-    queryset = UserFav.objects.all()
     serializer_class = UserFavSerializer
+    queryset = UserFav.objects.all()
+    def get(self, request, *args, **kwargs):
+        queryset = UserFav.objects.filter(user_id = request.user.id)
+        serializer = UserFavSerializer(queryset, many = True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+# list the userfav in different pages
+class UserFavShowPage(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        page = kwargs["page"]
+        pageSize = kwargs["pageSize"]
+        queryset = UserFav.objects.all()
+        paginator = Paginator(queryset, pageSize)
+        try:
+            user_fav = paginator.page(page)
+        except PageNotAnInteger:
+            user_fav = paginator.page(1)
+        except EmptyPage:
+            user_fav = paginator.page(paginator.num_pages)
+        serializer = UserFavSerializer(user_fav, many = True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     
     

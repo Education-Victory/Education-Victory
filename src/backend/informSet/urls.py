@@ -10,6 +10,7 @@ router.register(r'UserScoreApi', UserScoreViewSet)
 router.register(r'UserFavApi', UserFavViewSet)
 urlpatterns = [
     path('ModifyScoreApi/userscore:category=<int:score_category>/', UserScoreModifyApiView.as_view()),
+    path('UserFavPageView/pageSize=<int:pageSize>/page=<int:page>/', UserFavShowPage.as_view()),
     path('docs/', include_docs_urls(title='Api')),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)
