@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class InformsetConfig(AppConfig):
+class CommonConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'informSet'
+    name = 'common'
