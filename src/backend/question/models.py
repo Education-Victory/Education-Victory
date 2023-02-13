@@ -13,13 +13,14 @@ class Category(models.Model):
 
 class Question(models.Model):
     class QuestionTypeChoice(models.TextChoices):
+        OTHERS = 'OT', 'Others'
         MULTIPLE_CHOICE = 'MC', 'Multiple Choice'
         SHORT_ANSWER = 'SA', 'Short Answer'
         TRUE_O_FALSE = 'TF', 'True / False'
 
     name = models.CharField(max_length=100, blank=True, help_text='question name')
     description = models.JSONField(help_text='description of question')
-    category = models.JSONField(help_text='list of category id based on solution')
+    category = models.ManyToManyField(Category)
     type = models.CharField(max_length=2, choices=QuestionTypeChoice.choices, help_text='type of question')
     upvote = models.IntegerField(default=1, help_text='upvote of the question')
     downvote = models.IntegerField(default=1, help_text='downvote of the question')
@@ -31,19 +32,6 @@ class Question(models.Model):
     def __str__(self):
         return self.name
 
-class Solution(models.Model):
-    name = models.CharField(max_length=100, blank=True, help_text='solution name')
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    answer = models.JSONField(help_text='detailed solution')
-    keypoints = models.JSONField(help_text='list of keypoints id')
-    resources = models.JSONField(help_text='resources of question')
-    created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f'{self.name} - {self.question}'
-
 class Keypoint(models.Model):
     name = models.CharField(max_length=50, help_text='name of the keypoint')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
@@ -54,6 +42,19 @@ class Keypoint(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+
+class Solution(models.Model):
+    name = models.CharField(max_length=100, blank=True, help_text='solution name')
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    answer = models.JSONField(help_text='detailed solution')
+    keypoints = models.ManyToManyField(Keypoint)
+    resources = models.JSONField(help_text='resources of question')
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.name} - {self.question}'
 
 class UserKeypointScore(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
