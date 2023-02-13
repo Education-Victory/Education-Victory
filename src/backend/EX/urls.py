@@ -18,10 +18,16 @@ Example of CRUD for model Question
 """
 from django.contrib import admin
 from django.urls import path, include
-from public import views
+from question import views as question_views
+from public import views as public_views
+from rest_framework import routers
+
+router = routers.SimpleRouter()
+router.register(r'question', question_views.QuestionViewSet, basename='Question')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('', views.home, name='home'),
+    path('api/', include((router.urls, 'app_name'))),
+    path('', public_views.home, name='home'),
 ]
