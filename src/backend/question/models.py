@@ -1,86 +1,71 @@
 from django.db import models
+from django.utils import timezone
+from django.conf import settings
 
-
-class Question(models.Model):
-    class QuestionTypeChoice(models.TextChoices):
-        # Choices for types of a question
-        MULTIPLE_CHOICE = "MC", "Multiple Choice"
-        SHORT_ANSWER = "SA", "Short Answer"
-        TRUE_O_FALSE = "TF", "True / False"
-        CODE = "CO", "Code"
-
-    class QuestionCategoryChoice(models.TextChoices):
-        # Choices for category of a question
-        QUIZ = "QZ", "Quiz"
-        MOCK = "MK", "Mock"
-        PRACTICE = "PR", "Practice"
-
-    name = models.CharField(max_length=100, blank=True,
-                            help_text="Question Name(Optional)")
-    description = models.JSONField(
-        help_text="Detailed Description of Question")
-    url = models.URLField(max_length=20, blank=True,
-                          null=True, help_text="URL source of question")
-    type = models.CharField(
-        max_length=2, choices=QuestionTypeChoice.choices, help_text="Type of question")
-    created_at = models.DateTimeField(auto_now=True)
+class Category(models.Model):
+    name = models.CharField(max_length=30, help_text='category of solution')
+    weight = models.IntegerField(default=1, help_text='weight of the category')
+    created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
 
-    class Meta:
-        verbose_name = "Question"
-        verbose_name_plural = "Questions"
+class Question(models.Model):
+    class QuestionTypeChoice(models.TextChoices):
+        MULTIPLE_CHOICE = 'MC', 'Multiple Choice'
+        SHORT_ANSWER = 'SA', 'Short Answer'
+        TRUE_O_FALSE = 'TF', 'True / False'
 
+    name = models.CharField(max_length=100, blank=True, help_text='question name')
+    description = models.JSONField(help_text='description of question')
+    category = models.JSONField(help_text='list of category id based on solution')
+    type = models.CharField(max_length=2, choices=QuestionTypeChoice.choices, help_text='type of question')
+    upvote = models.IntegerField(default=1, help_text='upvote of the question')
+    downvote = models.IntegerField(default=1, help_text='downvote of the question')
+    publish = models.BooleanField(default=1, help_text='publish the question or not')
+    URL = models.URLField(max_length=20, blank=True, help_text='URL of question')
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
 class Solution(models.Model):
+    name = models.CharField(max_length=100, blank=True, help_text='solution name')
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    answer = models.JSONField(
-        help_text="detailed solution", default={"solutions": ""})
-    # follow up for similar questions/mutated versions, resources for better understanding
-    followUp = models.JSONField(
-        default={"followup": [], "resources": []}, help_text="follow-up of question")
-    keypoints = models.JSONField(
-        default={"keypoints": []}, help_text="list of keypoints'id")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    answer = models.JSONField(help_text='detailed solution')
+    keypoints = models.JSONField(help_text='list of keypoints id')
+    resources = models.JSONField(help_text='resources of question')
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.question} - {self.pk}"
-
-
-class Category(models.Model):
-    class Meta:
-        verbose_name_plural = "Categories"
-
-    name = models.CharField(max_length=30, default="question category")
-
+        return f'{self.name} - {self.question}'
 
 class Keypoint(models.Model):
-    difficulty = models.IntegerField(
-        default=1, help_text="Difficulty of a keypoint")
-    name = models.CharField(max_length=50, help_text="Name of the keypoint")
-    requirements = models.JSONField(
-        blank=True, null=True, help_text="requirements of a keypoint")
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, blank=True, null=True)
+    name = models.CharField(max_length=50, help_text='name of the keypoint')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
+    difficulty = models.IntegerField(default=1, help_text='difficulty of a keypoint')
+    requirements = models.CharField(max_length=100, blank=True, help_text='requirements of keypoint')
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name}"
-
+        return f'{self.name}'
 
 class UserKeypointScore(models.Model):
-    # TODO: foreign keys : user id
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     keypoint = models.ForeignKey(Keypoint, on_delete=models.CASCADE)
-    score = models.FloatField()
-
+    score = models.IntegerField(default=0)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class UserSubmission(models.Model):
-    # TODO: foreign keys : user id
-    solution = models.ForeignKey(Solution, on_delete=models.CASCADE, null=True)
-    content = models.JSONField(blank=True, null=True)
-    # same fields in Keypoint's requirements
-    completeness = models.JSONField(blank=True, null=True)
-    points = models.FloatField(
-        help_text="score added by this submission", default=0.0)
-    created_at = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    solution = models.ForeignKey(Solution, on_delete=models.CASCADE)
+    keypoint = models.JSONField(blank=True, help_text='list of completed keypoint id')
+    content = models.JSONField(blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
