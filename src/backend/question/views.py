@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .models import Question
-from .serializers import QuestionSerializer
+from .models import Question, Solution
+from .serializers import QuestionSerializer, SolutionSerializer
 
 class QuestionViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionSerializer
@@ -14,4 +14,11 @@ class QuestionViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(category__category_name=category)
         if sub_category is not None:
             queryset = queryset.filter(category__id=sub_category)
+        return queryset
+
+class SolutionViewSet(viewsets.ModelViewSet):
+    serializer_class = SolutionSerializer
+
+    def get_queryset(self):
+        queryset = Solution.objects.all()
         return queryset

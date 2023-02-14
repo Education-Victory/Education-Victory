@@ -24,6 +24,7 @@ from rest_framework import routers
 
 router = routers.SimpleRouter()
 router.register(r'question', question_views.QuestionViewSet, basename='Question')
+router.register(r'solution', question_views.SolutionViewSet, basename='Solution')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
