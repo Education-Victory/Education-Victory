@@ -27,7 +27,7 @@ jobs:
     - name: Create ENV file
       run: |
         touch ./src/backend/ENV.py
-        echo EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' >> ./src/backend/ENV.py
+        echo EMAIL_BACKEND = \'django.core.mail.backends.console.EmailBackend\' >> ./src/backend/ENV.py
     - name: Run Tests
       run: |
         python ./src/backend/manage.py test
