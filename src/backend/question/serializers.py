@@ -15,9 +15,11 @@ class KeypointSerializer(serializers.ModelSerializer):
                 'requirements', 'created_at', 'updated_at']
 
 class CategorySerializer(serializers.ModelSerializer):
+    keypoint = KeypointSerializer(many=True, read_only=True)
+
     class Meta:
         model = Category
-        fields = ['id', 'name', 'weight', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'weight', 'keypoint', 'created_at', 'updated_at']
 
 class QuestionSerializer(serializers.ModelSerializer):
     category = CategorySerializer(many=True, read_only=True)

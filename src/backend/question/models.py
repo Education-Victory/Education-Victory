@@ -34,7 +34,7 @@ class Question(models.Model):
 
 class Keypoint(models.Model):
     name = models.CharField(max_length=50, help_text='name of the keypoint')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='keypoint', blank=True, null=True)
     difficulty = models.IntegerField(default=1, help_text='difficulty of a keypoint')
     requirements = models.CharField(max_length=100, blank=True, help_text='requirements of keypoint')
     created_at = models.DateTimeField(default=timezone.now)
