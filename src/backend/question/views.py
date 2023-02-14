@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .models import Question, Solution
-from .serializers import QuestionSerializer, SolutionSerializer
+from .models import Question, Solution, Keypoint
+from .serializers import QuestionSerializer, SolutionSerializer, KeypointSerializer
 
 class QuestionViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionSerializer
@@ -21,4 +21,11 @@ class SolutionViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Solution.objects.all()
+        return queryset
+
+class KeypointViewSet(viewsets.ModelViewSet):
+    serializer_class = KeypointSerializer
+
+    def get_queryset(self):
+        queryset = Keypoint.objects.all()
         return queryset
