@@ -26,6 +26,7 @@ router = routers.SimpleRouter()
 router.register(r'question', question_views.QuestionViewSet, basename='Question')
 router.register(r'solution', question_views.SolutionViewSet, basename='Solution')
 router.register(r'keypoint', question_views.KeypointViewSet, basename='Keypoint')
+router.register(r'category', question_views.CategoryViewSet, basename='Category')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
