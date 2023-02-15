@@ -48,7 +48,7 @@ class Solution(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     answer = models.JSONField(help_text='detailed solution')
-    keypoints = models.ManyToManyField(Keypoint)
+    keypoint = models.ManyToManyField(Keypoint)
     resources = models.JSONField(help_text='resources of question')
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
