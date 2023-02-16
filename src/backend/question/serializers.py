@@ -5,7 +5,7 @@ from .models import Question, Category, Solution, Keypoint
 class SolutionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Solution
-        fields = ['id', 'name', 'question', 'category', 'answer', 'keypoints',
+        fields = ['id', 'name', 'question', 'category', 'answer', 'keypoint',
                 'resources', 'created_at', 'updated_at']
 
 class KeypointSerializer(serializers.ModelSerializer):
