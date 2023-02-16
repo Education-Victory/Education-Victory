@@ -17,10 +17,12 @@ Example of CRUD for model Question
     `router.register(r'question', views.QuestionViewSet, basename='Question')`
 """
 from django.contrib import admin
+from django.views.generic import TemplateView
 from django.urls import path, include
 from question import views as question_views
 from public import views as public_views
 from rest_framework import routers
+from rest_framework.schemas import get_schema_view
 
 router = routers.SimpleRouter()
 router.register(r'question', question_views.QuestionViewSet, basename='Question')
@@ -29,6 +31,15 @@ router.register(r'keypoint', question_views.KeypointViewSet, basename='Keypoint'
 router.register(r'category', question_views.CategoryViewSet, basename='Category')
 
 urlpatterns = [
+    path('openapi', get_schema_view(
+            title="API Documents",
+            description="API for all things …",
+            version="1.0.0"
+        ), name='openapi-schema'),
+    path('swagger-ui/', TemplateView.as_view(
+        template_name='swagger-ui.html',
+        extra_context={'schema_url':'openapi-schema'}
+    ), name='swagger-ui'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('api/', include((router.urls, 'app_name'))),
