@@ -28,7 +28,7 @@ jobs:
       run: |
         touch ./src/backend/ENV.py
         echo EMAIL_BACKEND = \'django.core.mail.backends.console.EmailBackend\' >> ./src/backend/ENV.py
-        echo ROOT = \'http://127.0.0.1:8000'\ >> ./src/backend/ENV.py
+        echo ROOT = \'http://127.0.0.1:8000\' >> ./src/backend/ENV.py
     - name: Run Tests
       run: |
         python ./src/backend/manage.py test
