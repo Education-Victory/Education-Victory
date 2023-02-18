@@ -45,8 +45,8 @@ class Keypoint(models.Model):
 
 class Solution(models.Model):
     name = models.CharField(max_length=100, blank=True, help_text='solution name')
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='solution_question')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='solution_category')
     answer = models.JSONField(help_text='detailed solution')
     keypoint = models.ManyToManyField(Keypoint)
     resources = models.JSONField(help_text='resources of question')
