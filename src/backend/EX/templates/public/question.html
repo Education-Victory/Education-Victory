@@ -1,0 +1,103 @@
+{% extends "basic.html" %}
+{% load static %}
+
+{% block content %}
+<span id="vue-span">
+  <section class="section">
+  <div class="container">
+    <nav class="panel">
+      <p class="panel-heading">
+        categorise and keypoints
+      </p>
+      <p class="panel-tabs">
+        <a v-for="(ca, index) in this.category" @click="get_question_by_cate(index)">[[ ca.name ]]</a>
+      </p>
+      <a  v-for="kp in this.cur_category.keypoint" @click="get_question_by_kp(kp.id)" class="panel-block">
+        <span class="panel-icon">
+          <i class="fas fa-book" aria-hidden="true"></i>
+        </span>
+        [[ kp.name ]]
+      </a>
+      <a v-for="i in placeholder" class="panel-block empty-text">
+        <span class="panel-icon">
+          <i class="fas fa-book" aria-hidden="true"></i>
+        </span>
+        Empty
+      </a>
+    </nav>
+  </div>
+  </section>
+  
+  <section class="section">
+  <div class="container">
+  <table id="question-table" class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>keypoints</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(so, index) in this.solution_lst">
+        <td>[[ so.id ]]</td>
+        <td>[[ so.question_name ]]</td>
+        <td v-for="(kp, index) in so.keypoint">[[ kp.name ]]</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  </section>
+</span>
+{% endblock %}
+{% block extra_script %}
+  <script>
+    var root = '{{ root }}';
+    var app = new Vue({
+      delimiters: ['[[', ']]'],
+      el: '#vue-span',
+      data () {
+        return {
+           root: root,
+           category: null,
+           cur_category: null,
+           solution_lst: null,
+           placeholder: null,
+        }
+      },
+      mounted () {
+        axios.get(root + '/api/category')
+          .then(response => {
+              this.category = response.data;
+              this.cur_category = this.category[0];
+          })
+          .catch()
+        axios.get(root + '/api/solution?category=1')
+          .then(response => {
+              this.solution_lst = response.data;
+              this.placeholder = 5 - this.cur_category.keypoint.length;
+          })
+          .catch()
+      },
+      methods: {
+        get_question_by_cate: function (index) {
+          var id = index + 1;
+          axios.get(root + '/api/solution/?category=' + id)
+            .then(response => {
+                this.cur_category = this.category[index];
+                this.solution_lst = response.data;
+                this.placeholder = 5 - this.cur_category.keypoint.length;
+            })
+            .catch()
+        },
+        get_question_by_kp: function (id) {
+          axios.get(root + '/api/solution/?keypoint=' + id)
+            .then(response => {
+                this.solution_lst = response.data;
+            })
+            .catch()
+        },
+      }
+    })
+  </script>
+{% endblock %}
