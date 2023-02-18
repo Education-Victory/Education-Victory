@@ -35,14 +35,18 @@
       <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>keypoints</th>
+        <th>Category</th>
+        <th>Keypoints</th>
+        <th>Details</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="(so, index) in this.solution_lst">
         <td>[[ so.id ]]</td>
         <td>[[ so.question_name ]]</td>
+        <td>[[ so.category_name ]]</td>
         <td v-for="(kp, index) in so.keypoint">[[ kp.name ]]</td>
+        <td><a :href="'{{ root }}/' + so.question_name + '/' + so.category_name + '/'">Details</a></td>
       </tr>
     </tbody>
   </table>
