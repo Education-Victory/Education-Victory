@@ -46,7 +46,7 @@
         <td>[[ so.question_name ]]</td>
         <td>[[ so.category_name ]]</td>
         <td v-for="(kp, index) in so.keypoint">[[ kp.name ]]</td>
-        <td><a :href="'{{ root }}/' + so.question_name + '/' + so.category_name + '/'">Details</a></td>
+        <td><a :href="'{{ root }}/question/' + so.question_name + '/' + so.category_name + '/'">Details</a></td>
       </tr>
     </tbody>
   </table>

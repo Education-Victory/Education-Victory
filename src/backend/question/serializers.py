@@ -19,15 +19,19 @@ class KeypointSerializer(serializers.ModelSerializer):
 class SolutionSerializer(serializers.ModelSerializer):
     keypoint = KeypointSerializer(many=True, read_only=True)
     question_name = serializers.SerializerMethodField()
+    question_des = serializers.SerializerMethodField()
     category_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Solution
-        fields = ['id', 'name', 'question_name', 'category_name', 'category', 'answer', 'keypoint',
+        fields = ['id', 'name', 'question_name', 'question_des', 'category_name', 'category', 'answer', 'keypoint',
                 'resources', 'created_at', 'updated_at']
 
     def get_question_name(self, obj):
         return obj.question.name
+
+    def get_question_des(self, obj):
+        return obj.question.description
 
     def get_category_name(self, obj):
         return obj.category.name

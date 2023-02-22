@@ -25,9 +25,15 @@ class SolutionViewSet(viewsets.ModelViewSet):
     serializer_class = SolutionSerializer
 
     def get_queryset(self):
-        queryset = Solution.objects.all().annotate(question_name=F('question__name'))
+        queryset = Solution.objects.all()
         category = self.request.query_params.get('category', None)
+        category_name = self.request.query_params.get('category_name', None)
+        question_name = self.request.query_params.get('question_name', None)
         keypoint = self.request.query_params.get('keypoint', None)
+        if category_name is not None:
+            queryset = queryset.filter(category__name=category_name)
+        if question_name is not None:
+            queryset = queryset.filter(question__name=question_name)
         if category is not None:
             queryset = queryset.filter(category=category)
         if keypoint is not None:
