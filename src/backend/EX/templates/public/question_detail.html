@@ -1,0 +1,136 @@
+{% extends "basic.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container" id="vue-div">
+<section class="hero is-dark">
+  <div class="hero-body">
+    <p class="title">
+      {{ question_name }}
+    </p>
+    <p class="subtitle">
+      {{ category_name }}
+    </p>
+    <p>[[ this.solution.question_des.dec ]]</p>
+  </div>
+</section>
+<section class="section">
+  <div class="card" id="card-practice">
+    <div class="card-content">
+      <div class="content">
+        <p class="is-size-3">How to practice</p>
+        <ol>
+          <li><p>Set a 30 minute countdown.</p></li>
+          <li><p>Let's focus on {{ category_name }} right now, Try to solve this question using {{ category_name }},  <a href="https://leetcode.com/problems/two-sum/">Here is the link</a>. Go back to this page when countdown ends.</p></li>
+          <li><p>Click the checkbox in <b>Checkboxes</b> to record your completion every time. You can observe changes in your completion of the item.</p></li>
+          <li><p>Read <b>Selected Solutions</b> (only {{ category_name }}) to learn how others solve this question.</p></li>
+          <li><p>Read <b>Resources</b> and <b>Tips</b> to learn more about the keypoints.</p></li>
+          <li><p>Checkout <b>Follow ups</b> and discuss with others at the forum.</p></li>
+        </ol>
+      </div>
+    </div>
+  </div> <!-- end card -->
+
+  <br>
+
+  <div class="card">
+    <div class="card-content">
+      <div class="content">
+        <p class="is-size-3">Checkboxes</p>
+        <ol>
+          <li><label class="checkbox"><input type="checkbox" id="testcase-input"> Pass all the Testcases</label></li>
+          <li><label class="checkbox"><input type="checkbox" id="timespace-input"> Space-time complexity </label></li>
+          <li v-for="(kp, index) in this.solution.keypoint"><label class="checkbox"><input type="checkbox" :id="kp.id + '-keypoint'"> Use [[ kp.name ]]</label></li>
+        </ol>
+        <div class="buttons">
+          <button class="button is-link is-rounded">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div> <!-- end card -->
+  
+  <br>
+
+  <article class="message">
+    <div class="message-header">
+      <p>Tips</p>
+      <button class="delete" aria-label="delete"></button>
+    </div>
+    <div class="message-body">
+      [[ this.resources.tip[0].title ]] 
+    </div>
+  </article>
+
+  <div class="card">
+    <div class="card-content">
+      <div class="content">
+        <p class="is-size-3">Selected Solutions</p>
+        <ol>
+          <li v-for="(so, index) in this.resources.solution"><a :href="so.url">[[ so.title ]]</a>
+            <span v-for="(la, index) in so.language" class="tag is-dark">[[ la ]]</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div> <!-- end card -->
+
+  <br>
+
+  <div class="card">
+    <div class="card-content">
+      <div class="content">
+        <p class="is-size-3">Resources</p>
+        <ol>
+          <li v-for="(re, index) in this.resources.reading"><a :href="re.url">[[ re.title ]]</a>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div> <!-- end card -->
+
+  <br>
+
+    <div class="card">
+    <div class="card-content">
+      <div class="content">
+        <p class="is-size-3">Follow up</p>
+        <ol>
+          <li v-for="(fo, index) in this.resources.followup"><a :href="fo.url">[[ fo.title ]]</a>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div> <!-- end card -->
+
+  <br>
+  
+</section>
+</div>
+
+{% endblock %}
+{% block extra_script %}
+  <script>
+    var root = '{{ root }}';
+    var question_name = '{{ question_name }}';
+    var category_name = '{{ category_name }}';
+    var app = new Vue({
+      delimiters: ['[[', ']]'],
+      el: '#vue-div',
+      data () {
+        return {
+           root: root,
+           solution: null,
+           resources: null,
+        }
+      },
+      mounted () {
+        axios.get(root + '/api/solution/?question_name=' + question_name + '&category_name=' + category_name)
+          .then(response => {
+              this.solution = response.data[0];
+              this.resources = this.solution.resources;
+          })
+          .catch()
+      },
+    })
+  </script>
+{% endblock %}
