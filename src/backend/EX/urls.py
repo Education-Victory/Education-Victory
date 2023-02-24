@@ -21,6 +21,7 @@ from django.views.generic import TemplateView
 from django.urls import path, include
 from question import views as question_views
 from public import views as public_views
+from common import views as common_views
 from rest_framework import routers
 from rest_framework.schemas import get_schema_view
 
@@ -29,6 +30,7 @@ router.register(r'question', question_views.QuestionViewSet, basename='Question'
 router.register(r'solution', question_views.SolutionViewSet, basename='Solution')
 router.register(r'keypoint', question_views.KeypointViewSet, basename='Keypoint')
 router.register(r'category', question_views.CategoryViewSet, basename='Category')
+router.register(r'submission', common_views.UserSubmissionViewSet, basename='Submission')
 
 urlpatterns = [
     path('openapi', get_schema_view(
