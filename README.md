@@ -3,6 +3,8 @@
 - [English](#education-victory)
 - [Chinese](#教育制胜)
 
+<img src="https://raw.githubusercontent.com/Education-X/Education-X/main/imgs/EV2.svg">
+
 ## Education Victory
 The new generation learning platform that combines personalized learning, collaborative learning, and project-based learning.
 
