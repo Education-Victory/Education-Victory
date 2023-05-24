@@ -1,15 +1,20 @@
 {% extends "basic.html" %}
 
 {% block content %}
-<section class="hero is-link is-halfheight has-text-centered">
+<section class="hero is-halfheight has-text-centered">
   <div class="hero-body">
     <div class="container has-text-centered">
-      <p class="title">
-        Education-X
+      <p class="front-title is-size-title has-text-link has-text-weight-bold">
+        Enjoy your practice <br> and learn together
       </p>
-      <p class="subtitle">
-        a new gernation learning platform
+      <hr>
+      <p class="front-subtitle is-size-4 has-text-weight-light">
+      Use efficient practice methods to quickly improve your ability, <br>
+      join our community to learn and share knowledge with everyone.
       </p>
+      <a href="{% url 'account_signup' %}" class="button is-dark is-large">
+        <strong>Sign up</strong>
+      </a>
     </div>
   </div>
 </section>
@@ -18,8 +23,8 @@
 <div class="container">
   <div class="columns">
     <div class="column">
-      <p class="title">Adative Learning</h2>
-      <h4>Recommend questions according to your level</h4>
+      <p class="title">Personalized Learning</h2>
+      <h4>You can understand your shortcomings at any time, and the platform will automatically recommend questions suitable for your level of difficulty.</h4>
     </div>
     <div class="column">
       <p class="title">Collaborative Learning</h2>

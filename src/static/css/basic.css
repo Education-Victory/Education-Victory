@@ -1,3 +1,18 @@
 #question-table {
     width: 100%;
 }
+
+.is-size-title {
+    font-size: 5rem;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+}
+
+.front-title {
+    line-height: 1.2;
+    margin-bottom: 2rem;
+}
+
+.front-subtitle {
+    margin-bottom: 3rem;
+}
