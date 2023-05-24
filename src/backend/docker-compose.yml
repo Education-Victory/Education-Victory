@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  backend:
+    container_name: educationx_backend
+    build:    # build image
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app  # working directory inside container
+    env_file:     # environment variables
+      - .env
+    volumes:       # enable hot reload
+      - .:/app
+      - ../static:/static
+    ports:         # port mapping
+      - "8000:8000"
+    command: [ sh, -c, 'sleep 10 &&  python manage.py migrate &&  python manage.py runserver 0.0.0.0:8000'] # first time run
+    # command: [ sh, -c, 'sleep 10 &&  python manage.py runserver 0.0.0.0:8000'] # regular run 
