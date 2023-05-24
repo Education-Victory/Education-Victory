@@ -16,3 +16,22 @@
 .front-subtitle {
     margin-bottom: 3rem;
 }
+
+.front-section {
+    margin-bottom: 10rem;
+}
+
+.front-column-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.front-a-button {
+    margin-top: 2rem;
+}
+
+.empty-div {
+    width: 100%;
+    height: 14rem;
+}
