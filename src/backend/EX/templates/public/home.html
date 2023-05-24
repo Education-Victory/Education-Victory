@@ -1,36 +1,106 @@
 {% extends "basic.html" %}
+{% load static %}
 
 {% block content %}
-<section class="hero is-link is-halfheight has-text-centered">
+<section class="hero is-halfheight has-text-centered front-section">
   <div class="hero-body">
     <div class="container has-text-centered">
-      <p class="title">
-        Education-X
+      <p class="front-title is-size-title has-text-link has-text-weight-bold">
+        Enjoy your practice <br> and learn together
       </p>
-      <p class="subtitle">
-        a new gernation learning platform
+      <hr>
+      <p class="front-subtitle is-size-4 has-text-weight-light">
+      Use efficient practice methods to quickly improve your ability, <br>
+      join our community to learn and share knowledge with everyone.
       </p>
+      <a href="{% url 'account_signup' %}" class="button is-dark is-large">
+        <strong>Sign up</strong>
+      </a>
     </div>
   </div>
 </section>
-<br>
+
 <section>
 <div class="container">
-  <div class="columns">
-    <div class="column">
-      <p class="title">Adative Learning</h2>
-      <h4>Recommend questions according to your level</h4>
+  <div class="columns is-multiline is-mobile">
+    <div class="column is-4 front-column-div">
+      <span>
+      <p class="is-size-2 has-text-weight-bold">Personalized Learning</p>
+      <p class="is-size-5 has-text-weight-light">Focus on the areas they need to improve in, learn at your own pace and own style.</p>
+      <a href="/" class="button is-dark is-medium front-a-button">
+        <strong>Get started</strong>
+      </a>
+      </span>
     </div>
-    <div class="column">
-      <p class="title">Collaborative Learning</h2>
-      <h4>Learning knowledges from each others</h4>
+    <div class="column is-8">
+      <img src={% static 'imgs/example-img-1.png' %}>
     </div>
-    <div class="column">
-      <p class="title">Project base Learning</h2>
-      <h4>Learning by building a project together</h4>
+    <div class="empty-div"></div>
+    <div class="column is-6">
+      <div class="card">
+        <div class="card-content">
+          <div class="media">
+            <div class="media-left">
+              <figure class="image is-48x48">
+                <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="media-content">
+              <p class="title is-4">John Smith</p>
+              <p class="subtitle is-6">@johnsmith</p>
+            </div>
+          </div>
+          <div class="content">
+            <a>@Teach By Learning</a><br>
+            <strong>Event:</strong> I want to explain the binary search solution for the 180th question.
+            <br>
+            <strong>Time:</strong> 11:09 PM - 1 Jan 2023
+            <br>
+            <strong>Link:</strong> Click to join
+          </div>
+        </div>
+      </div> <!-- end card -->
     </div>
-  </div>
+    <div class="column is-2">
+    </div>
+    <div class="column is-4 front-column-div">
+      <span>
+      <p class="is-size-2 has-text-weight-bold">Collaborative Learning</p>
+      <p class="is-size-5 has-text-weight-light">By starting an event, you can learn by teaching, or learn from
+          what others explain</p>
+      <a href="/" class="button is-dark is-medium front-a-button">
+        <strong>Get started</strong>
+      </a>
+      </span>
+    </div>
+    <div class="empty-div"></div>
+    <div class="column is-4 front-column-div">
+      <span>
+      <p class="is-size-2 has-text-weight-bold">Project base Learning</p>
+      <p class="is-size-5 has-text-weight-light">Get hands-on Experience to built and maintained software in the real world,
+      Develop collaboration skills and learn how to work together and share ideas</p>
+      <a href="/" class="button is-dark is-medium front-a-button">
+        <strong>Get started</strong>
+      </a>
+      </span>
+    </div>
+    <div class="column is-8">
+        <img src={% static 'imgs/example-img-2.png' %}>
+    </div>
+    <div class="empty-div"></div>
+  </div> <!-- end columns -->
 </div>
+</section>
+
+<section class="hero is-medium is-link has-text-centered">
+  <div class="hero-body">
+    <p class="title">
+      “Practice does not make perfect. Only perfect practice makes perfect.”
+    </p>
+    <p class="subtitle">
+      - Vince Lombardi
+    </p>
+  </div>
 </section>
 
 {% endblock %}
