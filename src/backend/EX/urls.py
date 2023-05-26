@@ -48,4 +48,5 @@ urlpatterns = [
     path('', public_views.home, name='home'),
     path('question/<str:question_name>/<str:category_name>/', public_views.question_detail, name='question_detail'),
     path('question/', public_views.question, name='question'),
+    path('evaluate/', public_views.evaluate, name='evaluate'),
 ]
