@@ -25,6 +25,7 @@ from common import views as common_views
 from rest_framework import routers
 from rest_framework.schemas import get_schema_view
 
+# Sets up the viewsets for models and maps them to appropriate URLs using SimpleRouter
 router = routers.SimpleRouter()
 router.register(r'question', question_views.QuestionViewSet, basename='Question')
 router.register(r'solution', question_views.SolutionViewSet, basename='Solution')
