@@ -16,6 +16,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Question.objects.all()
+        # Filters questions by category if provided in the query parameters
         category = self.request.query_params.get('category', None)
         if category is not None:
             queryset = queryset.filter(category=category)
@@ -26,6 +27,7 @@ class SolutionViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Solution.objects.all()
+        # Filters Solution by category, category_name, question_name and keypoint if provided in the query parameters
         category = self.request.query_params.get('category', None)
         category_name = self.request.query_params.get('category_name', None)
         question_name = self.request.query_params.get('question_name', None)
