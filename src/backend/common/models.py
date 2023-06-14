@@ -6,6 +6,7 @@ from question.models import Solution
 
 class User(AbstractUser):
     avatar = models.URLField(max_length=1024, blank=True, help_text="URL for avatar")
+    ability = models.ForeignKey(settings.QUESTION_ABILITY_MODEL, on_delete=models.CASCADE)
 
 
 class UserSubmission(models.Model):
