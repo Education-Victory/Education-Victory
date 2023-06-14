@@ -86,7 +86,7 @@ class Solution(models.Model):
     answer = models.JSONField(help_text='detailed solution')
     keypoint = models.ManyToManyField(Keypoint)
     resources = models.JSONField(help_text='resources of question')
-    difficulty = models.ForeignKey(Ability, on_delete=models.CASCADE)
+    difficulty = models.ForeignKey(Ability, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
