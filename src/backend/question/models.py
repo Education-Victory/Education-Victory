@@ -101,21 +101,3 @@ class UserKeypointScore(models.Model):
     score = models.IntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-
-
-class UserSubmission(models.Model):
-    # Representation of the userId (settings.AUTH_USER_MODEL.id)
-    userId = models.BigIntegerField()
-    # Representation of the question id (Question.id)
-    questionId = models.BigIntegerField()
-    # List of category ids, should be validated
-    categoryIds = models.JSONField()
-    # Representation of the solutionId (Solution.id)
-    solutionId = models.BigIntegerField()
-    keypoint = models.JSONField(
-        blank=True, help_text='list of completed keypoint id')
-    # User submission details
-    #   Should contain a 'score' key that represent the score of this submission, integer, [0,100]
-    details = models.JSONField(blank=True)
-    created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(auto_now=True)
