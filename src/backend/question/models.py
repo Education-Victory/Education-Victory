@@ -79,14 +79,13 @@ class Ability(models.Model):
 class Solution(models.Model):
     name = models.CharField(max_length=100, blank=True,
                             help_text='solution name')
-    question = models.ForeignKey(
+    questionId = models.ForeignKey(
         Question, on_delete=models.CASCADE, related_name='solution_question')
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, related_name='solution_category')
+    categoryIds = models.ManyToManyField(Category)
     answer = models.JSONField(help_text='detailed solution')
     keypoint = models.ManyToManyField(Keypoint)
     resources = models.JSONField(help_text='resources of question')
-    difficulty = models.ForeignKey(
+    abilityId = models.ForeignKey(
         Ability, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
