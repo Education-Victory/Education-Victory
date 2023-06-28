@@ -24,7 +24,7 @@ class Question(models.Model):
     name = models.CharField(max_length=100, blank=True,
                             help_text='question name')
     description = models.JSONField(help_text='description of question')
-    category = models.ManyToManyField(Category)
+    categoryIds = models.ManyToManyField(Category)
     type = models.CharField(
         max_length=2, choices=QuestionTypeChoice.choices, help_text='type of question')
     upvote = models.IntegerField(default=1, help_text='upvote of the question')
@@ -43,7 +43,7 @@ class Question(models.Model):
 
 class Keypoint(models.Model):
     name = models.CharField(max_length=50, help_text='name of the keypoint')
-    category = models.ForeignKey(
+    categoryId = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name='keypoint', blank=True, null=True)
     difficulty = models.IntegerField(
         default=1, help_text='difficulty of a keypoint')
