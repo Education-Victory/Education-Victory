@@ -77,6 +77,13 @@ class Ability(models.Model):
 
 
 class Solution(models.Model):
+    class SolutionType(models.TextChoices):
+        CODING = 'CO', 'Coding'
+        CHOICE = 'CH', 'Choice'
+
+    type = models.CharField(
+        max_length=2, choices=SolutionType.choices, help_text='required solution type', null=True)
+
     name = models.CharField(max_length=100, blank=True,
                             help_text='solution name')
     questionId = models.ForeignKey(
