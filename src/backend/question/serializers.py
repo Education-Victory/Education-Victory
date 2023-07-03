@@ -1,7 +1,7 @@
 import math
 from rest_framework import serializers
 
-from ..common.models import UserSubmission
+from common.models import UserSubmission
 from .models import Question, Category, Solution, Keypoint
 import numpy as np
 from datetime import datetime, timedelta
