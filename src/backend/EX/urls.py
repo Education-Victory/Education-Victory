@@ -48,5 +48,6 @@ urlpatterns = [
     path('api/', include((router.urls, 'app_name'))),
     path('', public_views.home, name='home'),
     path('question/<str:question_name>/<str:category_name>/', public_views.question_detail, name='question_detail'),
+    path('evaluation/<str:type>/', public_views.evaluation, name='evaluation'),
     path('question/', public_views.question, name='question'),
 ]
