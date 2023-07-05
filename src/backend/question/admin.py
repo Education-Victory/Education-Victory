@@ -3,11 +3,11 @@ from .models import Question, Keypoint, UserKeypointScore, Solution, Category
 
 
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'type')
+    list_display = ('id', 'name')
 
 
 class KeypointAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'categoryId')
+    list_display = ('id', 'name', 'category_id')
 
 
 class SolutionAdmin(admin.ModelAdmin):

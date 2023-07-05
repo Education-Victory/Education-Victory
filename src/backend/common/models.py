@@ -8,19 +8,19 @@ from question.models import Solution
 class User(AbstractUser):
     avatar = models.URLField(max_length=1024, blank=True,
                              help_text="URL for avatar")
-    abilityId = models.ForeignKey(
+    ability_id = models.ForeignKey(
         settings.QUESTION_ABILITY_MODEL, on_delete=models.CASCADE, null=True)
 
 
 class UserSubmission(models.Model):
-    # Representation of the userId (settings.AUTH_USER_MODEL.id)
-    userId = models.BigIntegerField()
+    # Representation of the user_id (settings.AUTH_USER_MODEL.id)
+    user_id = models.BigIntegerField()
     # Representation of the question id (Question.id)
-    questionId = models.BigIntegerField()
+    question_id = models.BigIntegerField()
     # List of category ids, should be validated
-    categoryIds = models.JSONField()
-    # Representation of the solutionId (Solution.id)
-    solutionId = models.BigIntegerField()
+    category_id_list = models.JSONField()
+    # Representation of the solution_id (Solution.id)
+    solution_id = models.BigIntegerField()
     keypoint = models.JSONField(
         blank=True, help_text='list of completed keypoint id')
     # User submission details

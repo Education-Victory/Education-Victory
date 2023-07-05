@@ -18,17 +18,17 @@ class Migration(migrations.Migration):
         migrations.RenameField(
             model_name='question',
             old_name='category',
-            new_name='categoryIds',
+            new_name='category_id_list',
         ),
         migrations.RenameField(
             model_name='solution',
             old_name='difficulty',
-            new_name='abilityId',
+            new_name='ability_id',
         ),
         migrations.RenameField(
             model_name='solution',
             old_name='question',
-            new_name='questionId',
+            new_name='question_id',
         ),
         migrations.RemoveField(
             model_name='solution',
@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='solution',
-            name='categoryIds',
+            name='category_id_list',
             field=models.ManyToManyField(to='question.category'),
         ),
         migrations.DeleteModel(

@@ -60,8 +60,8 @@ class SolutionSerializer(serializers.ModelSerializer):
             # AL
             # Define the adjust level here
             CONSTANT_AL = 5
-            user_ability = np.asanyarray(userObj.abilityId)
-            solution_ability = np.asanyarray(solutionObj.abilityId)
+            user_ability = np.asanyarray(userObj.ability_id)
+            solution_ability = np.asanyarray(solutionObj.ability_id)
             AL = ((user_ability + CONSTANT_AL *
                    (np.ones(user_ability.shape))) - solution_ability)
 
@@ -69,7 +69,7 @@ class SolutionSerializer(serializers.ModelSerializer):
             # Getting user submission for this solution, ordered by time created DESC
             CONSTANT_CW = 1
             userSubmissions = UserSubmission.objects.filter(
-                userId=userObj.id, solutionId=solutionObj.id).order_by('-created_at')
+                user_id=userObj.id, solution_id=solutionObj.id).order_by('-created_at')
             if userSubmissions.count() == 0:
                 CW = 0
             else:

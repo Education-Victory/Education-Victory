@@ -15,18 +15,11 @@ class Category(models.Model):
 
 
 class Question(models.Model):
-    class QuestionTypeChoice(models.TextChoices):
-        OTHERS = 'OT', 'Others'
-        MULTIPLE_CHOICE = 'MC', 'Multiple Choice'
-        SHORT_ANSWER = 'SA', 'Short Answer'
-        TRUE_O_FALSE = 'TF', 'True / False'
 
     name = models.CharField(max_length=100, blank=True,
                             help_text='question name')
     description = models.JSONField(help_text='description of question')
-    categoryIds = models.ManyToManyField(Category)
-    type = models.CharField(
-        max_length=2, choices=QuestionTypeChoice.choices, help_text='type of question')
+    category_id_list = models.ManyToManyField(Category)
     upvote = models.IntegerField(default=1, help_text='upvote of the question')
     downvote = models.IntegerField(
         default=1, help_text='downvote of the question')
@@ -43,7 +36,7 @@ class Question(models.Model):
 
 class Keypoint(models.Model):
     name = models.CharField(max_length=50, help_text='name of the keypoint')
-    categoryId = models.ForeignKey(
+    category_id = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name='keypoint', blank=True, null=True)
     difficulty = models.IntegerField(
         default=1, help_text='difficulty of a keypoint')
@@ -60,14 +53,17 @@ class Ability(models.Model):
     ability: models.JSONField(default=dict, blank=True)
 
     # Sanity check on save
-    def clean(self):
+    def clean(self, new_default=0):
         for key in self.data.keys():
             if key not in settings.VALID_ABILITY_KEYS:
                 raise Error(f"Invalid key: {key}")
-            if self.data[key] != 0:
-                raise Error(f"Value for key '{key}' must be 0")
+        # Set default value to new added keys
+        for key in settings.VALID_ABILITY_KEYS:
+            if key not in self.data.keys():
+                self.data[key] = 0
 
     # Initialize when no value is supported
+
     def save(self, *args, **kwargs):
         # Initialize if not defined
         if not self.data:
@@ -86,13 +82,13 @@ class Solution(models.Model):
 
     name = models.CharField(max_length=100, blank=True,
                             help_text='solution name')
-    questionId = models.ForeignKey(
+    question_id = models.ForeignKey(
         Question, on_delete=models.CASCADE, related_name='solution_question')
-    categoryIds = models.ManyToManyField(Category)
+    category_id_list = models.ManyToManyField(Category)
     answer = models.JSONField(help_text='detailed solution')
     keypoint = models.ManyToManyField(Keypoint)
     resources = models.JSONField(help_text='resources of question')
-    abilityId = models.ForeignKey(
+    ability_id = models.ForeignKey(
         Ability, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)

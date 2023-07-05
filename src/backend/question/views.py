@@ -60,8 +60,8 @@ class SolutionViewSet(viewsets.ModelViewSet):
         paginator = Paginator(query_set, limit)
         return paginator.get_page(page)
 
-    def get_queryset_by_suggested_level(self, userId, is_review_mode=False):
-        userObj = User.objects.get(id=userId)
+    def get_queryset_by_suggested_level(self, user_id, is_review_mode=False):
+        userObj = User.objects.get(id=user_id)
 
         date_range = 14
         today = datetime.now().date()

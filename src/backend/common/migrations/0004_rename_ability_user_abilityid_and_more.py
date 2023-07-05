@@ -13,12 +13,12 @@ class Migration(migrations.Migration):
         migrations.RenameField(
             model_name='user',
             old_name='ability',
-            new_name='abilityId',
+            new_name='ability_id',
         ),
         migrations.RenameField(
             model_name='usersubmission',
             old_name='content',
-            new_name='categoryIds',
+            new_name='category_id_list',
         ),
         migrations.RemoveField(
             model_name='usersubmission',
@@ -42,19 +42,19 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='usersubmission',
-            name='questionId',
+            name='question_id',
             field=models.BigIntegerField(default=1),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='usersubmission',
-            name='solutionId',
+            name='solution_id',
             field=models.BigIntegerField(default=1),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='usersubmission',
-            name='userId',
+            name='user_id',
             field=models.BigIntegerField(default=1),
             preserve_default=False,
         ),
