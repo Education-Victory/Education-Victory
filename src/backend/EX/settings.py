@@ -65,6 +65,8 @@ MIDDLEWARE = [
 
 AUTH_USER_MODEL = 'common.User'
 
+QUESTION_ABILITY_MODEL = 'question.Ability'
+
 ROOT_URLCONF = 'EX.urls'
 
 TEMPLATES = [
