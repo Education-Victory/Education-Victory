@@ -3,11 +3,111 @@
 
 {% block content %}
 <section>
-  <div class="container">
+  <div id="vue-div" class="container">
     <div class="columns">
-      <div class="column is-offset-2 is-8">
-      </div>
-    </div>
-  </div>
+      <div class="column is-offset-1 is-10">
+        <progress class="progress is-link is-medium" value="60" max="100">60%</progress>
+        <article :class="{hide: this.hide}" class="message is-warning">
+          <div class="message-header">
+            <p>Warning</p>
+            <button class="delete" aria-label="delete"></button>
+          </div>
+          <div class="message-body">
+            Wrong number of selection
+          </div>
+        </article>
+        <div class="choice-content content">
+          <h1>[[this.index + 1]]. [[ this.question.title ]]</h1>
+          <h2>[[ this.question.description ]]</h2>
+          <div>
+            <label v-for="choice in this.question.choice" class="form-control checkbox">
+              <input type="checkbox"> [[ choice.text ]]
+            </label>
+          </div>
+        </div> <!-- end content -->
+        <div class="buttons is-centered">
+          <button v-on:click="next_btn" class="button next-button">[[ btn_text ]]</button>
+        </div>
+      </div> <!-- end column -->
+    </div> <!-- end columns -->
+  </div> <!-- end container -->
 </section>
+{% endblock %}
+
+{% block extra_script %}
+<script>
+  const csrftoken = getCookie('csrftoken');
+  const root = '{{ root }}';
+  const total_question = 3;
+  var index = 0;
+  var app = new Vue({
+    delimiters: ['[[', ']]'],
+    el: '#vue-div',
+    data () {
+      return {
+        root: root,
+        question_lst: null,
+        question: {},
+        hide: true,
+        btn_text: 'Next',
+        index: index
+      }
+    },
+    mounted () {
+      /* Get simple evaluation questions from bandend API */
+      axios.get(root + '/api/evaluation_simple/')
+        .then(response => {
+          this.question_lst = response.data.data;
+          this.question = this.question_lst[index];
+        })
+        .catch()
+    },
+    methods: {
+      show_warning: function(event) {
+        this.hide = false;
+      },
+      /* Validate input before submit */
+      validate: function (event) {
+        var checked_lst = document.querySelectorAll('input[type="checkbox"]:checked');
+        if (this.question.type === 'single') {
+          if (checked_lst.length != 1) {
+            this.show_warning();
+            return false;
+          }
+        } else {
+          if (checked_lst.length == 0) {
+            this.show_warning();
+            return false;
+          }
+        }
+        return true;
+      },
+      /* Clear all checked checkbox */
+      clear_checkd: function (event) {
+        var checked_lst = document.querySelectorAll('input[type="checkbox"]:checked');
+        for(var i= 0; i < checked_lst.length; i++){
+          checked_lst[i].checked= false;}
+      },
+      /* Update to the next question*/
+      get_next_question: function (event) {
+        if (this.index + 1 == total_question) {
+          console.log('ended');
+        }
+        else {
+          this.index += 1;
+          this.question = this.question_lst[this.index];
+          if (this.index + 1 == total_question) {
+            this.btn_text = 'Finish';
+          }
+        }
+      },
+      next_btn: function (event) {
+        if (this.validate() === true) {
+          this.clear_checkd();
+          this.get_next_question();
+        }
+      }
+    },
+  })
+</script>
 {% endblock %}
