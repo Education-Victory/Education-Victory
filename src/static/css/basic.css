@@ -1,6 +1,11 @@
+html {
+    background-color: #F5F9FF;
+}
+
 #question-table {
     width: 100%;
 }
+
 
 .is-size-title {
     font-size: 5rem;
@@ -34,4 +39,79 @@
 .empty-div {
     width: 100%;
     height: 14rem;
+}
+
+.progress:not(:last-child) {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+}
+
+.choice-content h1 {
+    margin-bottom: 2.5rem;
+}
+
+.next-button {
+  width: 14rem;
+  height: 4rem;
+  font-size: 2rem;
+  background: rgba(230,238,255,1);
+  opacity: 1;
+  border: 2px solid rgba(0,0,0,1);
+  border-radius: 42px;
+  box-shadow: 0.5rem 0.5rem black;
+  overflow: hidden;
+  margin-top: 3rem;
+}
+
+.hide {
+  display: none;
+}
+
+/* for checkbox style: https://moderncss.dev/pure-css-custom-checkbox-style/ */
+.form-control {
+  font-size: 2rem;
+  line-height: 1;
+  display: grid;
+  grid-template-columns: 1em auto;
+  gap: 1rem;
+}
+
+.form-control + .form-control {
+  margin-top: 2rem;
+}
+
+input[type="checkbox"] {
+  /* Removed original checkbox style*/
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  margin: 0;
+
+  font: inherit;
+  color: #5555E0;
+  width: 2rem;
+  height: 2rem;
+  border: 0.24rem solid currentColor;
+  border-radius: 0.24rem;
+  transform: translateY(-0.075rem);
+
+  display: grid;
+  place-content: center;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  transform: scale(0);
+  transform-origin: bottom left;
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--form-control-color);
+  /* Windows High Contrast Mode */
+  background-color: #5555E0;
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
 }
