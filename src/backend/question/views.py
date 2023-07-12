@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.db.models import F
 from rest_framework import viewsets
+from common.utils import cal_score
 from .models import Question, Solution, Keypoint, Category
 from .serializers import QuestionSerializer, SolutionSerializer, KeypointSerializer, CategorySerializer
 
@@ -41,6 +42,35 @@ class SolutionViewSet(viewsets.ModelViewSet):
         if keypoint is not None:
             queryset = queryset.filter(keypoint=keypoint)
         return queryset
+
+    @action(detail=True, methods=['get'])
+    def recommend_solutions(self, request):
+        # We can call this API like
+        # /api/question/recommend_solutions?type=1&group=2&count=3
+        #
+        # user: request user
+        # type: 1. review_mode 2. submit more than 3 times
+        # group: Data structures / Algorithms / Technique / Others
+        # count: total count of solution should return
+        user = request.user
+        submission = UserSubmission.objects.filter(...)
+        group = self.request.query_params.get('group', None)
+        count = self.request.query_params.get('count', 0)
+        # Step 1: Implement filter
+        if group is not None:
+            queryset = queryset.filter(...)
+        if type == 1:
+            queryset = queryset.filter(...)
+        # Step 2: Calculate solution score
+        res = []
+        for query in queryset:
+            # cal_score is a pure function have no database operation in it
+            score = utils.cal_score(user.ability, query.ability, submission...)
+            res.append(score)
+        res.sort(reverse=True)
+        serializer = SolutionSerializer(res[:count], many=True)
+        return Response(serializer.data)
+
 
 class KeypointViewSet(viewsets.ModelViewSet):
     serializer_class = KeypointSerializer
