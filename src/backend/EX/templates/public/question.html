@@ -7,23 +7,11 @@
   <div class="container">
     <nav class="panel">
       <p class="panel-heading">
-        categorise and keypoints
+        Category
       </p>
       <p class="panel-tabs">
         <a v-for="(ca, index) in this.category" @click="get_question_by_cate(index)">[[ ca.name ]]</a>
       </p>
-      <a  v-for="kp in this.cur_category.keypoint" @click="get_question_by_kp(kp.id)" class="panel-block">
-        <span class="panel-icon">
-          <i class="fas fa-book" aria-hidden="true"></i>
-        </span>
-        [[ kp.name ]]
-      </a>
-      <a v-for="i in placeholder" class="panel-block empty-text">
-        <span class="panel-icon">
-          <i class="fas fa-book" aria-hidden="true"></i>
-        </span>
-        Empty
-      </a>
     </nav>
   </div>
   </section>
@@ -36,7 +24,6 @@
         <th>ID</th>
         <th>Name</th>
         <th>Category</th>
-        <th>Keypoints</th>
         <th>Details</th>
       </tr>
     </thead>
@@ -45,7 +32,6 @@
         <td>[[ so.id ]]</td>
         <td>[[ so.question_name ]]</td>
         <td>[[ so.category_name ]]</td>
-        <td v-for="(kp, index) in so.keypoint">[[ kp.name ]]</td>
         <td><a :href="'{{ root }}/question/' + so.question_name + '/' + so.category_name + '/'">Details</a></td>
       </tr>
     </tbody>
@@ -79,7 +65,6 @@
         axios.get(root + '/api/solution?category=1')
           .then(response => {
               this.solution_lst = response.data;
-              this.placeholder = 5 - this.cur_category.keypoint.length;
           })
           .catch()
       },
@@ -90,17 +75,9 @@
             .then(response => {
                 this.cur_category = this.category[index];
                 this.solution_lst = response.data;
-                this.placeholder = 5 - this.cur_category.keypoint.length;
             })
             .catch()
-        },
-        get_question_by_kp: function (id) {
-          axios.get(root + '/api/solution/?keypoint=' + id)
-            .then(response => {
-                this.solution_lst = response.data;
-            })
-            .catch()
-        },
+        }
       }
     })
   </script>
