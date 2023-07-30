@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
-import ENV
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -174,8 +173,9 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+ROOT = os.getenv('ROOT')
 # Email
-EMAIL_BACKEND = ENV.EMAIL_BACKEND
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
