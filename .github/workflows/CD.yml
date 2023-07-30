@@ -50,6 +50,8 @@ on:
       - main
 
 env:
+  ROOT: ${{ vars.ROOT }}
+  EMAIL_BACKEND: ${{ vars.EMAIL_BACKEND }}
   PROJECT_ID: test-education-victory # TODO: update Google Cloud project id
   GAR_LOCATION: us-central1 # TODO: update Artifact Registry location
   REPOSITORY: quickstart-docker-repo # TODO: update Artifact Registry repository name

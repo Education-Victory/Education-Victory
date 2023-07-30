@@ -1,19 +1,19 @@
-import ENV
+from django.conf import settings
 from django.shortcuts import render
 from django.http import JsonResponse
 
 def home(request):
     # HTML for home page
-    return render(request, 'public/home.html', {'root': ENV.ROOT})
+    return render(request, 'public/home.html', {'root': settings.ROOT})
 
 def question(request):
     # HTML for question list page
-    return render(request, 'public/question.html', {'root': ENV.ROOT})
+    return render(request, 'public/question.html', {'root': settings.ROOT})
 
 def question_detail(request, question_name, category_name):
     # HTML for question detail page
     return render(request, 'public/question_detail.html',
-        {'root': ENV.ROOT, 'question_name': question_name, 'category_name': category_name, 'user_id': request.user.id})
+        {'root': settings.ROOT, 'question_name': question_name, 'category_name': category_name, 'user_id': request.user.id})
 
 def evaluation(request, type):
     if type == 'simple':
