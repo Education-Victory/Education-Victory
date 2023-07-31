@@ -17,6 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEFAULT_DIR = Path(__file__).resolve().parent
 STATIC_DIR = Path(__file__).resolve().parent.parent.parent
 
+ROOT = os.getenv('ROOT')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -27,7 +28,7 @@ SECRET_KEY = 'django-insecure-@s=_aoq!k!h-@b^%t!+zoxo4fs@e+ccr^lld4fd9+3oxdg^!^!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ROOT]
 
 
 # Application definition
@@ -173,7 +174,6 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-ROOT = os.getenv('ROOT')
 # Email
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
 ACCOUNT_EMAIL_REQUIRED = True
