@@ -96,19 +96,12 @@ jobs:
 
       # END - Docker auth and build
      
-      - name: create-json
-        id: create-json
-        uses: jsdaniell/create-json@v1.2.2
-        with:
-          name: "credentials.json"
-          json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-        
       - name: Deploy to Cloud Run
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v0
         with:
           env_vars: |
-            GOOGLE_APPLICATION_CREDENTIALS=credentials.json
+            GOOGLE_APPLICATION_CREDENTIALS=/cer/test-cloud-storage
             ROOT=${{ env.ROOT }}
             EMAIL_BACKEND=${{ env.EMAIL_BACKEND }}
           service: ${{ env.SERVICE }}
