@@ -95,13 +95,20 @@ jobs:
           docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
 
       # END - Docker auth and build
-
+     
+      - name: create-json
+        id: create-json
+        uses: jsdaniell/create-json@v1.2.2
+        with:
+          name: "credentials.json"
+          json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        
       - name: Deploy to Cloud Run
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v0
         with:
           env_vars: |
-            GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+            GOOGLE_APPLICATION_CREDENTIALS=credentials.json
             ROOT=${{ env.ROOT }}
             EMAIL_BACKEND=${{ env.EMAIL_BACKEND }}
           service: ${{ env.SERVICE }}
