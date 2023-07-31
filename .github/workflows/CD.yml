@@ -101,6 +101,7 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v0
         with:
           env_vars: |
+            GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
             ROOT=${{ env.ROOT }}
             EMAIL_BACKEND=${{ env.EMAIL_BACKEND }}
           service: ${{ env.SERVICE }}
