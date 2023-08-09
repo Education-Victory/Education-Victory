@@ -29,6 +29,7 @@ class Question(models.Model):
                           help_text='URL of question')
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
+    # add a dummy type
     # django.db.utils.IntegrityError: NOT NULL constraint failed: question_question.type
     type = models.CharField(max_length=20, default='default_type', help_text='type of the question')
 
