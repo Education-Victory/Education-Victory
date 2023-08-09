@@ -29,6 +29,8 @@ class Question(models.Model):
                           help_text='URL of question')
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
+    # django.db.utils.IntegrityError: NOT NULL constraint failed: question_question.type
+    type = models.CharField(max_length=20, default='default_type', help_text='type of the question')
 
     def __str__(self):
         return self.name
@@ -50,24 +52,24 @@ class Keypoint(models.Model):
 
 
 class Ability(models.Model):
-    ability: models.JSONField(default=dict, blank=True)
+    ability = models.JSONField(default=dict, blank=True)
 
     # Sanity check on save
     def clean(self, new_default=0):
-        for key in self.data.keys():
+        for key in self.ability.keys():
             if key not in settings.VALID_ABILITY_KEYS:
                 raise Error(f"Invalid key: {key}")
         # Set default value to new added keys
         for key in settings.VALID_ABILITY_KEYS:
-            if key not in self.data.keys():
-                self.data[key] = 0
+            if key not in self.ability.keys():
+                self.ability[key] = 0
 
     # Initialize when no value is supported
 
     def save(self, *args, **kwargs):
         # Initialize if not defined
-        if not self.data:
-            self.data = {key: 0 for key in settings.VALID_ABILITY_KEYS}
+        if not self.ability:
+            self.ability = {key: 0 for key in settings.VALID_ABILITY_KEYS}
         self.full_clean()
         super().save(*args, **kwargs)
 
@@ -94,7 +96,7 @@ class Solution(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.name} - {self.question}'
+        return f'{self.name} - {self.question_id.name}'
 
 
 class UserKeypointScore(models.Model):
