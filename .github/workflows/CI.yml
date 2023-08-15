@@ -16,19 +16,97 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
+
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r ./src/backend/requirements.txt
+
     - name: Create ENV file
       run: |
         touch ./src/backend/ENV.py
         echo EMAIL_BACKEND = \'django.core.mail.backends.console.EmailBackend\' >> ./src/backend/ENV.py
         echo ROOT = \'http://127.0.0.1:8000\' >> ./src/backend/ENV.py
+
     - name: Run Tests
-      working-directory: ./src/backend
-      run: python manage.py test
+      run: |
+        coverage run ./src/backend/manage.py test ./src/backend/
+      env:
+        COVERAGE_FILE: ".coverage.${{ matrix.python-version }}"
+
+    - name: Store coverage file
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage
+        path: .coverage.${{ matrix.python-version }}
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pull-requests: write
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/download-artifact@v3
+        id: download
+        with:
+          name: "coverage"
+      
+      - name: Display coverage
+        id: coverage_comment
+        uses: py-cov-action/python-coverage-comment-action@v3
+        with:
+          GITHUB_TOKEN: ${{ github.token }}
+
+          # Only necessary in the "workflow_run" workflow.
+          GITHUB_PR_RUN_ID: ${{ inputs.GITHUB_PR_RUN_ID }}
+
+          # If the coverage percentage is above or equal to this value, the badge will be green.
+          MINIMUM_GREEN: 100
+
+          # Same with orange. Below is red.
+          MINIMUM_ORANGE: 70
+
+          # If true, will run `coverage combine` before reading the `.coverage` file.
+          MERGE_COVERAGE_FILES: true
+
+          # If true, will create an annotation on every line with missing coverage on a pull request.
+          ANNOTATE_MISSING_LINES: false
+
+          # Name of the artifact in which the body of the comment to post on the PR is stored.
+          # You typically don't have to change this unless you're already using this name for something else.
+          COMMENT_ARTIFACT_NAME: python-coverage-comment-action
+
+          # Name of the file in which the body of the comment to post on the PR is stored.
+          # You typically don't have to change this unless you're already using this name for something else.
+          COMMENT_FILENAME: python-coverage-comment-action.txt
+
+          # Name of the branch in which coverage data will be stored on the repository.
+          # Please make sure that this branch is not protected.
+          COVERAGE_DATA_BRANCH: python-coverage-comment-action-data
+
+      - name: Store Pull Request comment to be posted
+        uses: actions/upload-artifact@v3
+        if: steps.coverage_comment.outputs.COMMENT_FILE_WRITTEN == 'true'
+        with:
+          name: python-coverage-comment-action
+          path: python-coverage-comment-action.txt
+
+  Python-Linting:
+    needs: [build, coverage]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: psf/black@stable
+        with:
+          options: "--check"
+          src: "./src/backend"
+          version: "23.7.0"
