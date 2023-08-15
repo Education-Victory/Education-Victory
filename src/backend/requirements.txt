@@ -1,8 +1,10 @@
 asgiref==3.6.0
+black==23.7.0
 cachetools==5.3.1
 certifi==2022.12.7
 cffi==1.15.1
 charset-normalizer==3.0.1
+coverage==7.2.7
 cryptography==39.0.0
 defusedxml==0.7.1
 Django==4.1.4

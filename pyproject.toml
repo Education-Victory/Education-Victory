@@ -1,0 +1,70 @@
+# NOTE: you have to use single-quoted strings in TOML for regular expressions.
+# It's the equivalent of r-strings in Python.  Multiline strings are treated as
+# verbose regular expressions by Black.  Use [ ] to denote a significant space
+# character.
+
+
+# black 23.7.0 - python linter
+[tool.black]
+line-length = 88
+exclude = '''
+(
+    migrations
+  | __init__.py
+  | ENV.py
+  | manage.py
+  | test*
+  | test*.py
+)
+'''
+
+
+# coverage 7.2.7 - Django test coverage
+[tool.coverage.run]
+source = ["./src/backend/",]
+omit = [
+    "*/migrations/*",
+    "*/node_modules/*",
+    "__init__.py",
+    "manage.py",
+    "ENV.py",
+    "test*.py",
+    "*/test*/*",
+  ]
+
+
+branch = true
+relative_files = true
+
+[tool.coverage.report]
+# fail if under the threshold
+fail_under = 50
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    ]
+
+# Regexes for lines to exclude from consideration
+exclude_also = [
+    # Don't complain about missing debug-only code:
+    "def __repr__",
+    "if self\\.debug",
+
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+
+    # Don't complain if non-runnable code isn't run:
+    "if 0:",
+    "if __name__ == .__main__.:",
+
+    # Don't complain about abstract methods, they aren't run:
+    "@(abc\\.)?abstractmethod",
+    ]
+
+ignore_errors = true
+
+[tool.coverage.html]
+directory = "coverage_html_report"
