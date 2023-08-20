@@ -32,6 +32,12 @@ else:
     EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
     DEBUG = False
     DBNAME = os.getenv('DBNAME')
+    # Google Cloud Storage
+    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+    GS_BUCKET_NAME = 'education_victory_test_bucket'
+    STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -189,11 +195,6 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 # Enhance
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
-
-# Google Cloud Storage
-DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_BUCKET_NAME = 'education_victory_test_bucket'
-STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 
 # Other
 LOGIN_REDIRECT_URL = 'home'
