@@ -6,7 +6,7 @@ def home(request):
     # HTML for home page
     return render(request, 'public/home.html', {'root': settings.ROOT})
 
-def question(request):
+def practice(request):
     # HTML for question list page
     return render(request, 'public/question.html', {'root': settings.ROOT})
 
