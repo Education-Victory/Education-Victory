@@ -1,25 +1,14 @@
 from django.shortcuts import render
 from django.db.models import F
 from rest_framework import viewsets
-from .models import Question, Solution, Keypoint, Category
-from .serializers import QuestionSerializer, SolutionSerializer, KeypointSerializer, CategorySerializer
+from .models import Solution, Category
+from .serializers import SolutionSerializer, CategorySerializer
 
 class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
 
     def get_queryset(self):
         queryset = Category.objects.all()
-        return queryset
-
-class QuestionViewSet(viewsets.ModelViewSet):
-    serializer_class = QuestionSerializer
-
-    def get_queryset(self):
-        queryset = Question.objects.all()
-        # Filters questions by category if provided in the query parameters
-        category = self.request.query_params.get('category', None)
-        if category is not None:
-            queryset = queryset.filter(category=category)
         return queryset
 
 class SolutionViewSet(viewsets.ModelViewSet):
@@ -40,11 +29,4 @@ class SolutionViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(category=category)
         if keypoint is not None:
             queryset = queryset.filter(keypoint=keypoint)
-        return queryset
-
-class KeypointViewSet(viewsets.ModelViewSet):
-    serializer_class = KeypointSerializer
-
-    def get_queryset(self):
-        queryset = Keypoint.objects.all()
         return queryset

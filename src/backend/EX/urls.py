@@ -27,11 +27,8 @@ from rest_framework.schemas import get_schema_view
 
 # Sets up the viewsets for models and maps them to appropriate URLs using SimpleRouter
 router = routers.SimpleRouter()
-router.register(r'question', question_views.QuestionViewSet, basename='Question')
 router.register(r'solution', question_views.SolutionViewSet, basename='Solution')
-router.register(r'keypoint', question_views.KeypointViewSet, basename='Keypoint')
 router.register(r'category', question_views.CategoryViewSet, basename='Category')
-router.register(r'submission', common_views.UserSubmissionViewSet, basename='Submission')
 
 urlpatterns = [
     path('openapi', get_schema_view(
