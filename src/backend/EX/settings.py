@@ -17,18 +17,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEFAULT_DIR = Path(__file__).resolve().parent
 STATIC_DIR = Path(__file__).resolve().parent.parent.parent
 
-ROOT = os.getenv('ROOT')
+ENVIRONMENT = os.getenv('ENVIRONMENT')
+
+if ENVIRONMENT == 'LOCAL':
+    ROOT = 'http://127.0.0.1:8000'
+    HOST = '127.0.0.1'
+    SECRET_KEY = 'django-insecure-@s=_aoq!k!h-@b^%t!+zoxo4fs@e+ccr^lld4fd9+3oxdg^!^!'
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    DEBUG = True
+    DBNAME = 'db.sqlite3'
+else:
+    ROOT = os.getenv('ROOT')
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
+    DEBUG = False
+    DBNAME = os.getenv('DBNAME')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@s=_aoq!k!h-@b^%t!+zoxo4fs@e+ccr^lld4fd9+3oxdg^!^!'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = [ROOT]
+ALLOWED_HOSTS = [HOST]
 
 
 # Application definition
@@ -65,8 +73,6 @@ MIDDLEWARE = [
 
 AUTH_USER_MODEL = 'common.User'
 
-QUESTION_ABILITY_MODEL = 'question.Ability'
-
 ROOT_URLCONF = 'EX.urls'
 
 TEMPLATES = [
@@ -94,7 +100,7 @@ WSGI_APPLICATION = 'EX.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': DBNAME,
     }
 }
 
@@ -175,7 +181,6 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 # Email
-EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
@@ -272,4 +277,3 @@ VALID_ABILITY_KEYS = {
     "Reservoir Sampling": "Reservoir Sampling",
     "Eulerian Circuit": "Eulerian Circuit",
 }
-
