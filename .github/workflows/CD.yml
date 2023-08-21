@@ -105,6 +105,7 @@ jobs:
             GOOGLE_APPLICATION_CREDENTIALS=/cer/test-cloud-storage
             ENVIRONMENT=${{ env.ENVIRONMENT }}
             ROOT=${{ env.ROOT }}
+            HOST=${{ env.HOST }}
             EMAIL_BACKEND=${{ env.EMAIL_BACKEND }}
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
