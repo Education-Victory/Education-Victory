@@ -26,11 +26,15 @@ if ENVIRONMENT == 'LOCAL':
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     DEBUG = True
     DBNAME = 'db.sqlite3'
-elif ENVIRONMENT in ('TEST', 'PRODUCTION'):
-    if ENVIRONMENT == 'PRODUCTION':
-        DEBUG = False
-    else:
-        DEBUG = True
+elif ENVIRONMENT == 'TEST':
+    ROOT = os.getenv('ROOT')
+    ALLOWED_HOSTS = [os.getenv('HOST')]
+    SECRET_KEY = 'django-insecure-@s=_aoq!k!h-@b^%t!+zoxo4fs@e+ccr^lld4fd9+3oxdg^!^!'
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    DEBUG = True
+    DBNAME = 'db.sqlite3'
+elif ENVIRONMENT == 'PRODUCTION':
+    DEBUG = False
     ROOT = os.getenv('ROOT')
     ALLOWED_HOSTS = [os.getenv('HOST')]
     SECRET_KEY = os.getenv('SECRET_KEY')
