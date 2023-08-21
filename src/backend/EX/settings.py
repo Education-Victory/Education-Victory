@@ -26,13 +26,16 @@ if ENVIRONMENT == 'LOCAL':
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     DEBUG = True
     DBNAME = 'db.sqlite3'
-else:
+elif ENVIRONMENT in ('TEST', 'PRODUCTION'):
+    if ENVIRONMENT == 'PRODUCTION':
+        DEBUG = False
+    else:
+        DEBUG = True
     ROOT = os.getenv('ROOT')
     HOST = os.getenv('HOST')
     SECRET_KEY = os.getenv('SECRET_KEY')
     EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
-    DEBUG = False
-    DBNAME = os.getenv('DBNAME')
+    DBNAME = 'db.sqlite3'
     # Google Cloud Storage
     DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
     GS_BUCKET_NAME = 'education_victory_test_bucket'

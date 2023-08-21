@@ -48,4 +48,5 @@ urlpatterns = [
     path('question/<str:question_name>/<str:category_name>/', public_views.question_detail, name='question_detail'),
     path('evaluation/<str:type>/', public_views.evaluation, name='evaluation'),
     path('practice/', public_views.practice, name='practice'),
+    path('coding_question/', public_views.coding_question, name='coding_question'),
 ]
