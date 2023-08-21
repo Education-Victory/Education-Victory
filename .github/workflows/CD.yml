@@ -57,6 +57,7 @@ env:
   REGION: us-central1 # TODO: update Cloud Run service region
   ENVIRONMENT: ${{ vars.ENVIRONMENT }}
   ROOT: ${{ vars.ROOT }}
+  HOST: ${{ vars.HOST }}
   EMAIL_BACKEND: ${{ vars.EMAIL_BACKEND }}
 
 jobs:
