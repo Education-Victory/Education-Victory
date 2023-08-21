@@ -21,14 +21,14 @@ ENVIRONMENT = os.getenv('ENVIRONMENT')
 
 if ENVIRONMENT == 'LOCAL':
     ROOT = 'http://127.0.0.1:8000'
-    HOST = '127.0.0.1'
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
     SECRET_KEY = 'django-insecure-@s=_aoq!k!h-@b^%t!+zoxo4fs@e+ccr^lld4fd9+3oxdg^!^!'
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     DEBUG = True
     DBNAME = 'db.sqlite3'
 else:
     ROOT = os.getenv('ROOT')
-    HOST = os.getenv('HOST')
+    ALLOWED_HOSTS = [os.getenv('HOST')]
     SECRET_KEY = os.getenv('SECRET_KEY')
     EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
     DEBUG = False
@@ -43,7 +43,6 @@ else:
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-ALLOWED_HOSTS = [HOST]
 
 
 # Application definition
