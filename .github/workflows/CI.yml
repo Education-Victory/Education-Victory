@@ -25,6 +25,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r ./src/backend/requirements.txt
     - name: Setup env
+      run: echo $ENVIRONMENT
       env:
           ENVIRONMENT: LOCAL
     - name: Run Tests
