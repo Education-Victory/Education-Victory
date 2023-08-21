@@ -55,7 +55,7 @@ env:
   REPOSITORY: quickstart-docker-repo # TODO: update Artifact Registry repository name
   SERVICE: test-education-victory	 # TODO: update Cloud Run service name
   REGION: us-central1 # TODO: update Cloud Run service region
-  ENVIRONMENT: ${{ vars.env }}
+  ENVIRONMENT: ${{ vars.ENVIRONMENT }}
   ROOT: ${{ vars.ROOT }}
   EMAIL_BACKEND: ${{ vars.EMAIL_BACKEND }}
 
