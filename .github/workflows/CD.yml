@@ -55,6 +55,7 @@ env:
   REPOSITORY: quickstart-docker-repo # TODO: update Artifact Registry repository name
   SERVICE: test-education-victory	 # TODO: update Cloud Run service name
   REGION: us-central1 # TODO: update Cloud Run service region
+  ENVIRONMENT: ${{ vars.env }}
   ROOT: ${{ vars.ROOT }}
   EMAIL_BACKEND: ${{ vars.EMAIL_BACKEND }}
 
@@ -102,6 +103,7 @@ jobs:
         with:
           env_vars: |
             GOOGLE_APPLICATION_CREDENTIALS=/cer/test-cloud-storage
+            ENVIRONMENT=${{ env.ENVIRONMENT }}
             ROOT=${{ env.ROOT }}
             EMAIL_BACKEND=${{ env.EMAIL_BACKEND }}
           service: ${{ env.SERVICE }}
