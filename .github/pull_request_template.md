@@ -10,12 +10,12 @@ Issue Number: N/A
 
 <!-- Please try to limit your pull request to one type, submit multiple pull requests if needed. -->
 
-Please check the type of change your PR introduces:
+Choose the type of your PR :
 
 - [ ] Bugfix
 - [ ] Feature
 - [ ] Code style update (formatting, renaming)
-- [ ] Refactoring (no functional changes, no api changes)
+- [ ] Refactoring (no functional changes, no API changes)
 - [ ] Build related changes
 - [ ] Documentation content changes
 - [ ] Other (please describe):
