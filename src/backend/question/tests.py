@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from .models import Category, Question, Keypoint
+from .models import Category
 
 class CategoryTestCase(TestCase):
     def setUp(self):

@@ -1,0 +1,129 @@
+{% extends "basic.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href={% static 'css/codeeditor.min.css' %}> </link>
+<style>
+        .CodeMirror {
+            border: 1px solid black;
+            height: auto;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<script src={% static 'js/codeeditor.min.js' %}></script>
+<span id="vue-span">
+  <section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-5">
+        <div class="card">
+          <div class="card-content">
+            <div class="content">
+              <p class="title has-text-centered">Search in Rotated Sorted Array</p>
+              <p>There is an integer array nums sorted in ascending order (with distinct values). Prior to being passed to your function, nums is possibly rotated at an unknown pivot index k (1k nums.length) such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). For example, [0,1,2,4,5,6,7] might be rotated at pivot index 3 and become [4,5,6,7,0,1,2]. Given the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums. You must write an algorithm with O(log n) runtime complexity.</p>
+              <h3>Example</h3>
+              <p>
+                Example 1:
+
+                Input: nums = [4,5,6,7,0,1,2], target = 0
+                Output: 4
+                <br>
+                Example 2:
+                Input: nums = [4,5,6,7,0,1,2], target = 3
+                Output: -1
+                <br>
+                Example 3:
+                Input: nums = [1], target = 0
+                Output: -1
+              </p>                
+          </div>
+          </div> <!-- end card content -->
+        </div> <!-- end card -->
+      </div> <!-- end column -->
+      <div class="column is-7">
+        <textarea id="editor">
+var findMedianSortedArrays = function(nums1, nums2) {
+    let n1 = nums1.length;
+    let n2 = nums2.length;
+    
+    let l = 0;
+    let r = n1;
+    while (l <= r) {
+        let mid1 = Math.floor((l + r) / 2);
+        let mid2 = Math.floor((n1 + n2 + 1) / 2 - mid1);
+        if (maxLeft1 <= minRight2 && maxLeft2 <= minRight1) {
+            if ((n1 + n2) % 2 == 0) {
+                return (Math.max(maxLeft1, maxLeft2) + Math.min(minRight1, minRight2)) / 2;
+            } else {
+                return Math.max(maxLeft1, maxLeft2);
+            }
+        } else if (maxLeft1 > minRight2) {
+            r = mid1 - 1;
+        } else {
+            l = mid1 + 1;
+        }
+    }
+    
+    return -1;
+};
+        </textarea>
+        <br>
+        <button class="button is-dark">Text Hint</button>
+        <button class="button is-dark">Code Hint</button>
+        <button class="button is-dark">Submit</button>
+      </div>
+    </div>
+  </div> <!-- end container -->
+  </section>
+</span>
+{% endblock %}
+{% block extra_script %}
+  <script>
+     var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+       lineNumbers: true,
+       mode: "javascript"
+     });
+  </script>
+  <script>
+    var root = '{{ root }}';
+    var app = new Vue({
+      delimiters: ['[[', ']]'],
+      el: '#vue-span',
+      data () {
+        return {
+           root: root,
+           category: null,
+           cur_category: null,
+           solution_lst: null,
+           placeholder: null,
+        }
+      },
+      mounted () {
+        axios.get(root + '/api/category')
+          .then(response => {
+              this.category = response.data;
+              this.cur_category = this.category[0];
+          })
+          .catch()
+        axios.get(root + '/api/solution?category=1')
+          .then(response => {
+              this.solution_lst = response.data;
+          })
+          .catch()
+      },
+      methods: {
+        get_question_by_cate: function (index) {
+          var id = index + 1;
+          axios.get(root + '/api/solution/?category=' + id)
+            .then(response => {
+                this.cur_category = this.category[index];
+                this.solution_lst = response.data;
+            })
+            .catch()
+        }
+      }
+    })
+  </script>
+{% endblock %}
