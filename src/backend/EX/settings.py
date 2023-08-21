@@ -21,7 +21,7 @@ ENVIRONMENT = os.getenv('ENVIRONMENT')
 
 if ENVIRONMENT == 'LOCAL':
     ROOT = 'http://127.0.0.1:8000'
-    HOST = '127.0.0.1'
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
     SECRET_KEY = 'django-insecure-@s=_aoq!k!h-@b^%t!+zoxo4fs@e+ccr^lld4fd9+3oxdg^!^!'
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     DEBUG = True
@@ -32,7 +32,7 @@ elif ENVIRONMENT in ('TEST', 'PRODUCTION'):
     else:
         DEBUG = True
     ROOT = os.getenv('ROOT')
-    HOST = os.getenv('HOST')
+    ALLOWED_HOSTS = [os.getenv('HOST')]
     SECRET_KEY = os.getenv('SECRET_KEY')
     EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
     DBNAME = 'db.sqlite3'
