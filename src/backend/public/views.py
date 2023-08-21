@@ -8,7 +8,7 @@ def home(request):
 
 def practice(request):
     # HTML for question list page
-    return render(request, 'public/question.html', {'root': settings.ROOT})
+    return render(request, 'public/practice.html', {'root': settings.ROOT})
 
 def question_detail(request, question_name, category_name):
     # HTML for question detail page

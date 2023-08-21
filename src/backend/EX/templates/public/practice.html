@@ -1,0 +1,260 @@
+{% extends "basic.html" %}
+{% load static %}
+
+{% block content %}
+<span id="vue-span">
+  <section class="hero is-medium is-link">
+    <div class="hero-body">
+      <p class="title">
+        Algorithm Quiz
+      </p>
+      <p class="subtitle">
+        We learn from the fitness industry that by training on some questions slightly above your current level, you can achieve the best training effect. Spend ten minutes to complete these multiple-choice questions, which will help us better understand your proficiency.
+      </p>
+      <button class="button is-white">Start For Free</button>
+    </div>
+  </section>
+  <section class="section">
+  <div class="container">
+    <p class="title">Recommend For You</p>
+    <p>Easy 🟢</p>
+    <p>Medium 🟠</p>
+    <p>Hard 🟤</p>
+    <br>
+    <p class="subtitle">New Challenges</p>
+    <div class="columns">
+      <div class="column is-4">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-4by3">
+              <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="media">
+              <div class="media-content">
+                <p class="title has-text-centered">Binary Search</p>
+                <p class="subtitle has-text-centered has-text-grey">High Intensity Interval Exercise</p>
+                <p>Search in Rotated Sorted Array 🟠 🟦</p>
+                <p>Find Minimum in Rotated Sorted Array 🟢 🟧</p>
+                <p>Two Sum II - Input Array Is Sorted 🟤 🟧</p>
+                <br>
+                <button class="button is-dark is-fullwidth">Start</button>
+              </div>
+            </div> <!-- end media -->
+          </div> <!-- end card content -->
+        </div> <!-- end card -->
+      </div> <!-- end column -->
+      <div class="column is-4">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-4by3">
+              <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="media">
+              <div class="media-content">
+                <p class="title has-text-centered">Binary Search</p>
+                <p class="subtitle has-text-centered has-text-grey">High Intensity Interval Exercise</p>
+                <p>Search in Rotated Sorted Array 🟠 🟦</p>
+                <p>Find Minimum in Rotated Sorted Array 🟢 🟧</p>
+                <p>Two Sum II - Input Array Is Sorted 🟤 🟧</p>
+                <br>
+                <button class="button is-dark is-fullwidth">Start</button>
+              </div>
+            </div> <!-- end media -->
+          </div> <!-- end card content -->
+        </div> <!-- end card -->
+      </div> <!-- end column -->
+      <div class="column is-4">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-4by3">
+              <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="media">
+              <div class="media-content">
+                <p class="title has-text-centered">Binary Search</p>
+                <p class="subtitle has-text-centered has-text-grey">High Intensity Interval Exercise</p>
+                <p>Search in Rotated Sorted Array 🟠 🟦</p>
+                <p>Find Minimum in Rotated Sorted Array 🟢 🟧</p>
+                <p>Two Sum II - Input Array Is Sorted 🟤 🟧</p>
+                <br>
+                <button class="button is-dark is-fullwidth">Start</button>
+              </div>
+            </div> <!-- end media -->
+          </div> <!-- end card content -->
+        </div> <!-- end card -->
+      </div> <!-- end column -->
+    </div> <!-- end columns -->
+    <p class="subtitle">Review</p>
+    <div class="columns">
+      <div class="column is-4">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-4by3">
+              <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="media">
+              <div class="media-content">
+                <p class="title has-text-centered">Binary Search</p>
+                <p class="subtitle has-text-centered has-text-grey">High Intensity Interval Exercise</p>
+                <p>Search in Rotated Sorted Array 🟠 🟦</p>
+                <p>Find Minimum in Rotated Sorted Array 🟢 🟧</p>
+                <p>Two Sum II - Input Array Is Sorted 🟤 🟧</p>
+                <br>
+                <button class="button is-dark is-fullwidth">Start</button>
+              </div>
+            </div> <!-- end media -->
+          </div> <!-- end card content -->
+        </div> <!-- end card -->
+      </div> <!-- end column -->
+    </div>
+  </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="title">Choose Problem</p>
+      <div class="columns">
+        <div class="column is-1">
+          <div class="dropdown is-hoverable">
+          <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+              <span>Category</span>
+              <span class="icon is-small">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+              <a href="#" class="dropdown-item">
+                Binary Search
+              </a>
+              <a class="dropdown-item">
+                Hash Table
+              </a>
+              <a href="#" class="dropdown-item is-active">
+                Queue
+              </a>
+            </div>
+          </div> <!-- end dropdown-menu -->
+        </div> <!-- end dropdown -->
+      </div> <!-- end column -->
+      <div class="column is-1">
+          <div class="dropdown is-hoverable">
+          <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+              <span>Difficulty</span>
+              <span class="icon is-small">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+              <a href="#" class="dropdown-item">
+                Easy
+              </a>
+              <a class="dropdown-item">
+                Medium
+              </a>
+              <a href="#" class="dropdown-item is-active">
+                Hard
+              </a>
+            </div>
+          </div> <!-- end dropdown-menu -->
+        </div> <!-- end dropdown -->
+      </div> <!-- end column -->
+      <div class="column is-1">
+          <div class="dropdown is-hoverable">
+          <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+              <span>Company</span>
+              <span class="icon is-small">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+              <a href="#" class="dropdown-item">
+                Google
+              </a>
+              <a class="dropdown-item">
+                Apple
+              </a>
+              <a href="#" class="dropdown-item is-active">
+                Amazon
+              </a>
+            </div>
+          </div> <!-- end dropdown-menu -->
+        </div> <!-- end dropdown -->
+      </div> <!-- end column -->
+    </div> <!-- end columns -->
+    <article class="media">
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <a href="" class="is-size-5">Search in Rotated Sorted Array</a> <small>100 Like · 1075 points</small>
+          </p>
+          <p>
+            <a href="" class="is-size-5">Find Minimum in Rotated Sorted Array </a> <small>100 Like · 1075 points</small>
+          </p>
+          <p>
+            <a href="" class="is-size-5">Two Sum II - Input Array Is Sorted</a> <small>100 Like · 1075 points</small>
+          </p>
+        </div>
+      </div>
+    </article>
+  </section>
+</span>
+{% endblock %}
+{% block extra_script %}
+  <script>
+    var root = '{{ root }}';
+    var app = new Vue({
+      delimiters: ['[[', ']]'],
+      el: '#vue-span',
+      data () {
+        return {
+           root: root,
+           category: null,
+           cur_category: null,
+           solution_lst: null,
+           placeholder: null,
+        }
+      },
+      mounted () {
+        axios.get(root + '/api/category')
+          .then(response => {
+              this.category = response.data;
+              this.cur_category = this.category[0];
+          })
+          .catch()
+        axios.get(root + '/api/solution?category=1')
+          .then(response => {
+              this.solution_lst = response.data;
+          })
+          .catch()
+      },
+      methods: {
+        get_question_by_cate: function (index) {
+          var id = index + 1;
+          axios.get(root + '/api/solution/?category=' + id)
+            .then(response => {
+                this.cur_category = this.category[index];
+                this.solution_lst = response.data;
+            })
+            .catch()
+        }
+      }
+    })
+  </script>
+{% endblock %}

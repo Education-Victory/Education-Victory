@@ -28,7 +28,7 @@ if ENVIRONMENT == 'LOCAL':
     DBNAME = 'db.sqlite3'
 else:
     ROOT = os.getenv('ROOT')
-    HOST = os.getenv('HOS')
+    HOST = os.getenv('HOST')
     SECRET_KEY = os.getenv('SECRET_KEY')
     EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
     DEBUG = False
