@@ -6,12 +6,12 @@
 <img src="https://raw.githubusercontent.com/Education-X/Education-X/main/imgs/EV2.svg">
 
 ## Education Victory
-The new generation learning platform that combines personalized learning, collaborative learning, and project-based learning.
+The new-generation learning platform combines personalized learning, collaborative learning, and project-based learning.
 
 ### Personalized Learning
 1. After logging in, users need to participate in online evaluations to assess their abilities (logical analysis, algorithm ability, communication ability, etc.).
-2. The platform recommends appropriate difficulty level questions based on the user’s abilities.
-3. Users need to complete the recommended exercises and read related materials according to the recommended practice methods; the platform updates the user's abilities in real-time.
+2. The platform recommends appropriate difficulty-level questions based on the user’s abilities.
+3. Users need to complete the recommended exercises and read related materials according to the recommended practice methods; the platform updates the user's abilities in real time.
 4. Users can see their ability evaluations on their personal pages.
 
 ### Collaborative Learning (using https://meta.discourse.org/ for development)
@@ -21,7 +21,7 @@ The new generation learning platform that combines personalized learning, collab
 2. Learning through listening: Users can initiate a topic, such as:
     Time: April 1, 2025, 7:00 pm PST
     Activity: I don't know the solution to this question, hope someone can discuss it with me.
-3. Users can initiate a topic to study a specific subject as a team, discuss it after reading a video, article, or paper (using ChatGPT to ask and try to answer questions together).
+3. Users can initiate a topic to study a specific subject as a team, and discuss it after reading a video, article, or paper (using ChatGPT to ask and try to answer questions together).
 4. Users can initiate a topic to complete a project as a team.
 
 ### Project-based Learning
@@ -29,6 +29,11 @@ The new generation learning platform that combines personalized learning, collab
     Using a specific data structure for a particular algorithm question (or not using a specific data structure)
     Code length not exceeding 10 lines
 Users can share their works around the same challenge and then discuss them with each other.}
+
+## Quick Start
+
+1. Setup `ENVIRONMENT=LOCAL` in your local machines
+2. run `python manage.py runserver`
 
 ## 教育制胜
 
