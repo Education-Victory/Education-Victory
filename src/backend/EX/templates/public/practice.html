@@ -17,27 +17,20 @@
   <section class="section">
   <div class="container">
     <p class="title">Recommend For You</p>
-    <p>Easy 🟢</p>
-    <p>Medium 🟠</p>
-    <p>Hard 🟤</p>
-    <br>
-    <p class="subtitle">New Challenges</p>
     <div class="columns">
-      <div class="column is-4">
+      <div class="column is-3" v-for="(task, index) in new_tasks">
         <div class="card">
           <div class="card-image">
-            <figure class="image is-4by3">
-              <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+            <figure class="image is-3by3">
+                <img src="{% static  'imgs/profit.png' %}" alt="Image">
             </figure>
           </div>
           <div class="card-content">
             <div class="media">
               <div class="media-content">
-                <p class="title has-text-centered">Binary Search</p>
-                <p class="subtitle has-text-centered has-text-grey">High Intensity Interval Exercise</p>
-                <p>Search in Rotated Sorted Array 🟠 🟦</p>
-                <p>Find Minimum in Rotated Sorted Array 🟢 🟧</p>
-                <p>Two Sum II - Input Array Is Sorted 🟤 🟧</p>
+                <p class="title has-text-centered">[[ task.state ]]</p>
+                <p class="subtitle has-text-centered has-text-grey">[[ task.method ]]</p>
+                <p class="subtitle has-text-centered has-text-grey">[[ task.category ]]</p>
                 <br>
                 <button class="button is-dark is-fullwidth">Start</button>
               </div>
@@ -45,43 +38,19 @@
           </div> <!-- end card content -->
         </div> <!-- end card -->
       </div> <!-- end column -->
-      <div class="column is-4">
+      <div class="column is-3" v-for="(task, index) in old_tasks">
         <div class="card">
           <div class="card-image">
-            <figure class="image is-4by3">
-              <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+            <figure class="image is-3by3">
+                <img src="{% static  'imgs/profit.png' %}" alt="Image">
             </figure>
           </div>
           <div class="card-content">
             <div class="media">
               <div class="media-content">
-                <p class="title has-text-centered">Binary Search</p>
-                <p class="subtitle has-text-centered has-text-grey">High Intensity Interval Exercise</p>
-                <p>Search in Rotated Sorted Array 🟠 🟦</p>
-                <p>Find Minimum in Rotated Sorted Array 🟢 🟧</p>
-                <p>Two Sum II - Input Array Is Sorted 🟤 🟧</p>
-                <br>
-                <button class="button is-dark is-fullwidth">Start</button>
-              </div>
-            </div> <!-- end media -->
-          </div> <!-- end card content -->
-        </div> <!-- end card -->
-      </div> <!-- end column -->
-      <div class="column is-4">
-        <div class="card">
-          <div class="card-image">
-            <figure class="image is-4by3">
-              <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-            </figure>
-          </div>
-          <div class="card-content">
-            <div class="media">
-              <div class="media-content">
-                <p class="title has-text-centered">Binary Search</p>
-                <p class="subtitle has-text-centered has-text-grey">High Intensity Interval Exercise</p>
-                <p>Search in Rotated Sorted Array 🟠 🟦</p>
-                <p>Find Minimum in Rotated Sorted Array 🟢 🟧</p>
-                <p>Two Sum II - Input Array Is Sorted 🟤 🟧</p>
+                <p class="title has-text-centered">[[ task.state ]]</p>
+                <p class="subtitle has-text-centered has-text-grey">[[ task.method ]]</p>
+                <p class="subtitle has-text-centered has-text-grey">[[ task.category ]]</p>
                 <br>
                 <button class="button is-dark is-fullwidth">Start</button>
               </div>
@@ -90,130 +59,312 @@
         </div> <!-- end card -->
       </div> <!-- end column -->
     </div> <!-- end columns -->
-    <p class="subtitle">Review</p>
-    <div class="columns">
-      <div class="column is-4">
-        <div class="card">
-          <div class="card-image">
-            <figure class="image is-4by3">
-              <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-            </figure>
-          </div>
-          <div class="card-content">
-            <div class="media">
-              <div class="media-content">
-                <p class="title has-text-centered">Binary Search</p>
-                <p class="subtitle has-text-centered has-text-grey">High Intensity Interval Exercise</p>
-                <p>Search in Rotated Sorted Array 🟠 🟦</p>
-                <p>Find Minimum in Rotated Sorted Array 🟢 🟧</p>
-                <p>Two Sum II - Input Array Is Sorted 🟤 🟧</p>
-                <br>
-                <button class="button is-dark is-fullwidth">Start</button>
-              </div>
-            </div> <!-- end media -->
-          </div> <!-- end card content -->
-        </div> <!-- end card -->
-      </div> <!-- end column -->
-    </div>
   </div>
   </section>
 
-  <section class="section">
-    <div class="container">
-      <p class="title">Choose Problem</p>
-      <div class="columns">
-        <div class="column is-1">
-          <div class="dropdown is-hoverable">
-          <div class="dropdown-trigger">
-            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-              <span>Category</span>
-              <span class="icon is-small">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
-              </span>
-            </button>
-          </div>
-          <div class="dropdown-menu" id="dropdown-menu" role="menu">
-            <div class="dropdown-content">
-              <a href="#" class="dropdown-item">
-                Binary Search
-              </a>
-              <a class="dropdown-item">
-                Hash Table
-              </a>
-              <a href="#" class="dropdown-item is-active">
-                Queue
-              </a>
+      <section class="section">
+        <div class="container">
+          <div class="mb-4">
+            <div class="box p-5">
+              <div class="columns is-multiline is-vcentered is-justify-content-space-between">
+                <div class="column is-12-touch">
+                  <div class="is-flex is-align-items-center">
+                    <img class="mr-3 image is-cover is-48x48" style="border-radius: 50% !important;" src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="alt">
+                    <div>
+                      <p class="is-size-6 has-text-weight-bold">John Smith</p>
+                      <p class="is-size-7 has-text-grey">john@shuffle.dev</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <span class="tag is-primary is-light" href="#">Marketing</span>
+                </div>
+                <div class="column">
+                  <span class="is-size-6 has-text-weight-bold">Shuffle</span>
+                </div>
+                <div class="column">
+                  <div class="-mb-1 is-flex"><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Marketing</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Advertising</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Sales</a><a class="button mb-1 has-text-weight-normal" href="#">+2</a></div>
+                </div>
+                <div class="column">
+                  <div class="is-flex is-align-items-center is-justify-content-flex-end">
+                    <a class="button p-0 is-info is-light mr-3 is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
+                    </a>
+                    <a class="button p-0 is-info is-light is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div> <!-- end dropdown-menu -->
-        </div> <!-- end dropdown -->
-      </div> <!-- end column -->
-      <div class="column is-1">
-          <div class="dropdown is-hoverable">
-          <div class="dropdown-trigger">
-            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-              <span>Difficulty</span>
-              <span class="icon is-small">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
-              </span>
-            </button>
           </div>
-          <div class="dropdown-menu" id="dropdown-menu" role="menu">
-            <div class="dropdown-content">
-              <a href="#" class="dropdown-item">
-                Easy
-              </a>
-              <a class="dropdown-item">
-                Medium
-              </a>
-              <a href="#" class="dropdown-item is-active">
-                Hard
-              </a>
+          <div class="mb-4">
+            <div class="box p-5">
+              <div class="columns is-multiline is-vcentered is-justify-content-space-between">
+                <div class="column is-12-touch">
+                  <div class="is-flex is-align-items-center">
+                    <img class="mr-3 image is-cover is-48x48" style="border-radius: 50% !important;" src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="alt">
+                    <div>
+                      <p class="is-size-6 has-text-weight-bold">John Smith</p>
+                      <p class="is-size-7 has-text-grey">john@shuffle.dev</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <span class="tag is-primary is-light" href="#">Marketing</span>
+                </div>
+                <div class="column">
+                  <span class="is-size-6 has-text-weight-bold">Shuffle</span>
+                </div>
+                <div class="column">
+                  <div class="-mb-1 is-flex"><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Marketing</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Advertising</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Sales</a><a class="button mb-1 has-text-weight-normal" href="#">+2</a></div>
+                </div>
+                <div class="column">
+                  <div class="is-flex is-align-items-center is-justify-content-flex-end">
+                    <a class="button p-0 is-info is-light mr-3 is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
+                    </a>
+                    <a class="button p-0 is-info is-light is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div> <!-- end dropdown-menu -->
-        </div> <!-- end dropdown -->
-      </div> <!-- end column -->
-      <div class="column is-1">
-          <div class="dropdown is-hoverable">
-          <div class="dropdown-trigger">
-            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-              <span>Company</span>
-              <span class="icon is-small">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
-              </span>
-            </button>
           </div>
-          <div class="dropdown-menu" id="dropdown-menu" role="menu">
-            <div class="dropdown-content">
-              <a href="#" class="dropdown-item">
-                Google
-              </a>
-              <a class="dropdown-item">
-                Apple
-              </a>
-              <a href="#" class="dropdown-item is-active">
-                Amazon
-              </a>
+          <div class="mb-4">
+            <div class="box p-5">
+              <div class="columns is-multiline is-vcentered is-justify-content-space-between">
+                <div class="column is-12-touch">
+                  <div class="is-flex is-align-items-center">
+                    <img class="mr-3 image is-cover is-48x48" style="border-radius: 50% !important;" src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="alt">
+                    <div>
+                      <p class="is-size-6 has-text-weight-bold">John Smith</p>
+                      <p class="is-size-7 has-text-grey">john@shuffle.dev</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <span class="tag is-primary is-light" href="#">Marketing</span>
+                </div>
+                <div class="column">
+                  <span class="is-size-6 has-text-weight-bold">Shuffle</span>
+                </div>
+                <div class="column">
+                  <div class="-mb-1 is-flex"><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Marketing</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Advertising</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Sales</a><a class="button mb-1 has-text-weight-normal" href="#">+2</a></div>
+                </div>
+                <div class="column">
+                  <div class="is-flex is-align-items-center is-justify-content-flex-end">
+                    <a class="button p-0 is-info is-light mr-3 is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
+                    </a>
+                    <a class="button p-0 is-info is-light is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div> <!-- end dropdown-menu -->
-        </div> <!-- end dropdown -->
-      </div> <!-- end column -->
-    </div> <!-- end columns -->
-    <article class="media">
-      <div class="media-content">
-        <div class="content">
-          <p>
-            <a href="" class="is-size-5">Search in Rotated Sorted Array</a> <small>100 Like · 1075 points</small>
-          </p>
-          <p>
-            <a href="" class="is-size-5">Find Minimum in Rotated Sorted Array </a> <small>100 Like · 1075 points</small>
-          </p>
-          <p>
-            <a href="" class="is-size-5">Two Sum II - Input Array Is Sorted</a> <small>100 Like · 1075 points</small>
-          </p>
+          </div>
+          <div class="mb-4">
+            <div class="box p-5">
+              <div class="columns is-multiline is-vcentered is-justify-content-space-between">
+                <div class="column is-12-touch">
+                  <div class="is-flex is-align-items-center">
+                    <img class="mr-3 image is-cover is-48x48" style="border-radius: 50% !important;" src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="alt">
+                    <div>
+                      <p class="is-size-6 has-text-weight-bold">John Smith</p>
+                      <p class="is-size-7 has-text-grey">john@shuffle.dev</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <span class="tag is-primary is-light" href="#">Marketing</span>
+                </div>
+                <div class="column">
+                  <span class="is-size-6 has-text-weight-bold">Shuffle</span>
+                </div>
+                <div class="column">
+                  <div class="-mb-1 is-flex"><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Marketing</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Advertising</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Sales</a><a class="button mb-1 has-text-weight-normal" href="#">+2</a></div>
+                </div>
+                <div class="column">
+                  <div class="is-flex is-align-items-center is-justify-content-flex-end">
+                    <a class="button p-0 is-info is-light mr-3 is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
+                    </a>
+                    <a class="button p-0 is-info is-light is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <div class="box p-5">
+              <div class="columns is-multiline is-vcentered is-justify-content-space-between">
+                <div class="column is-12-touch">
+                  <div class="is-flex is-align-items-center">
+                    <img class="mr-3 image is-cover is-48x48" style="border-radius: 50% !important;" src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="alt">
+                    <div>
+                      <p class="is-size-6 has-text-weight-bold">John Smith</p>
+                      <p class="is-size-7 has-text-grey">john@shuffle.dev</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <span class="tag is-primary is-light" href="#">Marketing</span>
+                </div>
+                <div class="column">
+                  <span class="is-size-6 has-text-weight-bold">Shuffle</span>
+                </div>
+                <div class="column">
+                  <div class="-mb-1 is-flex"><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Marketing</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Advertising</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Sales</a><a class="button mb-1 has-text-weight-normal" href="#">+2</a></div>
+                </div>
+                <div class="column">
+                  <div class="is-flex is-align-items-center is-justify-content-flex-end">
+                    <a class="button p-0 is-info is-light mr-3 is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
+                    </a>
+                    <a class="button p-0 is-info is-light is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <div class="box p-5">
+              <div class="columns is-multiline is-vcentered is-justify-content-space-between">
+                <div class="column is-12-touch">
+                  <div class="is-flex is-align-items-center">
+                    <img class="mr-3 image is-cover is-48x48" style="border-radius: 50% !important;" src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="alt">
+                    <div>
+                      <p class="is-size-6 has-text-weight-bold">John Smith</p>
+                      <p class="is-size-7 has-text-grey">john@shuffle.dev</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <span class="tag is-primary is-light" href="#">Marketing</span>
+                </div>
+                <div class="column">
+                  <span class="is-size-6 has-text-weight-bold">Shuffle</span>
+                </div>
+                <div class="column">
+                  <div class="-mb-1 is-flex"><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Marketing</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Advertising</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Sales</a><a class="button mb-1 has-text-weight-normal" href="#">+2</a></div>
+                </div>
+                <div class="column">
+                  <div class="is-flex is-align-items-center is-justify-content-flex-end">
+                    <a class="button p-0 is-info is-light mr-3 is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
+                    </a>
+                    <a class="button p-0 is-info is-light is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <div class="box p-5">
+              <div class="columns is-multiline is-vcentered is-justify-content-space-between">
+                <div class="column is-12-touch">
+                  <div class="is-flex is-align-items-center">
+                    <img class="mr-3 image is-cover is-48x48" style="border-radius: 50% !important;" src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="alt">
+                    <div>
+                      <p class="is-size-6 has-text-weight-bold">John Smith</p>
+                      <p class="is-size-7 has-text-grey">john@shuffle.dev</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <span class="tag is-primary is-light" href="#">Marketing</span>
+                </div>
+                <div class="column">
+                  <span class="is-size-6 has-text-weight-bold">Shuffle</span>
+                </div>
+                <div class="column">
+                  <div class="-mb-1 is-flex"><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Marketing</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Advertising</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Sales</a><a class="button mb-1 has-text-weight-normal" href="#">+2</a></div>
+                </div>
+                <div class="column">
+                  <div class="is-flex is-align-items-center is-justify-content-flex-end">
+                    <a class="button p-0 is-info is-light mr-3 is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
+                    </a>
+                    <a class="button p-0 is-info is-light is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <div class="box p-5">
+              <div class="columns is-multiline is-vcentered is-justify-content-space-between">
+                <div class="column is-12-touch">
+                  <div class="is-flex is-align-items-center">
+                    <img class="mr-3 image is-cover is-48x48" style="border-radius: 50% !important;" src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="alt">
+                    <div>
+                      <p class="is-size-6 has-text-weight-bold">John Smith</p>
+                      <p class="is-size-7 has-text-grey">john@shuffle.dev</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <span class="tag is-primary is-light" href="#">Marketing</span>
+                </div>
+                <div class="column">
+                  <span class="is-size-6 has-text-weight-bold">Shuffle</span>
+                </div>
+                <div class="column">
+                  <div class="-mb-1 is-flex"><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Marketing</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Advertising</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Sales</a><a class="button mb-1 has-text-weight-normal" href="#">+2</a></div>
+                </div>
+                <div class="column">
+                  <div class="is-flex is-align-items-center is-justify-content-flex-end">
+                    <a class="button p-0 is-info is-light mr-3 is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
+                    </a>
+                    <a class="button p-0 is-info is-light is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <div class="is-flex is-align-items-center">
+                <p class="is-size-7 has-text-grey-light">Show</p>
+                <div class="select is-small mx-3">
+                  <select class="has-background-white" aria-label="Select example">
+                    <option value="1">9</option>
+                    <option value="2">18</option>
+                    <option value="3">36</option>
+                  </select>
+                </div>
+                <p class="is-size-7 has-text-grey-light">of 1200</p>
+              </div>
+            </div>
+            <div class="column is-flex is-justify-content-flex-end">
+              <nav class="pagination" role="navigation" aria-label="pagination">
+                <ul class="pagination-list" style="font-size: 12px;">
+                  <li>
+                    <a class="pagination-link has-background-white" href="#" aria-label="previous">
+                    </a>
+                  </li>
+                  <li><a class="pagination-link has-background-white" href="#" aria-label="page 1">1</a></li>
+                  <li>
+                    <a class="pagination-link has-background-white" href="#" aria-label="previous">
+                    </a>
+                  </li>
+                  <li class="is-hidden-mobile"><a class="pagination-link has-background-white" href="#" aria-label="page 1">12</a></li>
+                  <li class="is-hidden-mobile"><a class="pagination-link has-background-white" href="#" aria-label="page 1">13</a></li>
+                  <li class="is-hidden-mobile"><a class="pagination-link has-background-white" href="#" aria-label="page 1">14</a></li>
+                  <li class="is-hidden-mobile">
+                    <a class="pagination-link has-background-white" href="#" aria-label="previous">
+                    </a>
+                  </li>
+                  <li><a class="pagination-link has-background-white" href="#" aria-label="page 1">62</a></li>
+                  <li>
+                    <a class="pagination-link has-background-white" href="#" aria-label="next">
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
         </div>
-      </div>
-    </article>
-  </section>
+      </section>
+    </span>
 </span>
 {% endblock %}
 {% block extra_script %}
@@ -225,35 +376,42 @@
       data () {
         return {
            root: root,
-           category: null,
-           cur_category: null,
-           solution_lst: null,
-           placeholder: null,
+           new_tasks: [],
+           old_tasks: [],
+           question_lst: [],
         }
       },
       mounted () {
-        axios.get(root + '/api/category')
+        axios.get(root + '/api/task_info/?state=new&count=3')
           .then(response => {
-              this.category = response.data;
-              this.cur_category = this.category[0];
+            // handle success
+            this.new_tasks = response.data;
           })
-          .catch()
-        axios.get(root + '/api/solution?category=1')
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })
+          .finally(function () {
+            // always executed
+          });
+        axios.get(root + '/api/task_info/?state=old&count=1')
           .then(response => {
-              this.solution_lst = response.data;
+            this.old_tasks = response.data;
           })
-          .catch()
-      },
-      methods: {
-        get_question_by_cate: function (index) {
-          var id = index + 1;
-          axios.get(root + '/api/solution/?category=' + id)
-            .then(response => {
-                this.cur_category = this.category[index];
-                this.solution_lst = response.data;
-            })
-            .catch()
-        }
+          .catch(function (error) {
+            console.log(error);
+          })
+          .finally(function () {
+          });
+        axios.get(root + '/api/question/')
+          .then(response => {
+            this.question_lst = response.data;
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+          .finally(function () {
+          });
       }
     })
   </script>
