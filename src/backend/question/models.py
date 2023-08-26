@@ -59,6 +59,7 @@ class CodingQuestion(models.Model):
     def __str__(self):
         return self.name
 
+
 class ChoiceQuestion(models.Model):
     name = models.CharField(max_length=100)
     solution_id = models.ForeignKey(

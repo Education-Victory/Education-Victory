@@ -19,8 +19,10 @@ class User(AbstractUser):
 class Task(models.Model):
     user_id = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='task_user')
-    solution_id_lists = models.ManyToManyField(Solution)
+    question_id_lists = models.JSONField()
+    category = models.CharField(max_length=100)
     practice_method = models.CharField(max_length=100)
+    content = models.JSONField(blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
