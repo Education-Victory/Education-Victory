@@ -109,12 +109,6 @@ jobs:
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v0
         with:
-          env_vars: |
-            GOOGLE_APPLICATION_CREDENTIALS=/cer/test-cloud-storage
-            ENVIRONMENT=${{ env.ENVIRONMENT }}
-            ROOT=${{ env.ROOT }}
-            HOST=${{ env.HOST }}
-            EMAIL_BACKEND=${{ env.EMAIL_BACKEND }}
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
           # NOTE: If using a pre-built image, update the image name here
