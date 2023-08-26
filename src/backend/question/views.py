@@ -72,4 +72,4 @@ def get_question_lst(request):
 
 def get_question_from_query(model, category, question_type, difficulty):
     queryset = model.objects.all()
-    queryset.filter(category=category)
+    queryset.filter(solution__category_list__id=category)
