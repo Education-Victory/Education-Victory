@@ -115,3 +115,8 @@ input[type="checkbox"]::before {
 input[type="checkbox"]:checked::before {
   transform: scale(1);
 }
+
+.is-1-5 {
+  flex: none;
+  width: 10%;
+}
