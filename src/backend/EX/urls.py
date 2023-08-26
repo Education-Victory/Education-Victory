@@ -43,6 +43,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('api/evaluation_simple/', public_views.evaluation_simple),
+    path('api/question/', question_views.get_question_lst),
+    path('api/task_info/', question_views.get_recommend_task),
     path('api/', include((router.urls, 'app_name'))),
     path('', public_views.home, name='home'),
     path('question/<str:question_name>/<str:category_name>/', public_views.question_detail, name='question_detail'),
