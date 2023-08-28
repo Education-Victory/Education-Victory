@@ -4,6 +4,9 @@ from django.utils import timezone
 from django.conf import settings
 
 
+def get_default_json():
+    return '{}'
+
 class Category(models.Model):
     topic = models.CharField(max_length=100, help_text='topic of category')
     group = models.CharField(max_length=100, help_text='group of category')
@@ -32,27 +35,28 @@ class Problem(models.Model):
 
 
 class Solution(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(blank=True, max_length=100)
     problem_id = models.ForeignKey(
         Problem, on_delete=models.CASCADE, related_name='solution_problem')
-    category_id_list = models.ManyToManyField(Category)
+    category_id = models.ForeignKey(
+        Category, on_delete=models.CASCADE, related_name='solution_category')
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return f'{self.problem_id.name} - {self.category_id.name}'
 
 
 class CodingQuestion(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(blank=True, max_length=100)
     solution_id = models.ForeignKey(
         Solution, on_delete=models.CASCADE, related_name='coding_question_solution')
     description = models.CharField(max_length=4000)
-    diffculty = models.JSONField()
-    solution = models.CharField(max_length=4000)
-    text_hint = models.JSONField()
-    code_hint = models.CharField(max_length=4000)
-    resource = models.JSONField()
+    diffculty = models.IntegerField(default=0)
+    solution = models.CharField(blank=True, max_length=4000)
+    text_hint = models.JSONField(default=get_default_json)
+    code_hint = models.CharField(blank=True, max_length=4000)
+    resource = models.JSONField(default=get_default_json)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -61,16 +65,16 @@ class CodingQuestion(models.Model):
 
 
 class ChoiceQuestion(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(blank=True, max_length=100)
     solution_id = models.ForeignKey(
         Solution, on_delete=models.CASCADE, related_name='choice_question_solution')
     description = models.CharField(max_length=2000)
     answer_number = models.IntegerField(default=1)
-    diffculty = models.JSONField()
-    choice = models.JSONField()
+    diffculty = models.IntegerField(default=0)
+    choice = models.JSONField(default=get_default_json)
     solution = models.CharField(max_length=100, help_text='binary form of the correct answer')
-    text_hint = models.JSONField()
-    resource = models.JSONField()
+    text_hint = models.JSONField(default=get_default_json)
+    resource = models.JSONField(default=get_default_json)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -81,7 +85,7 @@ class ChoiceQuestion(models.Model):
 class TestCase(models.Model):
     coding_question_id = models.ForeignKey(
         CodingQuestion, on_delete=models.CASCADE, related_name='testcase_coding_question')
-    case_input = models.JSONField()
-    case_output = models.JSONField()
+    case_input = models.JSONField(default=get_default_json)
+    case_output = models.JSONField(default=get_default_json)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
