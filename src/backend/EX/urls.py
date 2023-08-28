@@ -27,7 +27,6 @@ from rest_framework.schemas import get_schema_view
 
 # Sets up the viewsets for models and maps them to appropriate URLs using SimpleRouter
 router = routers.SimpleRouter()
-router.register(r'solution', question_views.SolutionViewSet, basename='Solution')
 router.register(r'category', question_views.CategoryViewSet, basename='Category')
 
 urlpatterns = [

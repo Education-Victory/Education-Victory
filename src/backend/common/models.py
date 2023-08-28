@@ -4,14 +4,16 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from question.models import Solution
 
+def get_default_ability():
+    return [0] * 200
 
 class User(AbstractUser):
     avatar = models.URLField(max_length=1000, blank=True,
                              help_text="URL for avatar")
-    year_of_programming = models.BigIntegerField(blank=True)
-    solved_prblem = models.BigIntegerField(blank=True)
-    target = models.CharField(max_length=100)
-    ability = models.JSONField(blank=True)
+    year_of_programming = models.BigIntegerField(blank=True, null=True)
+    solved_prblem = models.BigIntegerField(blank=True, null=True)
+    target = models.CharField(max_length=100, blank=True)
+    ability = models.JSONField(default=get_default_ability)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 

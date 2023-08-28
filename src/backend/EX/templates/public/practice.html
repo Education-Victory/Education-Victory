@@ -15,355 +15,208 @@
     </div>
   </section>
   <section class="section">
-  <div class="container">
-    <p class="title">Recommend For You</p>
-    <div class="columns">
-      <div class="column is-3" v-for="(task, index) in new_tasks">
-        <div class="card">
-          <div class="card-image">
-            <figure class="image is-3by3">
-                <img src="{% static  'imgs/profit.png' %}" alt="Image">
-            </figure>
-          </div>
-          <div class="card-content">
-            <div class="media">
-              <div class="media-content">
-                <p class="title has-text-centered">[[ task.state ]]</p>
-                <p class="subtitle has-text-centered has-text-grey">[[ task.method ]]</p>
-                <p class="subtitle has-text-centered has-text-grey">[[ task.category ]]</p>
-                <br>
-                <button class="button is-dark is-fullwidth">Start</button>
+    <div class="container">
+      <div class="columns is-multiline">
+        <div class="column is-4-desktop is-6-tablet" v-for="(task, index) in new_task_lst">
+          <div class="card p-3">
+            <div class="card-content">
+              <div class="content is-flex is-justify-content-space-between is-align-items-center">
+                <div>
+                  <h2 class="title is-size-5 mb-1">[[ task.category ]]</h2>
+                  <span class="is-size-6">[[ task.method ]]</span>
+                </div>
+                <button class="button is-primary is-light p-0" style="width: 32px; height: 32px;">
+                </button>
               </div>
-            </div> <!-- end media -->
-          </div> <!-- end card content -->
-        </div> <!-- end card -->
-      </div> <!-- end column -->
-      <div class="column is-3" v-for="(task, index) in old_tasks">
-        <div class="card">
-          <div class="card-image">
-            <figure class="image is-3by3">
-                <img src="{% static  'imgs/profit.png' %}" alt="Image">
-            </figure>
-          </div>
-          <div class="card-content">
-            <div class="media">
-              <div class="media-content">
-                <p class="title has-text-centered">[[ task.state ]]</p>
-                <p class="subtitle has-text-centered has-text-grey">[[ task.method ]]</p>
-                <p class="subtitle has-text-centered has-text-grey">[[ task.category ]]</p>
-                <br>
-                <button class="button is-dark is-fullwidth">Start</button>
+              <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
+                <p class="mb-0 is-size-6" >Expected Time</p>
+                <span class="tag is-success is-light">60 minutes</span>
               </div>
-            </div> <!-- end media -->
-          </div> <!-- end card content -->
-        </div> <!-- end card -->
-      </div> <!-- end column -->
-    </div> <!-- end columns -->
-  </div>
-  </section>
-
-      <section class="section">
-        <div class="container">
-          <div class="mb-4">
-            <div class="box p-5">
-              <div class="columns is-multiline is-vcentered is-justify-content-space-between">
-                <div class="column is-12-touch">
-                  <div class="is-flex is-align-items-center">
-                    <img class="mr-3 image is-cover is-48x48" style="border-radius: 50% !important;" src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="alt">
-                    <div>
-                      <p class="is-size-6 has-text-weight-bold">John Smith</p>
-                      <p class="is-size-7 has-text-grey">john@shuffle.dev</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="column">
-                  <span class="tag is-primary is-light" href="#">Marketing</span>
-                </div>
-                <div class="column">
-                  <span class="is-size-6 has-text-weight-bold">Shuffle</span>
-                </div>
-                <div class="column">
-                  <div class="-mb-1 is-flex"><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Marketing</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Advertising</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Sales</a><a class="button mb-1 has-text-weight-normal" href="#">+2</a></div>
-                </div>
-                <div class="column">
-                  <div class="is-flex is-align-items-center is-justify-content-flex-end">
-                    <a class="button p-0 is-info is-light mr-3 is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
-                    </a>
-                    <a class="button p-0 is-info is-light is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
-                    </a>
-                  </div>
-                </div>
+              <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
+                <p class="mb-0 is-size-6">Questions</p>
+                <span class="tag is-danger is-light">5 questions</span>
               </div>
             </div>
-          </div>
-          <div class="mb-4">
-            <div class="box p-5">
-              <div class="columns is-multiline is-vcentered is-justify-content-space-between">
-                <div class="column is-12-touch">
-                  <div class="is-flex is-align-items-center">
-                    <img class="mr-3 image is-cover is-48x48" style="border-radius: 50% !important;" src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="alt">
-                    <div>
-                      <p class="is-size-6 has-text-weight-bold">John Smith</p>
-                      <p class="is-size-7 has-text-grey">john@shuffle.dev</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="column">
-                  <span class="tag is-primary is-light" href="#">Marketing</span>
-                </div>
-                <div class="column">
-                  <span class="is-size-6 has-text-weight-bold">Shuffle</span>
-                </div>
-                <div class="column">
-                  <div class="-mb-1 is-flex"><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Marketing</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Advertising</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Sales</a><a class="button mb-1 has-text-weight-normal" href="#">+2</a></div>
-                </div>
-                <div class="column">
-                  <div class="is-flex is-align-items-center is-justify-content-flex-end">
-                    <a class="button p-0 is-info is-light mr-3 is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
-                    </a>
-                    <a class="button p-0 is-info is-light is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
-                    </a>
-                  </div>
+            <div class="card-footer">
+              <div class="card-footer-item" style="width: 100%;">
+                <div class="is-flex is-justify-content-space-between is-align-items-center" style="width: 100%;">
+                  <a class="button is-link ml-auto" href="#">Start Practice</a>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="mb-4">
-            <div class="box p-5">
-              <div class="columns is-multiline is-vcentered is-justify-content-space-between">
-                <div class="column is-12-touch">
-                  <div class="is-flex is-align-items-center">
-                    <img class="mr-3 image is-cover is-48x48" style="border-radius: 50% !important;" src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="alt">
-                    <div>
-                      <p class="is-size-6 has-text-weight-bold">John Smith</p>
-                      <p class="is-size-7 has-text-grey">john@shuffle.dev</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="column">
-                  <span class="tag is-primary is-light" href="#">Marketing</span>
-                </div>
-                <div class="column">
-                  <span class="is-size-6 has-text-weight-bold">Shuffle</span>
-                </div>
-                <div class="column">
-                  <div class="-mb-1 is-flex"><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Marketing</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Advertising</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Sales</a><a class="button mb-1 has-text-weight-normal" href="#">+2</a></div>
-                </div>
-                <div class="column">
-                  <div class="is-flex is-align-items-center is-justify-content-flex-end">
-                    <a class="button p-0 is-info is-light mr-3 is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
-                    </a>
-                    <a class="button p-0 is-info is-light is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mb-4">
-            <div class="box p-5">
-              <div class="columns is-multiline is-vcentered is-justify-content-space-between">
-                <div class="column is-12-touch">
-                  <div class="is-flex is-align-items-center">
-                    <img class="mr-3 image is-cover is-48x48" style="border-radius: 50% !important;" src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="alt">
-                    <div>
-                      <p class="is-size-6 has-text-weight-bold">John Smith</p>
-                      <p class="is-size-7 has-text-grey">john@shuffle.dev</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="column">
-                  <span class="tag is-primary is-light" href="#">Marketing</span>
-                </div>
-                <div class="column">
-                  <span class="is-size-6 has-text-weight-bold">Shuffle</span>
-                </div>
-                <div class="column">
-                  <div class="-mb-1 is-flex"><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Marketing</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Advertising</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Sales</a><a class="button mb-1 has-text-weight-normal" href="#">+2</a></div>
-                </div>
-                <div class="column">
-                  <div class="is-flex is-align-items-center is-justify-content-flex-end">
-                    <a class="button p-0 is-info is-light mr-3 is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
-                    </a>
-                    <a class="button p-0 is-info is-light is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mb-4">
-            <div class="box p-5">
-              <div class="columns is-multiline is-vcentered is-justify-content-space-between">
-                <div class="column is-12-touch">
-                  <div class="is-flex is-align-items-center">
-                    <img class="mr-3 image is-cover is-48x48" style="border-radius: 50% !important;" src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="alt">
-                    <div>
-                      <p class="is-size-6 has-text-weight-bold">John Smith</p>
-                      <p class="is-size-7 has-text-grey">john@shuffle.dev</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="column">
-                  <span class="tag is-primary is-light" href="#">Marketing</span>
-                </div>
-                <div class="column">
-                  <span class="is-size-6 has-text-weight-bold">Shuffle</span>
-                </div>
-                <div class="column">
-                  <div class="-mb-1 is-flex"><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Marketing</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Advertising</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Sales</a><a class="button mb-1 has-text-weight-normal" href="#">+2</a></div>
-                </div>
-                <div class="column">
-                  <div class="is-flex is-align-items-center is-justify-content-flex-end">
-                    <a class="button p-0 is-info is-light mr-3 is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
-                    </a>
-                    <a class="button p-0 is-info is-light is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mb-4">
-            <div class="box p-5">
-              <div class="columns is-multiline is-vcentered is-justify-content-space-between">
-                <div class="column is-12-touch">
-                  <div class="is-flex is-align-items-center">
-                    <img class="mr-3 image is-cover is-48x48" style="border-radius: 50% !important;" src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="alt">
-                    <div>
-                      <p class="is-size-6 has-text-weight-bold">John Smith</p>
-                      <p class="is-size-7 has-text-grey">john@shuffle.dev</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="column">
-                  <span class="tag is-primary is-light" href="#">Marketing</span>
-                </div>
-                <div class="column">
-                  <span class="is-size-6 has-text-weight-bold">Shuffle</span>
-                </div>
-                <div class="column">
-                  <div class="-mb-1 is-flex"><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Marketing</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Advertising</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Sales</a><a class="button mb-1 has-text-weight-normal" href="#">+2</a></div>
-                </div>
-                <div class="column">
-                  <div class="is-flex is-align-items-center is-justify-content-flex-end">
-                    <a class="button p-0 is-info is-light mr-3 is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
-                    </a>
-                    <a class="button p-0 is-info is-light is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mb-4">
-            <div class="box p-5">
-              <div class="columns is-multiline is-vcentered is-justify-content-space-between">
-                <div class="column is-12-touch">
-                  <div class="is-flex is-align-items-center">
-                    <img class="mr-3 image is-cover is-48x48" style="border-radius: 50% !important;" src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="alt">
-                    <div>
-                      <p class="is-size-6 has-text-weight-bold">John Smith</p>
-                      <p class="is-size-7 has-text-grey">john@shuffle.dev</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="column">
-                  <span class="tag is-primary is-light" href="#">Marketing</span>
-                </div>
-                <div class="column">
-                  <span class="is-size-6 has-text-weight-bold">Shuffle</span>
-                </div>
-                <div class="column">
-                  <div class="-mb-1 is-flex"><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Marketing</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Advertising</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Sales</a><a class="button mb-1 has-text-weight-normal" href="#">+2</a></div>
-                </div>
-                <div class="column">
-                  <div class="is-flex is-align-items-center is-justify-content-flex-end">
-                    <a class="button p-0 is-info is-light mr-3 is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
-                    </a>
-                    <a class="button p-0 is-info is-light is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mb-4">
-            <div class="box p-5">
-              <div class="columns is-multiline is-vcentered is-justify-content-space-between">
-                <div class="column is-12-touch">
-                  <div class="is-flex is-align-items-center">
-                    <img class="mr-3 image is-cover is-48x48" style="border-radius: 50% !important;" src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="alt">
-                    <div>
-                      <p class="is-size-6 has-text-weight-bold">John Smith</p>
-                      <p class="is-size-7 has-text-grey">john@shuffle.dev</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="column">
-                  <span class="tag is-primary is-light" href="#">Marketing</span>
-                </div>
-                <div class="column">
-                  <span class="is-size-6 has-text-weight-bold">Shuffle</span>
-                </div>
-                <div class="column">
-                  <div class="-mb-1 is-flex"><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Marketing</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Advertising</a><a class="button mb-1 mr-2 has-text-weight-normal" href="#">Sales</a><a class="button mb-1 has-text-weight-normal" href="#">+2</a></div>
-                </div>
-                <div class="column">
-                  <div class="is-flex is-align-items-center is-justify-content-flex-end">
-                    <a class="button p-0 is-info is-light mr-3 is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
-                    </a>
-                    <a class="button p-0 is-info is-light is-flex is-justify-content-center is-align-items-center" style="width: 32px; height: 32px" href="#">
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="columns">
-            <div class="column">
-              <div class="is-flex is-align-items-center">
-                <p class="is-size-7 has-text-grey-light">Show</p>
-                <div class="select is-small mx-3">
-                  <select class="has-background-white" aria-label="Select example">
-                    <option value="1">9</option>
-                    <option value="2">18</option>
-                    <option value="3">36</option>
-                  </select>
-                </div>
-                <p class="is-size-7 has-text-grey-light">of 1200</p>
-              </div>
-            </div>
-            <div class="column is-flex is-justify-content-flex-end">
-              <nav class="pagination" role="navigation" aria-label="pagination">
-                <ul class="pagination-list" style="font-size: 12px;">
-                  <li>
-                    <a class="pagination-link has-background-white" href="#" aria-label="previous">
-                    </a>
-                  </li>
-                  <li><a class="pagination-link has-background-white" href="#" aria-label="page 1">1</a></li>
-                  <li>
-                    <a class="pagination-link has-background-white" href="#" aria-label="previous">
-                    </a>
-                  </li>
-                  <li class="is-hidden-mobile"><a class="pagination-link has-background-white" href="#" aria-label="page 1">12</a></li>
-                  <li class="is-hidden-mobile"><a class="pagination-link has-background-white" href="#" aria-label="page 1">13</a></li>
-                  <li class="is-hidden-mobile"><a class="pagination-link has-background-white" href="#" aria-label="page 1">14</a></li>
-                  <li class="is-hidden-mobile">
-                    <a class="pagination-link has-background-white" href="#" aria-label="previous">
-                    </a>
-                  </li>
-                  <li><a class="pagination-link has-background-white" href="#" aria-label="page 1">62</a></li>
-                  <li>
-                    <a class="pagination-link has-background-white" href="#" aria-label="next">
-                    </a>
-                  </li>
-                </ul>
-              </nav>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="box px-0">
+        <div class="px-5 mb-4">
+          <div class="columns is-vcentered is-multiline is-justify-content-space-between">
+            <div class="column">
+              <h5 class="title is-size-4">Question List</h5>
+              <p class="subtitle is-size-6">List of all type of questions</p>
+            </div>
+            <div class="column is-2">
+              <div class="dropdown is-hoverable">
+                <div class="dropdown-trigger">
+                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                    <span>Diffculty</span>
+                    <span class="icon is-small">
+                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                  <div class="dropdown-content">
+                    <a href="#" class="dropdown-item">
+                      Level one
+                    </a>
+                    <a href="#" class="dropdown-item">
+                      Level two
+                    </a>
+                    <a href="#" class="dropdown-item">
+                      Level three
+                    </a>
+                    <a href="#" class="dropdown-item">
+                      Level four
+                    </a>
+                    <a href="#" class="dropdown-item">
+                      Level five
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column is-2">
+              <div class="dropdown is-hoverable">
+                <div class="dropdown-trigger">
+                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                    <span>Category</span>
+                    <span class="icon is-small">
+                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                  <div class="dropdown-content">
+                    <a href="#" class="dropdown-item">
+                      Dropdown item
+                    </a>
+                    <a class="dropdown-item">
+                      Other dropdown item
+                    </a>
+                    <a href="#" class="dropdown-item is-active">
+                      Active dropdown item
+                    </a>
+                    <a href="#" class="dropdown-item">
+                      Other dropdown item
+                    </a>
+                    <hr class="dropdown-divider">
+                    <a href="#" class="dropdown-item">
+                      With a divider
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column is-2">
+              <div class="dropdown is-hoverable">
+                <div class="dropdown-trigger">
+                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                    <span>Type</span>
+                    <span class="icon is-small">
+                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                  <div class="dropdown-content">
+                    <a href="#" class="dropdown-item">
+                      Dropdown item
+                    </a>
+                    <a class="dropdown-item">
+                      Other dropdown item
+                    </a>
+                    <a href="#" class="dropdown-item is-active">
+                      Active dropdown item
+                    </a>
+                    <a href="#" class="dropdown-item">
+                      Other dropdown item
+                    </a>
+                    <hr class="dropdown-divider">
+                    <a href="#" class="dropdown-item">
+                      With a divider
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="table-container mb-0">
+          <table class="table is-striped is-fullwidth is-size-7 mb-0">
+            <thead>
+              <tr>
+                <th class="px-5 py-3 has-text-grey">Name</th>
+                <th class="px-5 py-3 has-text-grey">Diffculty</th>
+                <th class="px-5 py-3 has-text-grey">Type</th>
+                <th class="px-5 py-3 has-text-grey">Frequency</th>
+                <th class="px-5 py-3 has-text-grey">Progress</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(question, index) in question_lst">
+                <td class="px-5 py-4">
+                  <div class="is-flex is-align-items-center">
+                    <div>
+                      <p class="is-size-6 py-1 has-text-weight-medium">[[ question.solution_name ]]</p>
+                      <span class="tag is-success is-success">[[ question.category_name ]]</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-5 py-4">
+                  <p class="is-size-6 has-text-weight-medium">[[ question.diffculty ]]</p>
+                </td>
+                <td class="px-5 py-4">
+                  <p class="is-size-6 has-text-weight-medium">[[ question.qtype ]]</p>
+                </td>
+                <td class="px-5 py-4">
+                  <progress class="progress" value="15" max="100">15%</progress>
+                </td>
+                <td class="px-5 py-4">
+                  <progress class="progress" value="55" max="100">15%</progress>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-flex is-justify-content-flex-end">
+          <nav class="pagination" role="navigation" aria-label="pagination">
+            <ul class="pagination-list" style="font-size: 12px;">
+              <li>
+                <a class="pagination-link has-background-white" href="#" aria-label="previous">
+                </a>
+              </li>
+              <li><a class="pagination-link has-background-white" href="#" aria-label="page 1">1</a></li>
+              <li><a class="pagination-link has-background-white" href="#" aria-label="page 1">2</a></li>
+              <li><a class="pagination-link has-background-white" href="#" aria-label="page 1">3</a></li>
+              <li><a class="pagination-link has-background-white" href="#" aria-label="page 1">4</a></li>
+              <li><a class="pagination-link has-background-white" href="#" aria-label="page 1">5</a></li>
+              <li>
+                <a class="pagination-link has-background-white" href="#" aria-label="next">
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
     </span>
 </span>
 {% endblock %}
@@ -376,8 +229,8 @@
       data () {
         return {
            root: root,
-           new_tasks: [],
-           old_tasks: [],
+           new_task_lst: [],
+           old_task_lst: [],
            question_lst: [],
         }
       },
@@ -385,7 +238,7 @@
         axios.get(root + '/api/task_info/?state=new&count=3')
           .then(response => {
             // handle success
-            this.new_tasks = response.data;
+            this.new_task_lst = response.data;
           })
           .catch(function (error) {
             // handle error
@@ -396,14 +249,14 @@
           });
         axios.get(root + '/api/task_info/?state=old&count=1')
           .then(response => {
-            this.old_tasks = response.data;
+            this.old_task_lst = response.data;
           })
           .catch(function (error) {
             console.log(error);
           })
           .finally(function () {
           });
-        axios.get(root + '/api/question/')
+        axios.get(root + '/api/question/?type=All')
           .then(response => {
             this.question_lst = response.data;
           })
