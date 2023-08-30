@@ -17,36 +17,64 @@
   <section class="section">
     <div class="container">
       <div class="columns is-multiline">
-        <div class="column is-4-desktop is-6-tablet" v-for="(task, index) in new_task_lst">
+        <div class="column is-3-desktop is-6-tablet" v-for="(task, index) in new_task_lst">
           <div class="card p-3">
             <div class="card-content">
+              <span class="tag is-info top">New</span>
               <div class="content is-flex is-justify-content-space-between is-align-items-center">
                 <div>
                   <h2 class="title is-size-5 mb-1">[[ task.category ]]</h2>
-                  <span class="is-size-6">[[ task.method ]]</span>
+                  <span class="is-size-6">[[ task.practice_method ]]</span>
                 </div>
-                <button class="button is-primary is-light p-0" style="width: 32px; height: 32px;">
-                </button>
               </div>
               <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
-                <p class="mb-0 is-size-6" >Expected Time</p>
+                <p class="mb-0 is-size-6" >Estimated time</p>
                 <span class="tag is-success is-light">60 minutes</span>
               </div>
               <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
-                <p class="mb-0 is-size-6">Questions</p>
-                <span class="tag is-danger is-light">5 questions</span>
+                <p class="mb-0 is-size-6">Content</p>
+                <span class="tag is-success is-light">5 questions</span>
               </div>
             </div>
             <div class="card-footer">
               <div class="card-footer-item" style="width: 100%;">
                 <div class="is-flex is-justify-content-space-between is-align-items-center" style="width: 100%;">
-                  <a class="button is-link ml-auto" href="#">Start Practice</a>
+                  <a class="button is-link ml-auto" href="#">Start</a>
                 </div>
               </div>
+            </div> <!-- end card-footer -->
+          </div> <!-- end card -->
+        </div> <!-- end column -->
+      <div class="column is-3-desktop is-6-tablet" v-for="(task, index) in old_task_lst">
+          <div class="card p-3">
+            <div class="card-content">
+              <span class="tag is-warning top">Review</span>
+              <div class="content is-flex is-justify-content-space-between is-align-items-center">
+                <div>
+                  <h2 class="title is-size-5 mb-1">[[ task.category ]]</h2>
+                  <span class="is-size-6">[[ task.practice_method ]]</span>
+                </div>
+              </div>
+              <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
+                <p class="mb-0 is-size-6" >Estimated time</p>
+                <span class="tag is-success is-light">60 minutes</span>
+              </div>
+              <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
+                <p class="mb-0 is-size-6">Content</p>
+                <span class="tag is-success is-light">5 questions</span>
+              </div>
             </div>
+            <div class="card-footer">
+              <div class="card-footer-item" style="width: 100%;">
+                <div class="is-flex is-justify-content-space-between is-align-items-center" style="width: 100%;">
+                  <a class="button is-link ml-auto" href="#">Start</a>
+                </div>
+              </div>
+            </div> <!-- end card-footer -->
           </div>
-        </div>
-      </div>
+        </div> <!-- end card -->
+      </div> <!-- end column -->
+     </div>  <!-- end columns -->
     </div>
   </section>
   <section class="section">
@@ -161,6 +189,7 @@
             <thead>
               <tr>
                 <th class="px-5 py-3 has-text-grey">Name</th>
+                <th class="px-5 py-3 has-text-grey">Category</th>
                 <th class="px-5 py-3 has-text-grey">Diffculty</th>
                 <th class="px-5 py-3 has-text-grey">Type</th>
                 <th class="px-5 py-3 has-text-grey">Frequency</th>
@@ -172,10 +201,12 @@
                 <td class="px-5 py-4">
                   <div class="is-flex is-align-items-center">
                     <div>
-                      <p class="is-size-6 py-1 has-text-weight-medium">[[ question.solution_name ]]</p>
-                      <span class="tag is-success is-success">[[ question.category_name ]]</span>
+                      <p class="is-size-6 py-1 has-text-weight-medium">[[ question.solution_name ]] </p>
                     </div>
                   </div>
+                </td>
+                <td class="px-5 py-4">
+                  <span class="tag is-success is-success">[[ question.category_name ]]</span>
                 </td>
                 <td class="px-5 py-4">
                   <p class="is-size-6 has-text-weight-medium">[[ question.diffculty ]]</p>

@@ -45,18 +45,12 @@ class ChoiceQuestionSerializer(serializers.ModelSerializer):
         return 'Choice'
 
 
-class BasicTaskSerializer(serializers.Serializer):
-    state = serializers.CharField(max_length=100)
-    method = serializers.CharField(max_length=100)
-    category = serializers.CharField(max_length=100)
-
-
 class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Category
+        model = Task
         fields = [
-            'user_id', 'question_id_lists',
-            'practice_method', 'content', 'created_at', 'updated_at']
+            'user_id', 'state', 'completeness', 'question_id_lists',
+            'category', 'practice_method', 'content', 'created_at', 'updated_at']
 
 
