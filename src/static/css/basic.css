@@ -115,3 +115,11 @@ input[type="checkbox"]::before {
 input[type="checkbox"]:checked::before {
   transform: scale(1);
 }
+
+.top {
+  position: absolute;
+  left: 50%;
+  top: -0.75rem;
+  transform: translateX(-50%);
+  z-index: 1;
+}
