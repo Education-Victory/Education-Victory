@@ -26,10 +26,10 @@ class Task(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='task_user')
     state = models.CharField(default='New', max_length=100)
     completeness = models.CharField(default='Start', max_length=100)
-    question_id_lists = models.JSONField(get_default_json)
+    question_id_lists = models.JSONField(default=get_default_json)
     category = models.CharField(max_length=100)
     practice_method = models.CharField(max_length=100)
-    content = models.JSONField(get_default_json)
+    content = models.JSONField(default=get_default_json)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -40,7 +40,7 @@ class Task(models.Model):
 class QuestionSubmission(models.Model):
     task_id = models.ForeignKey(
         Task, on_delete=models.CASCADE, related_name='submission_task')
-    content = models.JSONField(get_default_json)
+    content = models.JSONField(default=get_default_json)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 

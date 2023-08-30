@@ -17,7 +17,7 @@ class Category(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.topic} - {self.group} - {self.name}'
+        return f'{self.name}'
 
 
 class Problem(models.Model):
