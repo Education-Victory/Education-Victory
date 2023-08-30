@@ -4,6 +4,9 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from question.models import Solution
 
+def get_default_json():
+    return '{}'
+
 def get_default_ability():
     return [0] * 200
 
@@ -23,10 +26,10 @@ class Task(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='task_user')
     state = models.CharField(default='New', max_length=100)
     completeness = models.CharField(default='Start', max_length=100)
-    question_id_lists = models.JSONField()
+    question_id_lists = models.JSONField(get_default_json)
     category = models.CharField(max_length=100)
     practice_method = models.CharField(max_length=100)
-    content = models.JSONField(blank=True)
+    content = models.JSONField(get_default_json)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -37,7 +40,7 @@ class Task(models.Model):
 class QuestionSubmission(models.Model):
     task_id = models.ForeignKey(
         Task, on_delete=models.CASCADE, related_name='submission_task')
-    content = models.JSONField(blank=True)
+    content = models.JSONField(get_default_json)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
