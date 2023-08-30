@@ -21,6 +21,8 @@ class User(AbstractUser):
 class Task(models.Model):
     user_id = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='task_user')
+    state = models.CharField(default='New', max_length=100)
+    completeness = models.CharField(default='Start', max_length=100)
     question_id_lists = models.JSONField()
     category = models.CharField(max_length=100)
     practice_method = models.CharField(max_length=100)
