@@ -1,28 +1,7 @@
 import json
 import random
-
-class Task:
-    '''
-    Every exercise is a task, we can build a task
-    using multiple quesitons and requirements, For example:
-    '''
-    def __init__(self, state, category, method):
-        self.state = state
-        self.method = method
-        self.category = category
-
-    def to_json(self):
-        return json.dumps(self.__dict__)
-
-
-class Step:
-    def __init__(self):
-        self.data = dict()
-
-    def build_question_step(self, question, requirement):
-        self.data['question'] = question
-        self.data['requirement'] = requirement
-
+from django.utils import timezone
+from common.models import Task
 
 def HITE(question_lst):
     '''
@@ -49,29 +28,17 @@ def HITE(question_lst):
     return task
 
 
-def get_category(count):
-    lst =['Binary Search', 'Binary Tree', 'Hash Table', 'BFS', 'DFS']
-    random.shuffle(lst)
-    return lst[:count]
-
-
 def get_practice_method(count):
-    lst =['HITE', 'PIE', 'BE']
+    lst =['High Intensity Interval', 'Progressive Intensity', 'Breakthrough']
     random.shuffle(lst)
     return lst[:count]
 
 
-def get_task(ability, state, count):
+def get_task(ability, state, count, category):
     '''
     TODO: use ability later
     '''
-    lst = []
-    category = get_category(count)
-    method = get_practice_method(count)
-    for i in range(count):
-        task = Task(state, category[i], method[i])
-        lst.append(task)
-    return lst
+    pass
 
 
 def generate_task(state='new', type='classic', method='HITE'):
@@ -85,3 +52,24 @@ def generate_task(state='new', type='classic', method='HITE'):
     elif method == 'BE':
         return BE(ques_lst)
 
+
+def today_task_exist(user):
+    date_today = timezone.now().date()
+    return Task.objects.filter(user_id_id=user, created_at__date=date_today).exists()
+
+
+def get_today_task(user, state, count):
+    date_today = timezone.now().date()
+    return Task.objects.filter(user_id_id=user, state=state, created_at__date=date_today)[:count]
+
+
+def create_and_save_today_task(user, state, count, category):
+    lst = []
+    method = get_practice_method(count)
+    for i in range(count):
+        task = Task(
+            user_id_id=user, state=state,
+            category=category[i], practice_method=method[i])
+        task.save()
+        lst.append(task)
+    return lst

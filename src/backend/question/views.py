@@ -4,9 +4,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from common.models import Task
 from .models import Solution, Category, CodingQuestion, ChoiceQuestion
-from .serializers import SolutionSerializer, CategorySerializer, BasicTaskSerializer, TaskSerializer,  \
-        CodingQuestionSerializer, ChoiceQuestionSerializer
-from .utils.task import get_task
+from .serializers import SolutionSerializer, CategorySerializer, \
+        TaskSerializer, CodingQuestionSerializer, ChoiceQuestionSerializer
+from .utils.task import get_task, today_task_exist, \
+    get_today_task, create_and_save_today_task
 
 class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
@@ -43,7 +44,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         state = self.request.query_params.get('state', None)
         count = self.request.query_params.get('count', None)
-        return get_recommend_task(state, count)
+        return get_recommend_task(state, count, category)
 
 
 @api_view(['GET'])
@@ -53,8 +54,15 @@ def get_recommend_task(request):
     '''
     state = request.GET.get('state', 'new')
     count = int(request.GET.get('count', 1))
-    task = get_task(request.user.id, state, count)
-    res = BasicTaskSerializer(task, many=True)
+    category = Category.objects.all().order_by('?')[:3]
+    # Usually HTTP GET should not change the state,
+    # but in our design, every day user browse the practice page,
+    # we would generate the task for them and keep it for today
+    if today_task_exist(request.user.id):
+        task = get_today_task(request.user.id, state, count)
+    else:
+        task = create_and_save_today_task(request.user.id, state, count, category)
+    res = TaskSerializer(task, many=True)
     return Response(res.data)
 
 
