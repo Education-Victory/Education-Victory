@@ -1,13 +1,14 @@
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from common.models import Task
 from .models import Solution, Category, CodingQuestion, ChoiceQuestion
 from .serializers import SolutionSerializer, CategorySerializer, \
         TaskSerializer, CodingQuestionSerializer, ChoiceQuestionSerializer
-from .utils.task import get_task, today_task_exist, \
-    get_today_task, create_and_save_today_task
+from .utils.task import get_task, get_today_task, generate_daily_task_for_user
+
 
 class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
@@ -21,49 +22,39 @@ class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
 
     def get_queryset(self):
-        queryset = Solution.objects.all()
-        # Filters Solution by category, category_name, question_name and keypoint if provided in the query parameters
-        category = self.request.query_params.get('category', None)
-        category_name = self.request.query_params.get('category_name', None)
-        question_name = self.request.query_params.get('question_name', None)
-        keypoint = self.request.query_params.get('keypoint', None)
-        if category_name is not None:
-            queryset = queryset.filter(category__name=category_name)
-        if question_name is not None:
-            queryset = queryset.filter(question__name=question_name)
-        if category is not None:
-            queryset = queryset.filter(category=category)
-        if keypoint is not None:
-            queryset = queryset.filter(keypoint=keypoint)
-        return queryset
-
-
-class TaskViewSet(viewsets.ModelViewSet):
-    serializer_class = TaskSerializer
-
-    def get_queryset(self):
+        queryset = Task.objects.all()
         state = self.request.query_params.get('state', None)
-        count = self.request.query_params.get('count', None)
-        return get_recommend_task(state, count, category)
+        count = int(self.request.query_params.get('count', '1'))
+        return queryset
 
 
 @api_view(['GET'])
 def get_recommend_task(request):
     '''
-    Get basic task info
+    User can get today tasks info in practice page
     '''
     state = request.GET.get('state', 'new')
     count = int(request.GET.get('count', 1))
-    category = Category.objects.all().order_by('?')[:3]
-    # Usually HTTP GET should not change the state,
-    # but in our design, every day user browse the practice page,
-    # we would generate the task for them and keep it for today
-    if today_task_exist(request.user.id):
-        task = get_today_task(request.user.id, state, count)
-    else:
-        task = create_and_save_today_task(request.user.id, state, count, category)
+    task = get_today_task(request.user, state, count)
     res = TaskSerializer(task, many=True)
     return Response(res.data)
+
+
+@api_view(['POST'])
+def generate_daily_task(request):
+    '''
+    Every day we will create tasks for user,
+    '''
+    if request.user.is_superuser:
+        generate_daily_task_for_user()
+        return Response(status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'Not authorized'}, status=status.HTTP_403_FORBIDDEN)
+
+
+@api_view(['GET'])
+def get_single_test(request):
+    pass
 
 
 @api_view(['GET'])
@@ -104,7 +95,7 @@ def get_question_from_query(category, question_type, difficulty, progress, frequ
 def get_queryset_from_model(model, category, difficulty):
     queryset = model.objects.all()
     if category:
-        queryset.filter(solution_id__category_id=category)
+        queryset.filter(solution__category_id=category)
     if difficulty:
         diffculty_range = {
             'Level One': (1, 20),
