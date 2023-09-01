@@ -36,9 +36,9 @@ class Problem(models.Model):
 
 class Solution(models.Model):
     name = models.CharField(blank=True, max_length=100)
-    problem_id = models.ForeignKey(
+    problem = models.ForeignKey(
         Problem, on_delete=models.CASCADE, related_name='solution_problem')
-    category_id = models.ForeignKey(
+    category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name='solution_category')
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
@@ -49,7 +49,7 @@ class Solution(models.Model):
 
 class CodingQuestion(models.Model):
     name = models.CharField(blank=True, max_length=100)
-    solution_id = models.ForeignKey(
+    solution = models.ForeignKey(
         Solution, on_delete=models.CASCADE, related_name='coding_question_solution')
     description = models.CharField(max_length=4000)
     diffculty = models.IntegerField(default=0)
@@ -66,7 +66,7 @@ class CodingQuestion(models.Model):
 
 class ChoiceQuestion(models.Model):
     name = models.CharField(blank=True, max_length=100)
-    solution_id = models.ForeignKey(
+    solution = models.ForeignKey(
         Solution, on_delete=models.CASCADE, related_name='choice_question_solution')
     description = models.CharField(max_length=2000)
     answer_number = models.IntegerField(default=1)
@@ -83,7 +83,7 @@ class ChoiceQuestion(models.Model):
 
 
 class TestCase(models.Model):
-    coding_question_id = models.ForeignKey(
+    coding_question = models.ForeignKey(
         CodingQuestion, on_delete=models.CASCADE, related_name='testcase_coding_question')
     case_input = models.JSONField(default=get_default_json)
     case_output = models.JSONField(default=get_default_json)

@@ -17,12 +17,13 @@ class User(AbstractUser):
     solved_prblem = models.BigIntegerField(blank=True, null=True)
     target = models.CharField(max_length=100, blank=True)
     ability = models.JSONField(default=get_default_ability)
+    is_premium = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
 
 class Task(models.Model):
-    user_id = models.ForeignKey(
+    user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='task_user')
     state = models.CharField(default='New', max_length=100)
     completeness = models.CharField(default='Start', max_length=100)
@@ -38,7 +39,7 @@ class Task(models.Model):
 
 
 class QuestionSubmission(models.Model):
-    task_id = models.ForeignKey(
+    task = models.ForeignKey(
         Task, on_delete=models.CASCADE, related_name='submission_task')
     content = models.JSONField(default=get_default_json)
     created_at = models.DateTimeField(default=timezone.now)
