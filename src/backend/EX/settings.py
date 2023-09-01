@@ -31,7 +31,7 @@ elif ENVIRONMENT in ('TEST', 'PRODUCTION'):
         DEBUG = True
         SECRET_KEY = 'django-insecure-@s=_aoq!k!h-@b^%t!+zoxo4fs@e+ccr^lld4fd9+3oxdg^!^!'
         EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-        DBNAME = 'db.sqlite3'
+        DBNAME = os.getenv('DBNAME')
     else:
         DEBUG = False
         SECRET_KEY = os.getenv('SECRET_KEY')
