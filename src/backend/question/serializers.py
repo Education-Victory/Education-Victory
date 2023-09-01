@@ -12,7 +12,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class SolutionSerializer(serializers.ModelSerializer):
-    category_name = serializers.CharField(source='category_id.name', read_only=True)
+    category_name = serializers.CharField(source='category.name', read_only=True)
 
     class Meta:
         model = Solution
@@ -20,8 +20,8 @@ class SolutionSerializer(serializers.ModelSerializer):
 
 
 class CodingQuestionSerializer(serializers.ModelSerializer):
-    category_name = serializers.CharField(source='solution_id.category_id.name', read_only=True)
-    solution_name = serializers.CharField(source='solution_id.problem_id.name', read_only=True)
+    category_name = serializers.CharField(source='solution.category_id.name', read_only=True)
+    solution_name = serializers.CharField(source='solution.problem_id.name', read_only=True)
     qtype = serializers.SerializerMethodField()
 
     class Meta:

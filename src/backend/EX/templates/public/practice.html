@@ -45,7 +45,7 @@
             </div> <!-- end card-footer -->
           </div> <!-- end card -->
         </div> <!-- end column -->
-      <div class="column is-3-desktop is-6-tablet" v-for="(task, index) in old_task_lst">
+      <div class="column is-3-desktop is-6-tablet" v-for="(task, index) in review_task_lst">
           <div class="card p-3">
             <div class="card-content">
               <span class="tag is-warning top">Review</span>
@@ -261,12 +261,12 @@
         return {
            root: root,
            new_task_lst: [],
-           old_task_lst: [],
+           review_task_lst: [],
            question_lst: [],
         }
       },
       mounted () {
-        axios.get(root + '/api/task_info/?state=new&count=3')
+        axios.get(root + '/api/task/?state=New&count=3')
           .then(response => {
             // handle success
             this.new_task_lst = response.data;
@@ -278,9 +278,9 @@
           .finally(function () {
             // always executed
           });
-        axios.get(root + '/api/task_info/?state=old&count=1')
+        axios.get(root + '/api/task/?state=Review&count=1')
           .then(response => {
-            this.old_task_lst = response.data;
+            this.review_task_lst = response.data;
           })
           .catch(function (error) {
             console.log(error);
