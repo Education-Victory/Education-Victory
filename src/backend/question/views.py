@@ -53,7 +53,7 @@ def generate_daily_task(request):
 
 
 @api_view(['GET'])
-def get_single_test(request):
+def get_single_task(request):
     pass
 
 

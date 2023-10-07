@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEFAULT_DIR = Path(__file__).resolve().parent
@@ -25,23 +27,37 @@ if ENVIRONMENT == 'LOCAL':
     ALLOWED_HOSTS = ['localhost', '127.0.0.1']
     SECRET_KEY = 'django-insecure-@s=_aoq!k!h-@b^%t!+zoxo4fs@e+ccr^lld4fd9+3oxdg^!^!'
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    DBNAME = 'db.sqlite3'
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'db.sqlite3',
+        }
+    }
+    STATIC_URL = 'static/'
+    STATICFILES_DIRS = [
+        STATIC_DIR / "static",
+    ]
 elif ENVIRONMENT in ('TEST', 'PRODUCTION'):
     if ENVIRONMENT == 'TEST':
         DEBUG = True
         SECRET_KEY = 'django-insecure-@s=_aoq!k!h-@b^%t!+zoxo4fs@e+ccr^lld4fd9+3oxdg^!^!'
         EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-        DBNAME = os.getenv('DBNAME')
     else:
         DEBUG = False
         SECRET_KEY = os.getenv('SECRET_KEY')
         EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
-        DBNAME = 'db.sqlite3'
     ROOT = os.getenv('ROOT')
+    STATIC_ROOT = os.path.join(STATIC_DIR, 'static')
     ALLOWED_HOSTS = [os.getenv('HOST')]
-    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-    GS_BUCKET_NAME = 'education_victory_test_bucket'
-    STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+    CSRF_TRUSTED_ORIGINS = [os.getenv('CSRF')]
+    DATABASES = {
+        'default': dj_database_url.parse(
+            os.getenv('DATABASE_URL'),
+            conn_max_age=600,
+            conn_health_checks=True,
+            )
+    }
+    STATIC_URL = 'https://cdn.jsdelivr.net/gh/Education-Victory/Education-Victory/src/static/'
 
 
 # Application definition
@@ -99,15 +115,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'EX.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': DBNAME,
-    }
-}
 
 
 # Password validation
@@ -150,11 +158,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
-    STATIC_DIR / "static",
-]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -198,82 +202,3 @@ ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 # Other
 LOGIN_REDIRECT_URL = 'home'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'home'
-
-# Ability Constants
-VALID_ABILITY_KEYS = {
-    "Array": "Array",
-    "String": "String",
-    "Hash Table": "Hash Table",
-    "Tree": "Tree",
-    "Matrix": "Matrix",
-    "Binary Tree": "Binary Tree",
-    "Heap (Priority Queue)": "Heap (Priority Queue)",
-    "Stack": "Stack",
-    "Graph": "Graph",
-    "Linked List": "Linked List",
-    "Ordered Set": "Ordered Set",
-    "Monotonic Stack": "Monotonic Stack",
-    "Trie": "Trie",
-    "Binary Search Tree": "Binary Search Tree",
-    "Queue": "Queue",
-    "Segment Tree": "Segment Tree",
-    "Binary Indexed Tree": "Binary Indexed Tree",
-    "Monotonic Queue": "Monotonic Queue",
-    "Doubly-Linked List": "Doubly-Linked List",
-    "Suffix Array": "Suffix Array",
-    "Minimum Spanning Tree": "Minimum Spanning Tree",
-    "Dynamic Programming": "Dynamic Programming",
-    "Greedy": "Greedy",
-    "Depth-First Search": "Depth-First Search",
-    "Binary Search": "Binary Search",
-    "Breadth-First Search": "Breadth-First Search",
-    "Backtracking": "Backtracking",
-    "Union Find": "Union Find",
-    "Divide and Conquer": "Divide and Conquer",
-    "Topological Sort": "Topological Sort",
-    "Shortest Path": "Shortest Path",
-    "String Matching": "String Matching",
-    "Merge Sort": "Merge Sort",
-    "Quickselect": "Quickselect",
-    "Bucket Sort": "Bucket Sort",
-    "Counting Sort": "Counting Sort",
-    "Line Sweep": "Line Sweep",
-    "Radix Sort": "Radix Sort",
-    "Strongly Connected Component": "Strongly Connected Component",
-    "Biconnected Component": "Biconnected Component",
-    "Cycle Detection": "Cycle Detection",
-    "Bipartite Graph": "Bipartite Graph",
-    "Sorting": "Sorting",
-    "Two Pointers": "Two Pointers",
-    "Bit Manipulation": "Bit Manipulation",
-    "Prefix Sum": "Prefix Sum",
-    "Counting": "Counting",
-    "Sliding Window": "Sliding Window",
-    "Enumeration": "Enumeration",
-    "Recursion": "Recursion",
-    "Bitmask": "Bitmask",
-    "Memoization": "Memoization",
-    "Hash Function": "Hash Function",
-    "Data Stream": "Data Stream",
-    "Rolling Hash": "Rolling Hash",
-    "Randomized": "Randomized",
-    "Iterator": "Iterator",
-    "Concurrency": "Concurrency",
-    "Rejection Sampling": "Rejection Sampling",
-    "Infix to Postfix": "Infix to Postfix",
-    "Brackets Match": "Brackets Match",
-    "Stock Span": "Stock Span",
-    "Expression Evaluation": "Expression Evaluation",
-    "Math": "Math",
-    "Design": "Design",
-    "Simulation": "Simulation",
-    "Number Theory": "Number Theory",
-    "Geometry": "Geometry",
-    "Game Theory": "Game Theory",
-    "Combinatorics": "Combinatorics",
-    "Interactive": "Interactive",
-    "Brainteaser": "Brainteaser",
-    "Probability and Statistics": "Probability and Statistics",
-    "Reservoir Sampling": "Reservoir Sampling",
-    "Eulerian Circuit": "Eulerian Circuit",
-}
