@@ -45,7 +45,7 @@ urlpatterns = [
     path('api/question/', question_views.get_question_lst),
     path('api/task/', question_views.get_recommend_task),
     path('api/gen_task/', question_views.generate_daily_task),
-    path('api/task/<str: category>/<str: practice_method>/', question_views.get_single_task),
+    path('api/task/<str:category>/<str:practice_method>/', question_views.get_single_task),
     path('api/', include((router.urls, 'app_name'))),
     path('', public_views.home, name='home'),
     path('question/<str:question_name>/<str:category_name>/', public_views.question_detail, name='question_detail'),
