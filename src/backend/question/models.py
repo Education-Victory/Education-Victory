@@ -44,7 +44,7 @@ class Solution(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.problem_id.name} - {self.category_id.name}'
+        return f'{self.name}'
 
 
 class CodingQuestion(models.Model):
@@ -53,7 +53,7 @@ class CodingQuestion(models.Model):
         Solution, on_delete=models.CASCADE, related_name='coding_question_solution')
     description = models.CharField(max_length=4000)
     diffculty = models.IntegerField(default=0)
-    solution = models.CharField(blank=True, max_length=4000)
+    answer = models.CharField(blank=True, max_length=4000)
     text_hint = models.JSONField(default=get_default_json)
     code_hint = models.CharField(blank=True, max_length=4000)
     resource = models.JSONField(default=get_default_json)
@@ -72,7 +72,7 @@ class ChoiceQuestion(models.Model):
     answer_number = models.IntegerField(default=1)
     diffculty = models.IntegerField(default=0)
     choice = models.JSONField(default=get_default_json)
-    solution = models.CharField(max_length=100, help_text='binary form of the correct answer')
+    answer = models.CharField(max_length=100, help_text='binary form of the correct answer')
     text_hint = models.JSONField(default=get_default_json)
     resource = models.JSONField(default=get_default_json)
     created_at = models.DateTimeField(default=timezone.now)
