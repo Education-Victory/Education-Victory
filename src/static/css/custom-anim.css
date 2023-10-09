@@ -1,0 +1,97 @@
+.has-background-transparent {
+    background-color: transparent;
+}
+
+.spin {
+    animation: spin 24s linear infinite;
+}
+
+    @keyframes spin {
+        from {
+            transform: rotate(360deg);
+        }
+  }
+     
+.button span+svg.is-rotate-45, a span+svg.is-rotate-45 {
+    transition-duration: 250ms;
+}
+
+.button:hover span+svg.is-rotate-45, a:hover span+svg.is-rotate-45 {
+    rotate: 45deg;
+    transition-timing-function: linear;
+}
+
+a div+div>h3+span.is-rotate-45 {
+    transition-duration: 150ms;
+}
+
+a:hover div+div>h3+span.is-rotate-45 {
+    rotate: 45deg;
+    transition-timing-function: linear;
+}
+
+a div+div+span.is-rotate-45 {
+    transition-duration: 150ms;
+}
+
+a:hover div+div+span.is-rotate-45 {
+    rotate: 45deg;
+    transition-timing-function: linear;
+}
+
+.button {
+    white-space: normal;
+}
+
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    cursor: pointer;
+}
+.custom-checkbox+div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 19px;
+    height: 19px;
+    padding: 3px;
+    border: 1px solid #D9D9D9;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.custom-checkbox:checked+div {
+    background-color: #219653;
+    border-color: #219653;
+}
+
+.custom-radio:checked+div svg {
+    width: 16px;
+    height: 16px;
+    color: white;
+}
+
+.custom-radio+div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 19px;
+    height: 19px;
+    padding: 3px;
+    border: 1px solid #D9D9D9;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.custom-radio:checked+div {
+    background-color: #219653;
+    border-color: #219653;
+}
+
+.custom-radio:checked+div svg {
+    width: 16px;
+    height: 16px;
+    color: white;
+}
