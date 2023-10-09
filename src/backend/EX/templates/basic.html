@@ -9,7 +9,9 @@
     {% block title %}
     <title>Education-X</title>
     {% endblock %}
-    <link rel="stylesheet" href="{% static 'css/bulma0.9.4.min.css' %}">
+    {% block extra_head %}
+    {% endblock %}
+    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/brands.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/solid.min.css' %}">
@@ -19,45 +21,33 @@
     {% endblock %}
   </head>
   <body>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
-        <a class="navbar-item" href="/">
-          <strong>Education Victory</strong>
-        </a>
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          Practice
-        </a>
-        <div class="navbar-dropdown">
-          <a href="{% url 'practice' %}" class="navbar-item">
-            Algorithms
+    <nav class="navbar py-8">
+      <div class="container">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="#">
+            <img src="pstls-assets/logos/pstls-logo-md.svg" alt="" width="116">
           </a>
+          <div class="navbar-item ml-auto is-hidden-desktop">
+            <button class="button is-ghost navbar-menu-open">
+              <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M3.5 7C3.22386 7 3 6.77614 3 6.5C3 6.22386 3.22386 6 3.5 6H20.5C20.7761 6 21 6.22386 21 6.5C21 6.77614 20.7761 7 20.5 7H3.5ZM3.5 12C3.22386 12 3 11.7761 3 11.5C3 11.2239 3.22386 11 3.5 11H20.5C20.7761 11 21 11.2239 21 11.5C21 11.7761 20.7761 12 20.5 12H3.5ZM3 16.5C3 16.7761 3.22386 17 3.5 17H20.5C20.7761 17 21 16.7761 21 16.5C21 16.2239 20.7761 16 20.5 16H3.5C3.22386 16 3 16.2239 3 16.5Z" fill="#000"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="navbar-menu">
+          <div class="navbar-start">
+            <a class="navbar-item is-size-6" aria-current="page" href="/">Home</a><a class="navbar-item is-size-6" href="/practice">Practice</a>
+          </div>
+
+          <div class="navbar-end">
+            <div class="navbar-item is-right">
+              <div class="buttons"><a class="button is-ghost has-text-dark has-text-weight-bold" href="{% url 'account_login' %}">Log In</a><a class="button is-link" href="{% url 'account_signup' %}">Sign Up</a></div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="navbar-end">
-        <div class="navbar-item">
-          {% if user.is_authenticated %}
-            {{ user.username }}
-          {% else %}
-          <div class="buttons">
-            <a href="{% url 'account_signup' %}" class="button is-dark">
-              <strong>Sign up</strong>
-            </a>
-            <a href="{% url 'account_login' %}" class="button is-light">
-              Sign in
-            </a>
-          {% endif %}
-          </div> <!-- end buttons -->
-        </div> <!-- end navbar-item -->
-      </div> <!-- end navbar-end -->
     </nav>
-
   {% block content %}
   {% endblock %}
 
@@ -92,23 +82,6 @@
         <li><a class="button is-white" href="#">Services</a></li>
         <li><a class="button is-white" href="#">Testimonials</a></li>
       </ul>
-      <div>
-        <a class="mr-4 is-inline-block" href="#">
-          <img src="bulma-plain-assets/socials/facebook.svg">
-        </a>
-        <a class="mr-4 is-inline-block" href="#">
-          <img src="bulma-plain-assets/socials/twitter.svg">
-        </a>
-        <a class="mr-4 is-inline-block" href="#">
-          <img src="bulma-plain-assets/socials/github.svg">
-        </a>
-        <a class="mr-4 is-inline-block" href="#">
-          <img src="bulma-plain-assets/socials/instagram.svg">
-        </a>
-        <a class="is-inline-block" href="#">
-          <img src="bulma-plain-assets/socials/linkedin.svg">
-        </a>
-      </div>
     </div>
     <div class="pt-5" style="border-top: 1px solid #dee2e6;"></div>
     <div class="container">

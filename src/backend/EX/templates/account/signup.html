@@ -1,0 +1,59 @@
+{% extends "../basic.html" %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bulma.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom-anim.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="">
+      <section class="section">
+        <div class="is-fixed-top is-top-0 is-left-0 is-fullwidth is-covered" style="height: 100%">
+          <div class="is-flex is-justify-content-center is-align-items-center is-fullwidth is-covered" style="height: 100%">
+            <div class="box has-mw-lg mx-auto px-8 px-16-tablet pt-12 pb-6 is-relative has-background-white is-fullwidth has-text-centered">
+              <div class="has-mw-md mx-auto">
+                <form action="">
+                  <h3 class="mb-10 is-size-4 has-text-weight-medium" style="letter-spacing: -0.02em;">Welcome to join us</h3>
+                  <a class="button is-light is-outlined is-rounded mb-2 is-fullwidth" href="#">
+                    <img src="asitrastudio-assets/sign-in/google.svg" alt="">
+                    <span class="is-size-7 has-text-dark ml-4">Sign up with Google</span>
+                  </a>
+                  <a class="button is-light is-outlined is-rounded mb-8 is-fullwidth" href="#">
+                    <svg width="18" height="18" viewbox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12.7478 0C12.7876 0 12.8274 0 12.8695 0C12.9671 1.20593 12.5068 2.107 11.9474 2.75952C11.3985 3.40754 10.6469 4.03603 9.43117 3.94067C9.35007 2.75201 9.81112 1.91777 10.3698 1.26675C10.8879 0.660032 11.8378 0.120142 12.7478 0Z" fill="#222222"></path>
+                      <path d="M16.4254 12.5517C16.4254 12.5638 16.4254 12.5743 16.4254 12.5855C16.0837 13.6203 15.5964 14.5071 15.0017 15.33C14.4588 16.0772 13.7935 17.0826 12.6056 17.0826C11.5791 17.0826 10.8973 16.4226 9.84534 16.4046C8.73252 16.3865 8.12055 16.9565 7.10309 17.0999C6.98671 17.0999 6.87032 17.0999 6.75618 17.0999C6.00905 16.9917 5.40608 16.4 4.96681 15.8669C3.67153 14.2916 2.6706 12.2566 2.48438 9.65256C2.48438 9.39725 2.48438 9.1427 2.48438 8.8874C2.56322 7.02369 3.46879 5.5084 4.67247 4.77403C5.30772 4.38357 6.181 4.05092 7.1534 4.1996C7.57015 4.26418 7.9959 4.40685 8.36909 4.54801C8.72276 4.68392 9.16504 4.92496 9.58403 4.91219C9.86787 4.90393 10.1502 4.75601 10.4363 4.65164C11.2743 4.34903 12.0958 4.00212 13.1785 4.16506C14.4798 4.36179 15.4034 4.93998 15.9741 5.83203C14.8733 6.53261 14.003 7.58836 14.1517 9.39125C14.2838 11.0289 15.236 11.9871 16.4254 12.5517Z" fill="#222222"></path>
+                    </svg>
+                    <span class="is-size-7 has-text-dark ml-4">Sign up with Github</span>
+                  </a>
+                  <div class="mb-8 is-flex is-align-items-center">
+                    <div class="has-background-light is-fullwidth" style="height: 2px;"></div>
+                    <span class="mx-5 is-size-7 is-uppercase has-text-weight-medium has-text-grey-light">or</span>
+                    <div class="has-background-light is-fullwidth" style="height: 2px;"></div>
+                  </div>
+                  <div>
+                    <input class="input mb-4" type="text" placeholder="User name">
+                    <input class="input mb-4" type="email" placeholder="Email Address">
+                    <div class="mb-10 is-relative">
+                      <input class="input" type="password" placeholder="Password">
+                      <button class="button is-light has-background-white p-0 mt-5 mr-8 is-absolute is-top-0 is-right-0" style="height: auto;">
+                        <svg width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12.1095 7.89167L7.89283 12.1083C7.33367 11.5492 7.01953 10.7908 7.01953 10C7.01953 9.60845 7.09665 9.22073 7.24649 8.85898C7.39634 8.49723 7.61596 8.16854 7.89283 7.89167C8.1697 7.6148 8.49839 7.39518 8.86014 7.24533C9.22189 7.09549 9.60961 7.01837 10.0012 7.01837C10.7919 7.01837 11.5503 7.33251 12.1095 7.89167Z" stroke="#151515" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                          <path d="M14.8518 4.80834C13.3935 3.70834 11.7268 3.10834 10.0018 3.10834C7.06016 3.10834 4.31849 4.84167 2.41016 7.84167C1.66016 9.01667 1.66016 10.9917 2.41016 12.1667C3.06849 13.2 3.83516 14.0917 4.66849 14.8083M7.01849 16.275C7.96849 16.675 8.97682 16.8917 10.0018 16.8917C12.9435 16.8917 15.6852 15.1583 17.5935 12.1583C18.3435 10.9833 18.3435 9.00834 17.5935 7.83334C17.3185 7.4 17.0185 6.99167 16.7102 6.60834" stroke="#151515" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                          <path d="M12.9263 10.5833C12.8134 11.1646 12.5294 11.699 12.1106 12.1177C11.6919 12.5364 11.1576 12.8204 10.5763 12.9333M7.89297 12.1083L1.66797 18.3333M18.3346 1.66667L12.1096 7.89167" stroke="#151515" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                      </button>
+                    </div>
+                    <button class="button mb-6 is-light is-rounded is-fullwidth" type="submit">Sign up</button>
+                    <p class="has-mw-xs mx-auto is-size-7 has-text-weight-bold has-text-centered has-text-grey-dark">
+                      <span>By signing up, you agree to Capital’s</span>
+                      <a class="is-inline-block has-text-black" href="#">Terms of Service, Privacy Policy</a>
+                      <span>and Deposit Account Agreement</span>
+                    </p>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+{% endblock %}
