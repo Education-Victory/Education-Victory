@@ -1,5 +1,16 @@
 html {
-    background-color: #F5F9FF;
+  background-image: url('../imgs/background.png');
+  background-repeat: repeat;
+  background-size: 1%;
+}
+
+.navbar {
+    box-shadow: 0 0.5em 1em -0.125em rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.02);
+}
+
+.navbar-dropdown {
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
 }
 
 #question-table {
