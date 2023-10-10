@@ -21,11 +21,11 @@
     {% endblock %}
   </head>
   <body>
-    <nav class="navbar py-8">
+    <nav class="navbar py-2">
       <div class="container">
         <div class="navbar-brand">
-          <a class="navbar-item" href="#">
-            <img src="pstls-assets/logos/pstls-logo-md.svg" alt="" width="116">
+          <a class="navbar-item" href="/">
+              <img src="{% static 'imgs/logo_small.png' %}" alt="small logo"><p class="has-text-weight-bold is-size-5">&nbsp&nbspNLOGK</p>
           </a>
           <div class="navbar-item ml-auto is-hidden-desktop">
             <button class="button is-ghost navbar-menu-open">
@@ -41,9 +41,25 @@
           </div>
 
           <div class="navbar-end">
+            {% if user.is_authenticated %}
+              <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                  {{ user.username }}
+               </a>
+              <div class="navbar-dropdown">
+                <a class="navbar-item">
+                  Profile
+                </a>
+                <hr class="navbar-divider">
+                <a class="navbar-item" href="{% url 'account_logout' %}">
+                  Logout
+                </a>
+              </div>
+            {% else %}
             <div class="navbar-item is-right">
-              <div class="buttons"><a class="button is-ghost has-text-dark has-text-weight-bold" href="{% url 'account_login' %}">Log In</a><a class="button is-link" href="{% url 'account_signup' %}">Sign Up</a></div>
+              <div class="buttons"><a class="button is-ghost has-text-dark has-text-weight-bold" href="{% url 'account_login' %}">Log In</a></div>
             </div>
+            {% endif %}
           </div>
         </div>
       </div>
