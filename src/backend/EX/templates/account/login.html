@@ -1,0 +1,31 @@
+{% extends "../basic.html" %}
+{% load static %}
+{% load socialaccount %}
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom-anim.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="">
+      <section class="section">
+        <div class="is-fixed-top is-top-0 is-left-0 is-fullwidth is-covered" style="height: 100%">
+          <div class="is-flex is-justify-content-center is-align-items-center is-fullwidth is-covered" style="height: 100%">
+            <div class="box has-mw-lg mx-auto px-8 px-16-tablet pt-12 pb-6 is-relative has-background-white is-fullwidth has-text-centered">
+              <div class="has-mw-md mx-auto">
+                <form action="">
+                  <h3 class="mb-10 is-size-4 has-text-weight-medium" style="letter-spacing: -0.02em;">Welcome to join us</h3>
+                  <a class="button is-light is-outlined is-rounded mb-2 is-fullwidth" href="{% provider_login_url "google" %}">
+                    <img src="{% static 'imgs/google.svg' %}" alt="Google Logo">
+                    <span class="is-size-7 has-text-dark ml-4">Sign in with Google</span>
+                  </a>
+                  <a class="button is-light is-outlined is-rounded mb-8 is-fullwidth" href="{% provider_login_url "github" %}">
+                    <img src="{% static 'imgs/github.svg' %}" alt="Github Logo" width="19">
+                    <span class="is-size-7 has-text-dark ml-4">Sign in with Github</span>
+                  </a>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+{% endblock %}
