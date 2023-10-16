@@ -7,7 +7,7 @@ from common.models import Task
 from .models import Solution, Category, CodingQuestion, ChoiceQuestion
 from .serializers import SolutionSerializer, CategorySerializer, \
         TaskSerializer, CodingQuestionSerializer, ChoiceQuestionSerializer
-from .utils.task import get_task, get_today_task, generate_daily_task_for_user
+from .utils.task import get_task, get_today_task, generate_task_from_user
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -43,13 +43,14 @@ def get_recommend_task(request):
 @api_view(['POST'])
 def generate_daily_task(request):
     '''
-    Every day we will create tasks for user,
+    Generate daily task
     '''
-    if request.user.is_superuser:
-        generate_daily_task_for_user()
-        return Response(status=status.HTTP_200_OK)
+    try:
+        generate_task_from_user(request.user)
+    except:
+        return Response({'error': 'Can\'t not generate task'}, status=status.HTTP_400_BAD_REQUEST)
     else:
-        return Response({'error': 'Not authorized'}, status=status.HTTP_403_FORBIDDEN)
+        return Response(status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -62,35 +63,19 @@ def get_question_lst(request):
     '''
     Get question list based on query
     '''
-
-    category = request.GET.get('cateogry', None)
-    question_type = request.GET.get('type', None)
-    difficulty = request.GET.get('difficulty', None)
+    category = request.GET.get('cateogry', 'All')
+    difficulty = request.GET.get('difficulty', 'All')
     progress = request.GET.get('progress', 'ascending')
     frequency = request.GET.get('frequency', 'ascending')
-    return get_question_from_query(
-        category, question_type, difficulty, progress, frequency)
+    return get_question_from_query(category, difficulty, progress, frequency)
 
-
-def get_question_from_query(category, question_type, difficulty, progress, frequency):
-    # TODO: Add progress and frequency
-    if question_type == 'All':
-        queryset_one = get_queryset_from_model(CodingQuestion, category, difficulty)
-        queryset_two = get_queryset_from_model(ChoiceQuestion, category, difficulty)
-        serializer_one = CodingQuestionSerializer(queryset_one, many=True)
-        serializer_two = ChoiceQuestionSerializer(queryset_two, many=True)
-        merged_data = list(serializer_one.data) + list(serializer_two.data)
-        return Response(merged_data)
-    else:
-        if question_type == 'Coding':
-            queryset = get_queryset_from_model(CodingQuestion, category, difficulty)
-            serializer = CodingQuestionSerializer(queryset, many=True)
-            return Response(serializer.data)
-        elif question_type == 'Choice':
-            queryset = get_queryset_from_model(ChoiceQuestion, category, difficulty)
-            serializer = ChoiceQuestionSerializer(queryset, many=True)
-            return Response(serializer.data)
-
+def get_question_from_query(category, difficulty, progress, frequency):
+    queryset_one = get_queryset_from_model(CodingQuestion, category, difficulty)
+    queryset_two = get_queryset_from_model(ChoiceQuestion, category, difficulty)
+    serializer_one = CodingQuestionSerializer(queryset_one, many=True)
+    serializer_two = ChoiceQuestionSerializer(queryset_two, many=True)
+    merged_data = list(serializer_one.data) + list(serializer_two.data)
+    return Response(merged_data)
 
 def get_queryset_from_model(model, category, difficulty):
     queryset = model.objects.all()
@@ -106,4 +91,3 @@ def get_queryset_from_model(model, category, difficulty):
             }
         queryset = model.objects.filter(diffculty__range=diffculty_range[difficulty])
     return queryset
-
