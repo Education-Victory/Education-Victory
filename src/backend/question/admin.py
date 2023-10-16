@@ -19,7 +19,7 @@ class SolutionAdmin(admin.ModelAdmin):
 
 
 class CodingQuestionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'description', 'diffculty')
+    list_display = ('id', 'name', 'solution', 'diffculty')
 
 
 class ChoiceQuestionAdmin(admin.ModelAdmin):

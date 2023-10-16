@@ -63,8 +63,8 @@ def get_question_lst(request):
     '''
     Get question list based on query
     '''
-    category = request.GET.get('cateogry', 'All')
-    difficulty = request.GET.get('difficulty', 'All')
+    category = request.GET.get('cateogry', None)
+    difficulty = request.GET.get('difficulty', None)
     progress = request.GET.get('progress', 'ascending')
     frequency = request.GET.get('frequency', 'ascending')
     return get_question_from_query(category, difficulty, progress, frequency)
@@ -83,11 +83,11 @@ def get_queryset_from_model(model, category, difficulty):
         queryset.filter(solution__category_id=category)
     if difficulty:
         diffculty_range = {
-            'Level One': (1, 20),
-            'Level Two': (21, 40),
-            'Level Three': (41, 60),
-            'Level Four': (61, 80),
-            'Level Five': (81, 100)
+            'Beginner': (1, 200),
+            'Easy': (201, 400),
+            'Medium': (401, 600),
+            'Hard': (601, 800),
+            'Expert': (801, 1000)
             }
         queryset = model.objects.filter(diffculty__range=diffculty_range[difficulty])
     return queryset
