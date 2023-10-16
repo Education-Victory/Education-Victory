@@ -41,8 +41,18 @@ class Task(models.Model):
 class QuestionSubmission(models.Model):
     task = models.ForeignKey(
         Task, on_delete=models.CASCADE, related_name='submission_task')
-    content = models.JSONField(default=get_default_json)
+    question_id = models.BigIntegerField(default=0)
+    qtype = models.CharField(max_length=100)
+    completeness = models.BigIntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class ProblemFrequency(models.Model):
+    question_id = models.BigIntegerField(default=0)
+    qtype = models.CharField(max_length=100, blank=True)
+    company = models.CharField(max_length=100, blank=True)
+    location = models.CharField(max_length=100, blank=True)
+    origin_link = models.URLField(max_length=1000, blank=True, help_text="URL for origin post")
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
