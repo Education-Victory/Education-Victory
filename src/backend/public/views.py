@@ -18,10 +18,8 @@ def question_detail(request, question_name, category_name):
         {'root': settings.ROOT, 'question_name': question_name, 'category_name': category_name, 'user_id': request.user.id})
 
 def evaluation(request, type):
-    if type == 'simple':
-        return render(request, 'public/evaluation/simple.html')
-    else:
-        return render(request, 'public/evaluation/detail.html')
+    if type == 'coding':
+        return render(request, 'public/evaluation/coding.html')
 
 def evaluation_simple(request):
     # Use three simple questions for simple evaluation to determine which level the user belongs to

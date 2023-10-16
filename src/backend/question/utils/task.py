@@ -49,14 +49,16 @@ def get_task(ability, state, count, category):
     pass
 
 
-def generate_daily_task_for_user():
-    User = get_user_model()
-    for u in User.objects.all():
-        if not today_task_exist(u):
-            # Generate New tasks
-            create_and_save_today_task(u, 'New', 3)
-            # Generate Review task
-            create_and_save_today_task(u, 'Review', 1)
+def generate_task_from_user(user):
+    user = get_user_model().objects.get(id=user.id)
+    if not today_task_exist(user):
+        try:
+            create_and_save_today_task(user, 'New', 3)
+            create_and_save_today_task(user, 'Review', 1)
+        except:
+            return False
+        return True
+    return False
 
 
 def generate_task(state='new', type='classic', method='HITE'):
@@ -73,7 +75,7 @@ def generate_task(state='new', type='classic', method='HITE'):
 
 def today_task_exist(user):
     date_today = timezone.now().date()
-    return Task.objects.filter(user_id=user, created_at__date=date_today).exists()
+    return Task.objects.filter(user=user, created_at__date=date_today).exists()
 
 
 def get_today_task(user, state, count):
@@ -82,7 +84,6 @@ def get_today_task(user, state, count):
 
 
 def create_and_save_today_task(user, state, count):
-    lst = []
     category = get_category_from_user(user, count)
     method = get_practice_method(count)
     for i in range(count):
@@ -90,5 +91,4 @@ def create_and_save_today_task(user, state, count):
             user_id=user.id, state=state,
             category=category[i], practice_method=method[i])
         task.save()
-        lst.append(task)
-    return lst
+    return True
