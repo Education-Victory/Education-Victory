@@ -20,13 +20,12 @@ class SolutionSerializer(serializers.ModelSerializer):
 
 
 class CodingQuestionSerializer(serializers.ModelSerializer):
-    category_name = serializers.CharField(source='solution.category_id.name', read_only=True)
-    solution_name = serializers.CharField(source='solution.problem_id.name', read_only=True)
+    category = serializers.CharField(source='solution.category.name', read_only=True)
     qtype = serializers.SerializerMethodField()
 
     class Meta:
         model = CodingQuestion
-        fields = ['id', 'name', 'diffculty', 'qtype', 'solution_name', 'category_name', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'category', 'diffculty', 'qtype', 'created_at', 'updated_at']
 
     def get_qtype(self, obj):
         return 'Coding'
