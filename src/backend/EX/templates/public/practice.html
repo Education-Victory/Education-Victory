@@ -149,7 +149,6 @@
                 <th class="px-5 py-3 has-text-grey">Name</th>
                 <th class="px-5 py-3 has-text-grey">Category</th>
                 <th class="px-5 py-3 has-text-grey">Diffculty</th>
-                <th class="px-5 py-3 has-text-grey">Type</th>
                 <th class="px-5 py-3 has-text-grey">Progress</th>
                 <th class="px-5 py-3 has-text-grey">Frequency</th>
               </tr>
@@ -170,13 +169,10 @@
                   <p class="is-size-6 has-text-weight-medium">[[ question.diffculty ]]</p>
                 </td>
                 <td class="px-5 py-4">
-                  <p class="is-size-6 has-text-weight-medium">[[ question.qtype ]]</p>
+                  <progress class="progress" value="0" max="100">0%</progress>
                 </td>
                 <td class="px-5 py-4">
-                  <progress class="progress" value="55" max="100">15%</progress>
-                </td>
-                <td class="px-5 py-4">
-                  <p class="is-size-6 has-text-weight-medium">5 times in last one year</p>
+                  <p class="is-size-6 has-text-weight-medium">[[ question.frequency ]] times in last one year</p>
                 </td>
               </tr>
             </tbody>
