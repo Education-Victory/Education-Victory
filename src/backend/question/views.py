@@ -1,14 +1,19 @@
+from datetime import timedelta
+from django.db.models import Count, OuterRef, Subquery
 from django.shortcuts import render
+from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from common.models import Task
-from .models import Solution, Category, CodingQuestion, ChoiceQuestion
-from .serializers import SolutionSerializer, CategorySerializer, \
+from .models import Category, CodingQuestion, ChoiceQuestion, ProblemFrequency
+from .serializers import CategorySerializer, \
         TaskSerializer, CodingQuestionSerializer, ChoiceQuestionSerializer
 from .utils.task import get_task, get_today_task, generate_task_from_user
 
+
+LAST_YEAR = timezone.now() - timedelta(days=365)
 
 class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
@@ -63,24 +68,42 @@ def get_question_lst(request):
     '''
     Get question list based on query
     '''
-    category = request.GET.get('cateogry', None)
     difficulty = request.GET.get('difficulty', None)
-    progress = request.GET.get('progress', 'ascending')
-    frequency = request.GET.get('frequency', 'ascending')
-    return get_question_from_query(category, difficulty, progress, frequency)
+    category = request.GET.get('cateogry', None)
+    company = request.GET.get('company', None)
+    progress = request.GET.get('progress', None)
+    frequency = request.GET.get('frequency', None)
+    return get_question_from_queryset(difficulty, category, company, progress, frequency)
 
-def get_question_from_query(category, difficulty, progress, frequency):
-    queryset_one = get_queryset_from_model(CodingQuestion, category, difficulty)
-    queryset_two = get_queryset_from_model(ChoiceQuestion, category, difficulty)
+def get_question_from_queryset(difficulty, category, company, progress, frequency):
+    queryset_one = get_queryset_from_model('coding', difficulty, category, company)
+    queryset_two = get_queryset_from_model('choice', difficulty, category, company)
     serializer_one = CodingQuestionSerializer(queryset_one, many=True)
     serializer_two = ChoiceQuestionSerializer(queryset_two, many=True)
     merged_data = list(serializer_one.data) + list(serializer_two.data)
+
+    if progress:
+        if progress == 'ascending':
+            return Response(sorted(merged_data, key=lambda x: x['progress']))
+        else:
+            return Response(sorted(merged_data, key=lambda x: x['progress'], reverse=True))
+    if frequency:
+        if frequency == 'ascending':
+            return Response(sorted(merged_data, key=lambda x: x['frequency']))
+        else:
+            return Response(sorted(merged_data, key=lambda x: x['frequency'], reverse=True))
     return Response(merged_data)
 
-def get_queryset_from_model(model, category, difficulty):
-    queryset = model.objects.all()
-    if category:
-        queryset.filter(solution__category_id=category)
+
+def get_queryset_from_model(model, difficulty, category, company):
+    # Get basic Queryset by model
+    if model == 'coding':
+        queryset = CodingQuestion.objects.all()
+        qtype = 'coding'
+    elif model == 'choice':
+        queryset = ChoiceQuestion.objects.all()
+        qtype = 'choice'
+    # Filter based on difficulty
     if difficulty:
         diffculty_range = {
             'Beginner': (1, 200),
@@ -89,5 +112,21 @@ def get_queryset_from_model(model, category, difficulty):
             'Hard': (601, 800),
             'Expert': (801, 1000)
             }
-        queryset = model.objects.filter(diffculty__range=diffculty_range[difficulty])
+        queryset = queryset.filter(diffculty__range=diffculty_range[difficulty])
+    # Filter based on category
+    if category:
+        queryset = queryset.filter(category=category)
+    # Filter based on company
+    if company:
+        queryset = queryset.filter(company=company)
+        # Count the frequency based on company
+        problem_frequency = ProblemFrequency.objects.filter(
+            question_id=OuterRef('id'), company=company, qtype=qtype, created_at__gte=LAST_YEAR).values(
+            "question_id").annotate(count=Count("id")).values("count")
+        queryset = queryset.annotate(frequency=Subquery(problem_frequency))
+    else:
+        problem_frequency = ProblemFrequency.objects.filter(
+            question_id=OuterRef('id'), qtype=qtype, created_at__gte=LAST_YEAR).values(
+            "question_id").annotate(count=Count("id")).values("count")
+        queryset = queryset.annotate(frequency=Subquery(problem_frequency))
     return queryset

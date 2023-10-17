@@ -7,6 +7,7 @@ from django.conf import settings
 def get_default_json():
     return '{}'
 
+
 class Category(models.Model):
     topic = models.CharField(max_length=100, help_text='topic of category')
     group = models.CharField(max_length=100, help_text='group of category')
@@ -34,23 +35,11 @@ class Problem(models.Model):
         return self.name
 
 
-class Solution(models.Model):
-    name = models.CharField(blank=True, max_length=100)
-    problem = models.ForeignKey(
-        Problem, on_delete=models.CASCADE, related_name='solution_problem')
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, related_name='solution_category')
-    created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f'{self.category} - {self.problem}'
-
-
 class CodingQuestion(models.Model):
+    problem = models.ForeignKey(
+        Problem, on_delete=models.CASCADE, related_name='coding_question_problem')
     name = models.CharField(blank=True, max_length=100)
-    solution = models.ForeignKey(
-        Solution, on_delete=models.CASCADE, related_name='coding_question_solution')
+    category = models.CharField(blank=True, max_length=100)
     description = models.CharField(max_length=4000)
     diffculty = models.IntegerField(default=0)
     answer = models.CharField(blank=True, max_length=4000)
@@ -65,9 +54,10 @@ class CodingQuestion(models.Model):
 
 
 class ChoiceQuestion(models.Model):
+    problem = models.ForeignKey(
+        Problem, on_delete=models.CASCADE, related_name='choice_question_problem')
     name = models.CharField(blank=True, max_length=100)
-    solution = models.ForeignKey(
-        Solution, on_delete=models.CASCADE, related_name='choice_question_solution')
+    category = models.CharField(blank=True, max_length=100)
     description = models.CharField(max_length=2000)
     answer_number = models.IntegerField(default=1)
     diffculty = models.IntegerField(default=0)
@@ -87,5 +77,15 @@ class TestCase(models.Model):
         CodingQuestion, on_delete=models.CASCADE, related_name='testcase_coding_question')
     case_input = models.JSONField(default=get_default_json)
     case_output = models.JSONField(default=get_default_json)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class ProblemFrequency(models.Model):
+    question_id = models.BigIntegerField(default=0)
+    qtype = models.CharField(max_length=100, blank=True)
+    company = models.CharField(max_length=100, blank=True)
+    location = models.CharField(max_length=100, blank=True)
+    origin_link = models.URLField(max_length=1000, blank=True, help_text="URL for origin post")
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)

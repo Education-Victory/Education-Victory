@@ -2,7 +2,6 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-from question.models import Solution
 
 def get_default_json():
     return '{}'
@@ -39,20 +38,12 @@ class Task(models.Model):
 
 
 class QuestionSubmission(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='submission_user')
     task = models.ForeignKey(
         Task, on_delete=models.CASCADE, related_name='submission_task')
     question_id = models.BigIntegerField(default=0)
     qtype = models.CharField(max_length=100)
     completeness = models.BigIntegerField(default=0)
-    created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
-class ProblemFrequency(models.Model):
-    question_id = models.BigIntegerField(default=0)
-    qtype = models.CharField(max_length=100, blank=True)
-    company = models.CharField(max_length=100, blank=True)
-    location = models.CharField(max_length=100, blank=True)
-    origin_link = models.URLField(max_length=1000, blank=True, help_text="URL for origin post")
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
