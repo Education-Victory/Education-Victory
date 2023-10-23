@@ -9,8 +9,8 @@ def get_default_json():
 
 
 class Category(models.Model):
-    topic = models.CharField(max_length=100, help_text='topic of category')
-    group = models.CharField(max_length=100, help_text='group of category')
+    topic = models.CharField(max_length=100, default='algorithm', help_text='topic of category')
+    group = models.CharField(max_length=100, default='greedy', help_text='group of category')
     name = models.CharField(max_length=100)
     weight = models.IntegerField(default=1, help_text='bigger means more important')
     diffculty = models.IntegerField(default=1, help_text='diffculty of the category')
@@ -82,8 +82,20 @@ class TestCase(models.Model):
 
 
 class ProblemFrequency(models.Model):
+    STAGE_CHOICES = (
+        ('coding', 'Coding'),
+        ('phone', 'Phone'),
+        ('onsite', 'Onsite'),
+    )
+    QTYPE_CHOICES = (
+        ('algorithm', 'Algorithm'),
+        ('computer science', 'Computer Science'),
+        ('system design', 'System Design'),
+        ('behavioral', 'Behavioral'),
+    )
     question_id = models.BigIntegerField(default=0)
-    qtype = models.CharField(max_length=100, blank=True)
+    qtype = models.CharField(max_length=100, choices=QTYPE_CHOICES, default='algorithm')
+    stage = models.CharField(max_length=10, choices=STAGE_CHOICES, default='onsite')
     company = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=100, blank=True)
     origin_link = models.URLField(max_length=1000, blank=True, help_text="URL for origin post")
