@@ -1,5 +1,7 @@
+import urllib.parse
 from datetime import timedelta
-from django.db.models import Count, OuterRef, Subquery
+from django.db.models import Count, Q
+from django.db.models.functions import Coalesce
 from django.shortcuts import render
 from django.utils import timezone
 from rest_framework import viewsets
@@ -68,43 +70,39 @@ def get_question_lst(request):
     '''
     Get question list based on query
     '''
-    difficulty = request.GET.get('difficulty', None)
-    category = request.GET.get('cateogry', None)
-    company = request.GET.get('company', None)
+    topic = request.GET.get('topic')
+    difficulty = request.GET.get('difficulty')
+    category = urllib.parse.unquote(request.GET.get('category'))
+    company = request.GET.get('company')
     progress = request.GET.get('progress', None)
     frequency = request.GET.get('frequency', None)
-    return get_question_from_queryset(difficulty, category, company, progress, frequency)
+    return get_question_from_queryset(topic, difficulty, category, company, progress, frequency)
 
-def get_question_from_queryset(difficulty, category, company, progress, frequency):
-    queryset_one = get_queryset_from_model('coding', difficulty, category, company)
-    queryset_two = get_queryset_from_model('choice', difficulty, category, company)
-    serializer_one = CodingQuestionSerializer(queryset_one, many=True)
-    serializer_two = ChoiceQuestionSerializer(queryset_two, many=True)
-    merged_data = list(serializer_one.data) + list(serializer_two.data)
-
-    if progress:
-        if progress == 'ascending':
-            return Response(sorted(merged_data, key=lambda x: x['progress']))
-        else:
-            return Response(sorted(merged_data, key=lambda x: x['progress'], reverse=True))
-    if frequency:
-        if frequency == 'ascending':
-            return Response(sorted(merged_data, key=lambda x: x['frequency']))
-        else:
-            return Response(sorted(merged_data, key=lambda x: x['frequency'], reverse=True))
+def get_question_from_queryset(topic, difficulty, category, company, progress, frequency):
+    if topic == 'Algorithm':
+        queryset_one = get_algorithm_queryset('coding', difficulty, category, company)
+        queryset_two = get_algorithm_queryset('choice', difficulty, category, company)
+        serializer_one = CodingQuestionSerializer(queryset_one, many=True)
+        serializer_two = ChoiceQuestionSerializer(queryset_two, many=True)
+        merged_data = list(serializer_one.data) + list(serializer_two.data)
+    if progress == 'ascending':
+        return Response(sorted(merged_data, key=lambda x: x['progress']))
+    elif progress == 'descending':
+        return Response(sorted(merged_data, key=lambda x: x['progress'], reverse=True))
+    if frequency == 'ascending':
+        return Response(sorted(merged_data, key=lambda x: x['frequency']))
+    elif frequency == 'descending':
+        return Response(sorted(merged_data, key=lambda x: x['frequency'], reverse=True))
     return Response(merged_data)
 
 
-def get_queryset_from_model(model, difficulty, category, company):
-    # Get basic Queryset by model
+
+def get_algorithm_queryset(model, difficulty, category, company):
     if model == 'coding':
         queryset = CodingQuestion.objects.all()
-        qtype = 'coding'
     elif model == 'choice':
         queryset = ChoiceQuestion.objects.all()
-        qtype = 'choice'
-    # Filter based on difficulty
-    if difficulty:
+    if difficulty and difficulty != 'All':
         diffculty_range = {
             'Beginner': (1, 200),
             'Easy': (201, 400),
@@ -114,19 +112,33 @@ def get_queryset_from_model(model, difficulty, category, company):
             }
         queryset = queryset.filter(diffculty__range=diffculty_range[difficulty])
     # Filter based on category
-    if category:
+    if category and category != 'All':
         queryset = queryset.filter(category=category)
-    # Filter based on company
-    if company:
-        queryset = queryset.filter(company=company)
-        # Count the frequency based on company
-        problem_frequency = ProblemFrequency.objects.filter(
-            question_id=OuterRef('id'), company=company, qtype=qtype, created_at__gte=LAST_YEAR).values(
-            "question_id").annotate(count=Count("id")).values("count")
-        queryset = queryset.annotate(frequency=Subquery(problem_frequency))
+    last_year_conditions = Q(problem__frequency_problem__created_at__gte=LAST_YEAR)
+    total_conditions = Q()
+    if company and company != 'All':
+        last_year_conditions &= Q(problem__frequency_problem__company=company)
+        total_conditions &= Q(problem__frequency_problem__company=company)
+        queryset = queryset.annotate(
+            frequency=Count(
+                'problem__frequency_problem',
+                filter=last_year_conditions
+            ),
+            total_frequency=Count(
+                'problem__frequency_problem',
+                filter=total_conditions
+            )
+        )
+        queryset = queryset.filter(frequency__gt=0)
     else:
-        problem_frequency = ProblemFrequency.objects.filter(
-            question_id=OuterRef('id'), qtype=qtype, created_at__gte=LAST_YEAR).values(
-            "question_id").annotate(count=Count("id")).values("count")
-        queryset = queryset.annotate(frequency=Subquery(problem_frequency))
+        queryset = queryset.annotate(
+            frequency=Count(
+                'problem__frequency_problem',
+                filter=last_year_conditions
+            ),
+            total_frequency=Count(
+                'problem__frequency_problem',
+                filter=total_conditions
+            )
+        )
     return queryset

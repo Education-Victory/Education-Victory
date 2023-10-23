@@ -95,46 +95,46 @@
             <div class="column is-3">
               <div class="control has-icons-left">
                 <div class="select is-fullwidth">
-                  <select>
+                  <select id="select-difficulty" @change="changeDifficulty">
                     <option>Beginner</option>
                     <option>Easy</option>
                     <option>Medium</option>
                     <option>Hard</option>
                     <option>Expert</option>
-                    <option>All</option>
+                    <option selected>All</option>
                   </select>
                 </div>
                 <span class="icon is-left">
-                  <i class="fas fa-globe"></i>
+                  <i class="fa-solid fa-layer-group"></i>
                 </span>
               </div> <!-- end control -->
             </div> <!-- end column -->
             <div class="column is-3">
               <div class="control has-icons-left">
                 <div class="select is-fullwidth">
-                  <select>
+                  <select id="select-category" @change="changeCategory">
                     <option v-for="(category, index) in category_lst">[[ category.name ]]</option>
-                    <option>All</option>
+                    <option selected>All</option>
                   </select>
                 </div>
                 <span class="icon is-left">
-                  <i class="fas fa-globe"></i>
+                  <i class="fa-solid fa-cubes"></i>
                 </span>
               </div> <!-- end control -->
             </div> <!-- end column -->
             <div class="column is-3">
               <div class="control has-icons-left">
                 <div class="select is-fullwidth">
-                  <select>
+                  <select id="select-company" @change="changeCompany">
                     <option>Amazon</option>
                     <option>Google</option>
                     <option>Meta</option>
                     <option>TikTok</option>
-                    <option>All</option>
+                    <option selected>All</option>
                   </select>
                 </div>
                 <span class="icon is-left">
-                  <i class="fas fa-globe"></i>
+                  <i class="fa-solid fa-suitcase"></i>
                 </span>
               </div> <!-- end control -->
             </div> <!-- end column -->
@@ -150,7 +150,7 @@
                 <th class="px-5 py-3 has-text-grey">Category</th>
                 <th class="px-5 py-3 has-text-grey">Diffculty</th>
                 <th class="px-5 py-3 has-text-grey">Progress</th>
-                <th class="px-5 py-3 has-text-grey">Frequency</th>
+                <th class="px-5 py-3 has-text-grey">Frequency (Last Year / Last 5 Year)</th>
               </tr>
             </thead>
             <tbody>
@@ -172,7 +172,7 @@
                   <progress class="progress" value="0" max="100">0%</progress>
                 </td>
                 <td class="px-5 py-4">
-                  <p class="is-size-6 has-text-weight-medium">[[ question.frequency ]] times in last one year</p>
+                  <p class="is-size-6 has-text-weight-medium">[[ question.frequency ]] / [[ question.total_frequency ]]</p>
                 </td>
               </tr>
             </tbody>
@@ -214,16 +214,61 @@
         'X-CSRFToken': csrfToken,
       },
     };
+    function fetchQuestion(topic, difficulty, category, company) {
+      return axios.get(root + '/api/question/?topic=' + topic + '&difficulty=' + difficulty + '&category=' + category + '&company=' + company);
+    }
     var app = new Vue({
       delimiters: ['[[', ']]'],
       el: '#vue-span',
       data () {
         return {
            root: root,
+           topic: 'Algorithm',
+           difficulty: 'All',
+           category: 'All',
+           company: 'All',
            new_task_lst: [],
            review_task_lst: [],
            question_lst: [],
            category_lst: [],
+        }
+      },
+      methods: {
+        changeDifficulty: function() {
+          const element = document.getElementById('select-difficulty');
+          const index = element.selectedIndex;
+          const new_difficulty = element.options[index].text;
+          if (new_difficulty !== this.difficulty) {
+            this.difficulty = new_difficulty;
+            fetchQuestion(this.topic, this.difficulty, this.category, this.company)
+              .then(response => {
+                this.question_lst = response.data;
+            })
+          }
+        },
+        changeCategory: function() {
+          const element = document.getElementById('select-category');
+          const index = element.selectedIndex;
+          const new_category = element.options[index].text;
+          if (new_category !== this.category) {
+            this.category = new_category;
+            fetchQuestion(this.topic, this.difficulty, this.category, this.company)
+              .then(response => {
+                this.question_lst = response.data;
+            })
+          }
+        },
+        changeCompany: function() {
+          const element = document.getElementById('select-company');
+          const index = element.selectedIndex;
+          const new_company = element.options[index].text;
+          if (new_company !== this.company) {
+            this.company = new_company;
+            fetchQuestion(this.topic, this.difficulty, this.category, this.company)
+              .then(response => {
+                this.question_lst = response.data;
+            })
+          }
         }
       },
       mounted () {
@@ -241,14 +286,12 @@
               })
 
           })
-        axios.get(root + '/api/question/?type=All')
+        fetchQuestion(this.topic, this.difficulty, this.category, this.company)
           .then(response => {
-            this.question_lst = response.data;
+              this.question_lst = response.data;
           })
-          .catch(function (error) {
-            console.log(error);
-          })
-          .finally(function () {
+          .catch(error => {
+              console.error(error);
           });
         axios.get(root + '/api/category/')
           .then(response => {
