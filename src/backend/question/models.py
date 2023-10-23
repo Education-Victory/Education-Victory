@@ -93,8 +93,8 @@ class ProblemFrequency(models.Model):
         ('system design', 'System Design'),
         ('behavioral', 'Behavioral'),
     )
-    question_id = models.BigIntegerField(default=0)
-    qtype = models.CharField(max_length=100, choices=QTYPE_CHOICES, default='algorithm')
+    problem = models.ForeignKey(
+        Problem, on_delete=models.CASCADE, related_name='frequency_problem')
     stage = models.CharField(max_length=10, choices=STAGE_CHOICES, default='onsite')
     company = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=100, blank=True)
