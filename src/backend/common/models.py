@@ -38,12 +38,18 @@ class Task(models.Model):
 
 
 class QuestionSubmission(models.Model):
+    QTYPE_CHOICES = (
+        ('algorithm', 'Algorithm'),
+        ('computer science', 'Computer Science'),
+        ('system design', 'System Design'),
+        ('behavioral', 'Behavioral'),
+    )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='submission_user')
     task = models.ForeignKey(
         Task, on_delete=models.CASCADE, related_name='submission_task')
     question_id = models.BigIntegerField(default=0)
-    qtype = models.CharField(max_length=100)
+    qtype = models.CharField(max_length=100, choices=QTYPE_CHOICES, default='algorithm')
     completeness = models.BigIntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
