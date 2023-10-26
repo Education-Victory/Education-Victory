@@ -133,3 +133,8 @@ input[type="checkbox"]:checked::before {
   transform: translateX(-50%);
   z-index: 1;
 }
+
+.custom-card .card-content {
+  max-height: 80vh;
+  overflow-y: auto;
+}

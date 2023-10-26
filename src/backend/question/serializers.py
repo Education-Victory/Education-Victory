@@ -11,6 +11,15 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'weight', 'created_at', 'updated_at']
 
 
+class CodingQuestionBasicSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CodingQuestion
+        fields = ['id', 'name', 'category', 'diffculty',
+            'begin', 'during', 'finish', 'answer', 'text_hint', 'code_hint',
+            'resource', 'created_at', 'updated_at']
+
+
 class CodingQuestionSerializer(serializers.ModelSerializer):
     qtype = serializers.SerializerMethodField()
     frequency = serializers.SerializerMethodField()
@@ -18,7 +27,8 @@ class CodingQuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CodingQuestion
-        fields = ['id', 'name', 'category', 'frequency', 'total_frequency', 'diffculty', 'qtype', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'category', 'frequency',
+            'total_frequency', 'diffculty', 'qtype', 'created_at', 'updated_at']
 
     def get_qtype(self, obj):
         return 'Coding'

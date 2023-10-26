@@ -28,6 +28,7 @@ from rest_framework.schemas import get_schema_view
 # Sets up the viewsets for models and maps them to appropriate URLs using SimpleRouter
 router = routers.SimpleRouter()
 router.register(r'category', question_views.CategoryViewSet, basename='Category')
+router.register(r'coding', question_views.CodingQuestionViewSet, basename='CodingQuestion')
 
 urlpatterns = [
     path('openapi', get_schema_view(
@@ -48,7 +49,7 @@ urlpatterns = [
     path('api/task/<str:category>/<str:practice_method>/', question_views.get_single_task),
     path('api/', include((router.urls, 'app_name'))),
     path('', public_views.home, name='home'),
-    path('question/<str:question_name>/<str:category_name>/', public_views.question_detail, name='question_detail'),
+    path('Coding/<str:question_name>/<str:category_name>/', public_views.coding_question, name='coding_question'),
     path('evaluation/<str:type>/', public_views.evaluation, name='evaluation'),
     path('practice/', public_views.practice, name='practice'),
     path('coding_question/', public_views.coding_question, name='coding_question'),

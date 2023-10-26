@@ -158,7 +158,9 @@
                 <td class="px-5 py-4">
                   <div class="is-flex is-align-items-center">
                     <div>
-                      <p class="is-size-6 py-1 has-text-weight-medium">[[ question.name ]] </p>
+                        <a :href="`${root}/${question.qtype}/${question.name}/${question.category}/`">
+                        <p class="is-size-6 py-1 has-text-weight-medium">[[ question.name ]] </p>
+                      </a>
                     </div>
                   </div>
                 </td>
