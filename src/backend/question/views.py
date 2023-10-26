@@ -11,7 +11,7 @@ from rest_framework.decorators import api_view
 from common.models import Task
 from .models import Category, CodingQuestion, ChoiceQuestion, ProblemFrequency
 from .serializers import CategorySerializer, \
-        TaskSerializer, CodingQuestionSerializer, ChoiceQuestionSerializer
+        TaskSerializer, CodingQuestionSerializer, CodingQuestionBasicSerializer, ChoiceQuestionSerializer
 from .utils.task import get_task, get_today_task, generate_task_from_user
 
 
@@ -30,8 +30,19 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Task.objects.all()
-        state = self.request.query_params.get('state', None)
-        count = int(self.request.query_params.get('count', '1'))
+        return queryset
+
+class CodingQuestionViewSet(viewsets.ModelViewSet):
+    serializer_class = CodingQuestionBasicSerializer
+
+    def get_queryset(self):
+        queryset = CodingQuestion.objects.all()
+        category = self.request.query_params.get('category', None)
+        name = self.request.query_params.get('name', None)
+        if category:
+            queryset = queryset.filter(category=category)
+        if name:
+            queryset = queryset.filter(name=name)
         return queryset
 
 
@@ -94,8 +105,6 @@ def get_question_from_queryset(topic, difficulty, category, company, progress, f
     elif frequency == 'descending':
         return Response(sorted(merged_data, key=lambda x: x['frequency'], reverse=True))
     return Response(merged_data)
-
-
 
 def get_algorithm_queryset(model, difficulty, category, company):
     if model == 'coding':

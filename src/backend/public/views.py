@@ -9,12 +9,8 @@ def home(request):
 def practice(request):
     return render(request, 'public/practice.html', {'root': settings.ROOT})
 
-def coding_question(request):
-    return render(request, 'public/coding_question.html', {'root': settings.ROOT})
-
-def question_detail(request, question_name, category_name):
-    # HTML for question detail page
-    return render(request, 'public/question_detail.html',
+def coding_question(request, question_name, category_name):
+    return render(request, 'public/coding_question.html',
         {'root': settings.ROOT, 'question_name': question_name, 'category_name': category_name, 'user_id': request.user.id})
 
 def evaluation(request, type):
