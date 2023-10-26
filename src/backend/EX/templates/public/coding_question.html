@@ -13,36 +13,44 @@
 
 {% block content %}
 <script src={% static 'js/codeeditor.min.js' %}></script>
+<script src={% static 'js/marked.min.js' %}></script>
 <span id="vue-span">
   <section class="section">
-  <div class="container">
+  <div class="container is-fluid">
     <div class="columns">
-      <div class="column is-5">
-        <div class="card">
+      <div class="column is-6">
+        <div class="card custom-card">
           <div class="card-content">
             <div class="content">
-              <p class="title has-text-centered">Search in Rotated Sorted Array</p>
-              <p>There is an integer array nums sorted in ascending order (with distinct values). Prior to being passed to your function, nums is possibly rotated at an unknown pivot index k (1k nums.length) such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). For example, [0,1,2,4,5,6,7] might be rotated at pivot index 3 and become [4,5,6,7,0,1,2]. Given the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums. You must write an algorithm with O(log n) runtime complexity.</p>
-              <h3>Example</h3>
-              <p>
-                Example 1:
-
-                Input: nums = [4,5,6,7,0,1,2], target = 0
-                Output: 4
-                <br>
-                Example 2:
-                Input: nums = [4,5,6,7,0,1,2], target = 3
-                Output: -1
-                <br>
-                Example 3:
-                Input: nums = [1], target = 0
-                Output: -1
-              </p>                
+              <p class="title has-text-centered">[[ question.name ]]</p>
+              <div class="tabs is-centered">
+                <ul>
+                  <li class="is-active">
+                    <a>
+                      <span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
+                      <span>Before</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a>
+                      <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
+                      <span>During</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a>
+                      <span class="icon is-small"><i class="fas fa-film" aria-hidden="true"></i></span>
+                      <span>After</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div v-html="renderedMarkdown"></div>
           </div>
           </div> <!-- end card content -->
         </div> <!-- end card -->
       </div> <!-- end column -->
-      <div class="column is-7">
+      <div class="column is-6">
         <textarea id="editor">
 var findMedianSortedArrays = function(nums1, nums2) {
     let n1 = nums1.length;
@@ -88,40 +96,28 @@ var findMedianSortedArrays = function(nums1, nums2) {
   </script>
   <script>
     var root = '{{ root }}';
+    const question_name = '{{ question_name }}';
+    const category_name = '{{ category_name }}';
     var app = new Vue({
       delimiters: ['[[', ']]'],
       el: '#vue-span',
       data () {
         return {
            root: root,
-           category: null,
-           cur_category: null,
-           solution_lst: null,
-           placeholder: null,
+           question: null,
         }
       },
       mounted () {
-        axios.get(root + '/api/category')
+        axios.get(root + '/api/coding/?name=' + question_name + '&category=' + category_name)
           .then(response => {
-              this.category = response.data;
-              this.cur_category = this.category[0];
-          })
-          .catch()
-        axios.get(root + '/api/solution?category=1')
-          .then(response => {
-              this.solution_lst = response.data;
+              this.question = response.data[0];
+              console.log(this.question.begin);
           })
           .catch()
       },
-      methods: {
-        get_question_by_cate: function (index) {
-          var id = index + 1;
-          axios.get(root + '/api/solution/?category=' + id)
-            .then(response => {
-                this.cur_category = this.category[index];
-                this.solution_lst = response.data;
-            })
-            .catch()
+      computed: {
+        renderedMarkdown() {
+          return marked.parse(this.question.begin);
         }
       }
     })
