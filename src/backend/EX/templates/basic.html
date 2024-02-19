@@ -11,7 +11,7 @@
     {% endblock %}
     {% block extra_head %}
     {% endblock %}
-    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bulma.0.9.4.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/brands.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/solid.min.css' %}">
@@ -21,7 +21,7 @@
     {% endblock %}
   </head>
   <body>
-    <nav class="navbar py-2">
+    <nav class="navbar is-fixed-top py-2">
       <div class="container">
         <div class="navbar-brand">
           <a class="navbar-item" href="/">
@@ -37,7 +37,9 @@
         </div>
         <div class="navbar-menu">
           <div class="navbar-start">
-            <a class="navbar-item is-size-6" aria-current="page" href="/">Home</a><a class="navbar-item is-size-6" href="/practice">Practice</a>
+            <a class="navbar-item is-size-6" aria-current="page" href="/">Home</a>
+            <a class="navbar-item is-size-6" href="/practice">Practice</a>
+            <a class="navbar-item is-size-6" href="/story">Our Story</a>
           </div>
 
           <div class="navbar-end">
@@ -100,7 +102,7 @@
         <li><a class="button is-white" href="#">Testimonials</a></li>
       </ul>
     </div>
-    <div class="pt-5" style="border-top: 1px solid #dee2e6;"></div>
+    <div class="pt-5"></div>
     <div class="container">
       <p class="has-text-centered">All rights reserved © Education Victory, LLC 2023</p>
     </div>

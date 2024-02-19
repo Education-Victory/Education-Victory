@@ -77,55 +77,6 @@ html {
   display: none;
 }
 
-/* for checkbox style: https://moderncss.dev/pure-css-custom-checkbox-style/ */
-.form-control {
-  font-size: 2rem;
-  line-height: 1;
-  display: grid;
-  grid-template-columns: 1em auto;
-  gap: 1rem;
-}
-
-.form-control + .form-control {
-  margin-top: 2rem;
-}
-
-input[type="checkbox"] {
-  /* Removed original checkbox style*/
-  -webkit-appearance: none;
-  appearance: none;
-  background-color: #fff;
-  margin: 0;
-
-  font: inherit;
-  color: #5555E0;
-  width: 2rem;
-  height: 2rem;
-  border: 0.24rem solid currentColor;
-  border-radius: 0.24rem;
-  transform: translateY(-0.075rem);
-
-  display: grid;
-  place-content: center;
-}
-
-input[type="checkbox"]::before {
-  content: "";
-  width: 0.65em;
-  height: 0.65em;
-  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-  transform: scale(0);
-  transform-origin: bottom left;
-  transition: 120ms transform ease-in-out;
-  box-shadow: inset 1em 1em var(--form-control-color);
-  /* Windows High Contrast Mode */
-  background-color: #5555E0;
-}
-
-input[type="checkbox"]:checked::before {
-  transform: scale(1);
-}
-
 .top {
   position: absolute;
   left: 50%;
@@ -134,7 +85,15 @@ input[type="checkbox"]:checked::before {
   z-index: 1;
 }
 
-.custom-card .card-content {
-  max-height: 80vh;
+.render-markdown, .practice-panel {
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.CodeMirror {
+  border: 1px solid #eee;
+  height: auto;
+  width: 100%;
+  min-height: 130vh; /* or whatever height you prefer */
   overflow-y: auto;
 }
