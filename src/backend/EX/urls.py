@@ -20,7 +20,6 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from django.urls import path, include
 from question import views as question_views
-from public import views as public_views
 from common import views as common_views
 from rest_framework import routers
 from rest_framework.schemas import get_schema_view
@@ -42,15 +41,15 @@ urlpatterns = [
     ), name='swagger-ui'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('api/evaluation_simple/', public_views.evaluation_simple),
+    path('api/evaluation_simple/', common_views.evaluation_simple),
     path('api/question/', question_views.get_question_lst),
     path('api/task/', question_views.get_recommend_task),
     path('api/gen_task/', question_views.generate_daily_task),
     path('api/task/<str:category>/<str:practice_method>/', question_views.get_single_task),
     path('api/', include((router.urls, 'app_name'))),
-    path('', public_views.home, name='home'),
-    path('Coding/<str:question_name>/<str:category_name>/', public_views.coding_question, name='coding_question'),
-    path('evaluation/<str:type>/', public_views.evaluation, name='evaluation'),
-    path('practice/', public_views.practice, name='practice'),
-    path('coding_question/', public_views.coding_question, name='coding_question'),
+    path('', common_views.home, name='home'),
+    path('Coding/<str:question_name>/<str:category_name>/', common_views.coding_question, name='coding_question'),
+    path('evaluation/<str:type>/', common_views.evaluation, name='evaluation'),
+    path('practice/', common_views.practice, name='practice'),
+    path('coding_question/', common_views.coding_question, name='coding_question'),
 ]

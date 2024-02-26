@@ -70,7 +70,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
-    'public.apps.PublicConfig',
     'question.apps.QuestionConfig',
     'common.apps.CommonConfig',
     'allauth',
