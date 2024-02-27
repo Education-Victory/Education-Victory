@@ -1,19 +1,19 @@
-from uu import Error
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from problem.models import Problem
 
 
 def get_default_json():
-    return '{}'
+    return {}
 
 
-class Category(models.Model):
-    topic = models.CharField(max_length=100, default='algorithm', help_text='topic of category')
-    group = models.CharField(max_length=100, default='greedy', help_text='group of category')
-    name = models.CharField(max_length=100)
+class Tag(models.Model):
+    name = models.CharField(max_length=100, default='greedy')
     weight = models.IntegerField(default=1, help_text='bigger means more important')
-    diffculty = models.IntegerField(default=1, help_text='diffculty of the category')
+    difficulty = models.IntegerField(default=1, help_text='bigger means more difficult')
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -21,86 +21,84 @@ class Category(models.Model):
         return f'{self.name}'
 
 
-class Problem(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.CharField(max_length=4000)
-    category_id_list = models.ManyToManyField(Category)
-    upvote = models.IntegerField(default=1)
-    downvote = models.IntegerField(default=1)
-    is_published = models.BooleanField(default=1)
+class Checklist(models.Model):
+    name = models.CharField(max_length=100, default='')
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.name
 
 
 class CodingQuestion(models.Model):
     problem = models.ForeignKey(
-        Problem, on_delete=models.CASCADE, related_name='coding_question_problem')
-    name = models.CharField(blank=True, max_length=100)
-    category = models.CharField(blank=True, max_length=100)
-    begin = models.TextField(max_length=8000)
-    during = models.TextField(max_length=8000)
-    finish = models.TextField(max_length=8000)
-    description = models.TextField(max_length=4000)
-    diffculty = models.IntegerField(default=0)
-    answer = models.CharField(blank=True, max_length=4000)
+        Problem, on_delete=models.CASCADE)
+    tag = models.ManyToManyField(Tag, through='TagCoding')
+    desc = models.TextField(max_length=4000)
+    default_code = models.TextField(max_length=4000)
+    difficulty = models.IntegerField(default=0)
+    answer = models.CharField(blank=True, max_length=8000)
+    checklist = models.ManyToManyField(Checklist)
     text_hint = models.JSONField(default=get_default_json)
-    code_hint = models.TextField(blank=True, max_length=4000)
-    resource = models.JSONField(default=get_default_json)
+    text_hint_2 = models.JSONField(default=get_default_json)
+    code_hint = models.JSONField(default=get_default_json)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return self.desc[:50]
+
+
+class TagCoding(models.Model):
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    coding_question = models.ForeignKey(CodingQuestion, on_delete=models.CASCADE)
+    weight = models.IntegerField()
+
+    class Meta:
+        unique_together = [['tag', 'coding_question']]
 
 
 class ChoiceQuestion(models.Model):
+    TYPE = (
+        (0, 'Single'),
+        (1, 'Multiple'),
+    )
+
     problem = models.ForeignKey(
-        Problem, on_delete=models.CASCADE, related_name='choice_question_problem')
-    name = models.CharField(blank=True, max_length=100)
-    category = models.CharField(blank=True, max_length=100)
-    description = models.CharField(max_length=2000)
-    answer_number = models.IntegerField(default=1)
-    diffculty = models.IntegerField(default=0)
+        Problem, on_delete=models.CASCADE)
+    tag = models.ManyToManyField(Tag, through='TagChoice')
+    desc = models.TextField(max_length=4000)
+    type = models.IntegerField(choices=TYPE, default=0)
+    difficulty = models.IntegerField(default=0)
     choice = models.JSONField(default=get_default_json)
-    answer = models.CharField(max_length=100, help_text='binary form of the correct answer')
+    answer = models.IntegerField(default=1, help_text='binary form of the correct answer')
+    checklist = models.ManyToManyField(Checklist)
     text_hint = models.JSONField(default=get_default_json)
-    resource = models.JSONField(default=get_default_json)
+    text_hint_2 = models.JSONField(default=get_default_json)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.name
+
+class TagChoice(models.Model):
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    choice_question = models.ForeignKey(ChoiceQuestion, on_delete=models.CASCADE)
+    weight = models.IntegerField()
+
+    class Meta:
+        unique_together = [['tag', 'choice_question']]
+
+
+class UserSubmission(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    type_of_question = GenericForeignKey('content_type', 'object_id')
+    checklist = models.IntegerField(default=1, help_text='binary form of checked checklist')
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class TestCase(models.Model):
     coding_question = models.ForeignKey(
-        CodingQuestion, on_delete=models.CASCADE, related_name='testcase_coding_question')
+        CodingQuestion, on_delete=models.CASCADE)
     case_input = models.JSONField(default=get_default_json)
     case_output = models.JSONField(default=get_default_json)
-    created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
-class ProblemFrequency(models.Model):
-    STAGE_CHOICES = (
-        ('coding', 'Coding'),
-        ('phone', 'Phone'),
-        ('onsite', 'Onsite'),
-    )
-    QTYPE_CHOICES = (
-        ('algorithm', 'Algorithm'),
-        ('computer science', 'Computer Science'),
-        ('system design', 'System Design'),
-        ('behavioral', 'Behavioral'),
-    )
-    problem = models.ForeignKey(
-        Problem, on_delete=models.CASCADE, related_name='frequency_problem')
-    stage = models.CharField(max_length=10, choices=STAGE_CHOICES, default='onsite')
-    company = models.CharField(max_length=100, blank=True)
-    location = models.CharField(max_length=100, blank=True)
-    origin_link = models.URLField(max_length=1000, blank=True, help_text="URL for origin post")
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)

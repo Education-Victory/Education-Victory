@@ -1,24 +1,52 @@
 from django.contrib import admin
-from .models import Category, Problem, CodingQuestion, ChoiceQuestion
+from .models import (
+    Tag,
+    Checklist,
+    CodingQuestion,
+    TagCoding,
+    ChoiceQuestion,
+    TagChoice,
+    UserSubmission,
+    TestCase,
+)
 
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('name', 'weight', 'difficulty', 'created_at', 'updated_at')
+    search_fields = ('name',)
 
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'topic', 'group', 'name', 'diffculty')
+@admin.register(Checklist)
+class ChecklistAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_at', 'updated_at')
 
-
-class ProblemAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-
-
+@admin.register(CodingQuestion)
 class CodingQuestionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'category', 'diffculty')
+    list_display = ('desc', 'problem', 'difficulty', 'created_at', 'updated_at')
+    list_filter = ('difficulty',)
+    search_fields = ('desc', 'default_code')
 
+@admin.register(TagCoding)
+class TagCodingAdmin(admin.ModelAdmin):
+    list_display = ('tag', 'coding_question', 'weight')
+    list_filter = ('tag',)
 
+@admin.register(ChoiceQuestion)
 class ChoiceQuestionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'category', 'diffculty')
+    list_display = ('desc', 'problem', 'type', 'difficulty', 'created_at', 'updated_at')
+    list_filter = ('type', 'difficulty')
+    search_fields = ('desc',)
 
+@admin.register(TagChoice)
+class TagChoiceAdmin(admin.ModelAdmin):
+    list_display = ('tag', 'choice_question', 'weight')
+    list_filter = ('tag',)
 
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Problem, ProblemAdmin)
-admin.site.register(CodingQuestion, CodingQuestionAdmin)
-admin.site.register(ChoiceQuestion, ChoiceQuestionAdmin)
+@admin.register(UserSubmission)
+class UserSubmissionAdmin(admin.ModelAdmin):
+    list_display = ('user', 'content_type', 'object_id', 'checklist', 'created_at', 'updated_at')
+    list_filter = ('content_type', 'user')
+
+@admin.register(TestCase)
+class TestCaseAdmin(admin.ModelAdmin):
+    list_display = ('coding_question', 'case_input', 'case_output', 'created_at', 'updated_at')
+    search_fields = ('coding_question__desc',)
