@@ -3,7 +3,6 @@ from django.utils import timezone
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from problem.models import Problem
 
 
 def get_default_json():
@@ -28,10 +27,9 @@ class Checklist(models.Model):
 
 
 class CodingQuestion(models.Model):
-    problem = models.ForeignKey(
-        Problem, on_delete=models.CASCADE)
-    tag = models.ManyToManyField(Tag, through='TagCoding')
-    desc = models.models.JSONField(default=get_default_json)
+    problem = models.ForeignKey('problem.Problem', on_delete=models.CASCADE)
+    tag = models.ManyToManyField('question.Tag', through='TagCoding')
+    desc = models.JSONField(default=get_default_json)
     default_code = models.TextField(max_length=4000)
     difficulty = models.IntegerField(default=0)
     answer = models.CharField(blank=True, max_length=8000)
@@ -47,8 +45,8 @@ class CodingQuestion(models.Model):
 
 
 class TagCoding(models.Model):
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
-    coding_question = models.ForeignKey(CodingQuestion, on_delete=models.CASCADE)
+    tag = models.ForeignKey('question.Tag', on_delete=models.CASCADE)
+    coding_question = models.ForeignKey('question.CodingQuestion', on_delete=models.CASCADE)
     weight = models.IntegerField()
 
     class Meta:
@@ -61,9 +59,8 @@ class ChoiceQuestion(models.Model):
         (1, 'Multiple'),
     )
 
-    problem = models.ForeignKey(
-        Problem, on_delete=models.CASCADE)
-    tag = models.ManyToManyField(Tag, through='TagChoice')
+    problem = models.ForeignKey('problem.Problem', on_delete=models.CASCADE)
+    tag = models.ManyToManyField('question.Tag', through='TagChoice')
     desc = models.JSONField(default=get_default_json)
     type = models.IntegerField(choices=TYPE, default=0)
     difficulty = models.IntegerField(default=0)
@@ -77,8 +74,8 @@ class ChoiceQuestion(models.Model):
 
 
 class TagChoice(models.Model):
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
-    choice_question = models.ForeignKey(ChoiceQuestion, on_delete=models.CASCADE)
+    tag = models.ForeignKey('question.Tag', on_delete=models.CASCADE)
+    choice_question = models.ForeignKey('question.ChoiceQuestion', on_delete=models.CASCADE)
     weight = models.IntegerField()
 
     class Meta:

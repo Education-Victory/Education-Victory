@@ -26,6 +26,16 @@ class Problem(models.Model):
     def __str__(self):
         return self.name
 
+
+class TagProblem(models.Model):
+    tag = models.ForeignKey('question.Tag', on_delete=models.CASCADE)
+    problem = models.ForeignKey('problem.Problem', on_delete=models.CASCADE)
+    weight = models.IntegerField()
+
+    class Meta:
+        unique_together = [['tag', 'problem']]
+
+
 class ProblemFrequency(models.Model):
     STAGE_CHOICES = (
         ('coding', 'Coding'),
