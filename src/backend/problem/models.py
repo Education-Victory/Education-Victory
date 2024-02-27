@@ -1,6 +1,10 @@
 from django.db import models
 from django.utils import timezone
 
+def get_default_json():
+    return {}
+
+
 class Problem(models.Model):
     CATEGORY_CHOICE = (
         ('algorithm', 'Algorithm'),
@@ -12,7 +16,7 @@ class Problem(models.Model):
 
     name = models.CharField(max_length=100)
     category = models.CharField(max_length=100, choices=CATEGORY_CHOICE, default='algorithm')
-    description = models.CharField(max_length=4000)
+    desc = models.JSONField(default=get_default_json)
     upvote = models.IntegerField(default=1)
     downvote = models.IntegerField(default=1)
     is_published = models.BooleanField(default=True)
