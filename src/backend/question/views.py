@@ -8,29 +8,12 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from common.models import Task
-from .models import Category, CodingQuestion, ChoiceQuestion, ProblemFrequency
-from .serializers import CategorySerializer, \
-        TaskSerializer, CodingQuestionSerializer, CodingQuestionBasicSerializer, ChoiceQuestionSerializer
-from .utils.task import get_task, get_today_task, generate_task_from_user
+from .models import CodingQuestion, ChoiceQuestion
+from .serializers import CodingQuestionSerializer, CodingQuestionBasicSerializer, ChoiceQuestionSerializer
 
 
 LAST_YEAR = timezone.now() - timedelta(days=365)
 
-class CategoryViewSet(viewsets.ModelViewSet):
-    serializer_class = CategorySerializer
-
-    def get_queryset(self):
-        queryset = Category.objects.all()
-        return queryset
-
-
-class TaskViewSet(viewsets.ModelViewSet):
-    serializer_class = TaskSerializer
-
-    def get_queryset(self):
-        queryset = Task.objects.all()
-        return queryset
 
 class CodingQuestionViewSet(viewsets.ModelViewSet):
     serializer_class = CodingQuestionBasicSerializer

@@ -1,14 +1,6 @@
 import math
 from rest_framework import serializers
-from common.models import Task
-from .models import Category, CodingQuestion, ChoiceQuestion
-
-
-class CategorySerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Category
-        fields = ['id', 'name', 'weight', 'created_at', 'updated_at']
+from .models import CodingQuestion, ChoiceQuestion
 
 
 class CodingQuestionBasicSerializer(serializers.ModelSerializer):
@@ -50,14 +42,3 @@ class ChoiceQuestionSerializer(serializers.ModelSerializer):
 
     def get_qtype(self, obj):
         return 'Choice'
-
-
-class TaskSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Task
-        fields = [
-            'user_id', 'state', 'completeness', 'question_id_lists',
-            'category', 'practice_method', 'content', 'created_at', 'updated_at']
-
-
