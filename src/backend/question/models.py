@@ -29,6 +29,7 @@ class Checklist(models.Model):
 class CodingQuestion(models.Model):
     problem = models.ForeignKey('problem.Problem', on_delete=models.CASCADE)
     tag = models.ManyToManyField('question.Tag', through='TagCoding')
+    type = models.CharField(default='implement', max_length=1000)
     desc = models.JSONField(default=get_default_json)
     default_code = models.TextField(max_length=4000)
     difficulty = models.IntegerField(default=0)
@@ -61,8 +62,9 @@ class ChoiceQuestion(models.Model):
 
     problem = models.ForeignKey('problem.Problem', on_delete=models.CASCADE)
     tag = models.ManyToManyField('question.Tag', through='TagChoice')
+    type = models.CharField(default='understand', max_length=1000)
     desc = models.JSONField(default=get_default_json)
-    type = models.IntegerField(choices=TYPE, default=0)
+    answer_type = models.IntegerField(choices=TYPE, default=0)
     difficulty = models.IntegerField(default=0)
     choice = models.JSONField(default=get_default_json)
     answer = models.IntegerField(default=1, help_text='binary form of the correct answer')
