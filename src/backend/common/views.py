@@ -9,10 +9,6 @@ def home(request):
 def practice(request):
     return render(request, 'common/practice.html', {'root': settings.ROOT})
 
-def coding_question(request, question_name, category_name):
-    return render(request, 'common/coding_question.html',
-        {'root': settings.ROOT, 'question_name': question_name, 'category_name': category_name, 'user_id': request.user.id})
-
 def evaluation(request, type):
     if type == 'coding':
         return render(request, 'common/evaluation/coding.html')
