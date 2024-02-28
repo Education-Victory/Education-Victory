@@ -15,18 +15,45 @@ from .serializers import CodingQuestionSerializer, CodingQuestionBasicSerializer
 LAST_YEAR = timezone.now() - timedelta(days=365)
 
 
-class CodingQuestionViewSet(viewsets.ModelViewSet):
-    serializer_class = CodingQuestionBasicSerializer
-
+class ResourceViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
-        queryset = CodingQuestion.objects.all()
-        category = self.request.query_params.get('category', None)
+        queryset = None
+        resource_type = self.request.query_params.get('resource_type', None)
         name = self.request.query_params.get('name', None)
-        if category:
-            queryset = queryset.filter(category=category)
-        if name:
-            queryset = queryset.filter(name=name)
-        return queryset
+        question_type = self.request.query_params.get('type', None)
+
+        if resource_type == 'question':
+            if question_type in ('understand', 'analyze'):
+                queryset = ChoiceQuestion.objects.filter(type=question_type)
+                if name:
+                    name = name.replace('-', ' ')
+                    queryset = queryset.filter(problem__name=name)
+            elif question_type == 'implement':
+                queryset = CodingQuestion.objects.filter(type=question_type)
+                if name:
+                    name = name.replace('-', ' ')
+                    queryset = queryset.filter(name=name)
+            return queryset
+
+    def get_serializer_class(self):
+        question_type = self.request.query_params.get('type', None)
+
+        if question_type in ('understand', 'analyze'):
+            return ChoiceQuestionSerializer
+        elif question_type == 'implement':
+            return CodingQuestionBasicSerializer
+        else:
+            # Handle unknown type or default case
+            raise ValueError("Unknown or missing 'type' query parameter.")
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        if queryset is None:
+            return Response({'error': 'Invalid question type or missing name.'}, status=400)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 
 @api_view(['GET'])

@@ -27,8 +27,8 @@ from rest_framework.schemas import get_schema_view
 
 # Sets up the viewsets for models and maps them to appropriate URLs using SimpleRouter
 router = routers.DefaultRouter()
-router.register(r'coding', question_views.CodingQuestionViewSet, basename='CodingQuestion')
-router.register(r'problems', problem_views.ProblemViewSet)
+router.register(r'resource', question_views.ResourceViewSet, basename='resource')
+router.register(r'problem', problem_views.ProblemViewSet, basename='problem')
 
 
 urlpatterns = [
@@ -45,13 +45,10 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('api/evaluation_simple/', common_views.evaluation_simple),
     path('api/question/', question_views.get_question_lst),
-    path('api/task/', question_views.get_recommend_task),
     path('api/gen_task/', question_views.generate_daily_task),
-    path('api/task/<str:category>/<str:practice_method>/', question_views.get_single_task),
     path('api/', include((router.urls, 'app_name'))),
-    path('', common_views.home, name='home'),
-    path('Coding/<str:question_name>/<str:category_name>/', common_views.coding_question, name='coding_question'),
+    path('system-design/<str:name>/', problem_views.problem, name='problem'),
     path('evaluation/<str:type>/', common_views.evaluation, name='evaluation'),
     path('practice/', common_views.practice, name='practice'),
-    path('coding_question/', common_views.coding_question, name='coding_question'),
+    path('', common_views.home, name='home'),
 ]
