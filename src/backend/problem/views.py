@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ModelViewSet
+from .models import Problem
+from .serializers import ProblemSerializer
 
-# Create your views here.
+class ProblemViewSet(ModelViewSet):
+    queryset = Problem.objects.all()
+    serializer_class = ProblemSerializer

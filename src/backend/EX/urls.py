@@ -19,14 +19,17 @@ Example of CRUD for model Question
 from django.contrib import admin
 from django.views.generic import TemplateView
 from django.urls import path, include
+from problem import views as problem_views
 from question import views as question_views
 from common import views as common_views
 from rest_framework import routers
 from rest_framework.schemas import get_schema_view
 
 # Sets up the viewsets for models and maps them to appropriate URLs using SimpleRouter
-router = routers.SimpleRouter()
+router = routers.DefaultRouter()
 router.register(r'coding', question_views.CodingQuestionViewSet, basename='CodingQuestion')
+router.register(r'problems', problem_views.ProblemViewSet)
+
 
 urlpatterns = [
     path('openapi', get_schema_view(
