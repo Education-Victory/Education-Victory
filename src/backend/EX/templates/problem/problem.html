@@ -1,0 +1,443 @@
+{% extends "basic.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href={% static 'css/codeeditor.min.css' %}> </link>
+<style>
+        
+    </style>
+{% endblock %}
+
+{% block content %}
+<span id="vue-span">
+  <section class="section">
+  <div class="container is-fluid">
+    <div class="columns">
+      <div class="column is-6">
+        <div class="card custom-card">
+          <div class="card-content">
+              <p class="title has-text-centered">[[ question.name ]]</p>
+              <div class="tabs is-centered">
+                <ul>
+                  <li :class="{ 'is-active': activeLeftTab === 'Question' }">
+                    <a @click="changeProgress($event)">
+                      <span class="icon is-small"><i class="fas fa-question-circle" aria-hidden="true"></i></span>
+                      <span>Question</span>
+                    </a>
+                  </li>
+                  <li :class="{ 'is-active': activeLeftTab === 'Prior Knowledge' }">
+                    <a @click="changeProgress($event)">
+                      <span class="icon is-small"><i class="fas fa-book" aria-hidden="true"></i></span>
+                      <span>Prior Knowledge</span>
+                    </a>
+                  </li>
+                  <li :class="{ 'is-active': activeLeftTab === 'Solution' }">
+                    <a @click="changeProgress($event)">
+                      <span class="icon is-small"><i class="fas fa-lightbulb" aria-hidden="true"></i></span>
+                      <span>Solution</span>
+                    </a>
+                  </li>
+                </ul>
+              </div> <!-- end tab -->
+              <div class="content render-markdown">
+                <p>[[ message ]]</p>
+                <div v-html="renderedMarkdown">
+                </div>
+              </div>
+          </div> <!-- end card content -->
+        </div> <!-- end card -->
+      </div> <!-- end column -->
+      <div class="column is-6">
+        <div class="card custom-card">
+          <div class="card-content">
+            <timer-component></timer-component>
+            <div class="tabs is-centered">
+                <ul>
+                  <li :class="{ 'is-active': activeTab === 'Understand' }">
+                    <a @click="changeActive('Understand')">
+                      <span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
+                      <span>Understand</span>
+                    </a>
+                  </li>
+                  <li :class="{ 'is-active': activeTab === 'Analyze' }">
+                    <a @click="changeActive('Analyze')">
+                      <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
+                      <span>Analyze</span>
+                    </a>
+                  </li>
+                  <li :class="{ 'is-active': activeTab === 'Implement' }">
+                    <a @click="changeActive('Implement')">
+                      <!-- Tab content -->
+                      <span class="icon is-small"><i class="fas fa-film" aria-hidden="true"></i></span>
+                      <span>Implement</span>
+                    </a>
+                  </li>
+                  <li :class="{ 'is-active': activeTab === 'Review' }">
+                    <a @click="changeActive('Review')">
+                      <!-- Tab content -->
+                      <span class="icon is-small"><i class="fas fa-film" aria-hidden="true"></i></span>
+                      <span>Review</span>
+                    </a>
+                  </li>
+                </ul>
+              </div> <!-- end tab -->
+             <div v-if="activeTab === 'Understand'" class="content practice-panel">
+                <p></p>
+                <div class="field mb-5">
+                  <label class="label">Question1: </label>
+                  <p>Which statements are true regarding the problem described in the text?</p>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="red">
+                      The target represents the combined amount you and your friend are willing to contribute.
+                    </label>
+                  </div>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="green">
+                      Each item in the nums array can only be used once in the sum.
+                    </label>
+                  </div>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="blue">
+                      You need to find the sum of all items in the nums array.
+                    </label>
+                  </div>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="yellow">
+                      The solution should identify the positions of the two items that add up to the exact target amount.
+                    </label>
+                  </div>
+                </div> <!-- end field -->
+                <br>
+                <div class="field">
+                  <label class="label">Question2: </label>
+                  <p>Consider the following <code>nums</code> array and <code>target</code> value:</p>
+                <p><code>nums</code> = [5, 1, 9, 3, 7, 4]</p>
+                <p><code>target</code> = 11</p>
+                <p>Which pair of indices from the <code>nums</code> array contain values that add up to the <code>target</code>?</p>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="red">
+                      Indices 0 and 2 (values 5 and 9)
+                    </label>
+                  </div>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="green">
+                      Indices 1 and 3 (values 1 and 3)
+                    </label>
+                  </div>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="blue">
+                      Indices 2 and 4 (values 9 and 7)
+                    </label>
+                  </div>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="yellow">
+                      Indices 0 and 1 (values 5 and 1)
+                    </label>
+                  </div>
+                </div> <!-- end field -->
+              </div> <!-- end content -->
+             <div v-if="activeTab === 'Analyze'" class="content practice-panel">
+               <div class="field mb-5">
+                  <label class="label">Question1: </label>
+                  <p>Which data structures you would use to solve this problem?</p>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="red">
+                      Binary Tree
+                    </label>
+                  </div>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="green">
+                      Stack
+                    </label>
+                  </div>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="blue">
+                      Heap
+                    </label>
+                  </div>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="yellow">
+                      Array
+                    </label>
+                  </div>
+                </div> <!-- end field -->
+                <br>
+                <div class="field mb-5">
+                  <label class="label">Question2: </label>
+                  <p>Which algorithm & data structure you would use to solve this problem?</p>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="red">
+                      Binary Tree
+                    </label>
+                  </div>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="green">
+                      Stack
+                    </label>
+                  </div>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="blue">
+                      Heap
+                    </label>
+                  </div>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="yellow">
+                      Array
+                    </label>
+                  </div>
+                </div> <!-- end field -->
+             </div> 
+              <!-- Implement ------------------>
+              <div v-if="activeTab === 'Implement'">
+                <div class="columns">
+                  <div class="column is-narrow">
+                    <div class="select">
+                      <select id="language-selector">
+                        <option value="Python3">Python3</option>
+                        <option value="Java">Java</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="column is-narrow">
+                    <div class="buttons">
+                      <button class="button is-info" @click="showSmallHint()">Small Hint</button>
+                      <button class="button is-info" @click="showBigHint()">Big Hint</button>
+                      <button class="button is-link" @click="confirmCodeHint()">Code Hint</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="notification is-info is-light" v-if="isNotificationActive">
+                  <button class="delete" @click="closeNotification"></button>
+                    [[ notificationMessage ]]
+                </div>
+                <codemirror v-model="question.code_hint" :selectedLanguage="language"></codemirror>
+              </div> <!-- end content -->
+
+            </div> <!-- end card-content -->
+            <footer class="card-footer">
+              <a href="#" class="card-footer-item"><i class="fas fa-film" aria-hidden="true"></i>&nbsp;Submit</a>
+            </footer>
+          </div> <!-- end card -->
+          <br>
+          <div class="card">
+            <div class="card-content">
+              <div class="tabs is-boxed">
+                <ul>
+                  <li class="is-active"><a>Milestones</a></li>
+                </ul>
+              </div>
+              <div class="control">
+                <label class="checkbox">
+                  <input type="checkbox" name="colors" value="blue">
+                  Passed Question 1
+                </label>
+              </div>
+              <div class="control">
+                <label class="checkbox">
+                  <input type="checkbox" name="colors" value="blue">
+                  Passed Question 2
+                </label>
+              </div>
+            </div> <!-- end card content -->
+          </div> <!-- end card -->
+        </div> <!-- end column -->
+    </div> <!-- end columns -->
+</div> <!-- end container -->
+</section>
+</span>
+{% endblock %}
+{% block extra_script %}
+  <script src={% static 'js/codeeditor.min.js' %}></script>
+  <script src={% static 'js/marked.min.js' %}></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.0/mode/java/java.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.0/mode/python/python.min.js"></script>
+  <script>
+    var root = '{{ root }}';
+    const question_name = '{{ question_name }}';
+    const category_name = '{{ category_name }}';
+    Vue.component('codemirror', {
+      template: '<textarea ref="myTextarea"></textarea>',
+      props: ['value', 'selectedLanguage'],
+      data() {
+        return {
+          editor: null,
+        };
+      },
+      mounted: function() {
+        this.$nextTick(() => {
+          if (this.$refs.myTextarea) {
+            var self = this;
+            this.editor = CodeMirror.fromTextArea(this.$refs.myTextarea, {
+              lineNumbers: true,
+              mode: 'python',
+            });
+            this.editor.on('change', function() {
+              self.$emit('input', self.editor.getValue());
+            });
+            if (this.value) {
+              this.editor.setValue(this.value);
+            }
+          } else {
+            console.error('The textarea element is not available in the DOM.');
+          }
+        });
+      },
+      methods: {
+        confirmCodeHint() {
+          if (confirm('This will replace your code in CodeMirror. Click "Yes" to proceed, "No" to cancel.')) {
+            this.applyCodeHint();
+          }
+        },
+        applyCodeHint() {
+          this.code = this.question.code_hint; // Replace the code in CodeMirror with the code hint
+        },
+        updateEditorMode(language) {
+          let mode = 'text/plain';
+          if (language === 'Java') {
+            mode = 'text/x-java';
+          } else if (language === 'Python3') {
+            mode = {name: "python", version: 3, singleLineStringErrors: false};
+          }
+          if (this.editor) {
+            this.editor.setOption("mode", mode);
+          }
+        }, 
+      },
+      watch: {
+        value: function(val) {
+          if (this.editor && val !== this.editor.getValue()) {
+            this.editor.setValue(val);
+          }
+        },
+        selectedLanguage: function(newLanguage) {
+          this.updateEditorMode(newLanguage);
+        }
+      }
+    });
+
+    Vue.component('timer-component', {
+      data: function () {
+        return {
+          startTime: Date.now(),
+          currentTime: Date.now(),
+          timer: null
+        };
+      },
+      computed: {
+        formattedTime: function () {
+          const elapsedTime = this.currentTime - this.startTime;
+          let seconds = Math.floor((elapsedTime / 1000) % 60);
+          let minutes = Math.floor((elapsedTime / (1000 * 60)) % 60);
+          let hours = Math.floor((elapsedTime / (1000 * 60 * 60)) % 24);
+
+          seconds = seconds < 10 ? '0' + seconds : seconds;
+          minutes = minutes < 10 ? '0' + minutes : minutes;
+          hours = hours < 10 ? '0' + hours : hours;
+
+          return `${hours}:${minutes}:${seconds}`;
+        }
+      },
+      mounted: function () {
+        this.timer = setInterval(() => {
+          this.currentTime = Date.now();
+        }, 1000);
+      },
+      beforeDestroy: function () {
+        if (this.timer) {
+          clearInterval(this.timer);
+        }
+      },
+      delimiters: ['[[', ']]'],
+      template: `
+          <p id="timer" class="title has-text-centered">
+            <span id="timerValue">[[ formattedTime ]]</span>
+          </p>
+      `
+    });
+
+    var app = new Vue({
+      delimiters: ['[[', ']]'],
+      el: '#vue-span',
+      data () {
+        return {
+           root: root,
+           question: '',
+           activeTab: 'Understand',
+           activeLeftTab: 'Question',
+           isNotificationActive: false,
+           notificationMessage: '',
+           language: 'Python3',
+           code_hint: '',
+           message: ''
+        }
+      },
+      mounted () {
+        axios.get(root + '/api/coding/?name=' + question_name + '&category=' + category_name)
+          .then(response => {
+              this.question = response.data[0];
+          })
+          .catch()
+      },
+      methods: {
+        showSmallHint() {
+          this.notificationMessage = this.question.text_hint.data[0];
+          this.isNotificationActive = true;
+        },
+        showBigHint() {
+          this.notificationMessage = this.question.text_hint.data[1];
+          this.isNotificationActive = true;
+        },
+        closeNotification() {
+          this.isNotificationActive = false;
+        },
+        getCode: function() {
+          if (this.editor) {
+            return this.editor.getValue();
+          }
+          return '';
+        },  
+        sendCodeToServer: function() {
+          const editor_code = this.getCode();
+        },
+        changeActive(tabName) {
+          this.activeTab = tabName;
+        },
+        changeProgress: function(event) {
+          const anchor = event.currentTarget;
+          const span = anchor.querySelector("span:not(.icon)");
+          const text = span.textContent;
+          this.activeLeftTab = text;
+        },
+      },
+      computed: {
+        renderedMarkdown() {
+          if (this.activeLeftTab == 'Prior Knowledge') {
+            return marked.parse(this.question.begin);
+          }
+          else if (this.activeLeftTab == 'Question') {
+            return marked.parse(this.question.during);
+          }
+          else if (this.activeLeftTab == 'Solution') {
+            return marked.parse(this.question.finish);
+          } 
+        },
+      }
+    })
+  </script>
+{% endblock %}
