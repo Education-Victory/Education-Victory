@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from question.models import Checklist
 
 def get_default_json():
     return {}
@@ -19,6 +20,7 @@ class Problem(models.Model):
     desc = models.JSONField(default=get_default_json)
     upvote = models.IntegerField(default=1)
     downvote = models.IntegerField(default=1)
+    checklist = models.ManyToManyField(Checklist, blank=True)
     is_published = models.BooleanField(default=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
