@@ -1,5 +1,10 @@
 from django.contrib import admin
-from .models import Problem, TagProblem, ProblemFrequency
+from .models import Problem, TagProblem, ProblemFrequency, Checklist
+
+@admin.register(Checklist)
+class ChecklistAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_at', 'updated_at')
+
 
 @admin.register(Problem)
 class ProblemAdmin(admin.ModelAdmin):
@@ -9,11 +14,13 @@ class ProblemAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
 
+
 @admin.register(TagProblem)
 class TagProblemAdmin(admin.ModelAdmin):
     list_display = ('tag', 'problem', 'weight')
     list_filter = ('tag',)
     search_fields = ('tag__name', 'problem__name')
+
 
 @admin.register(ProblemFrequency)
 class ProblemFrequencyAdmin(admin.ModelAdmin):

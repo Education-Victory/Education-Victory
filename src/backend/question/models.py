@@ -20,12 +20,6 @@ class Tag(models.Model):
         return f'{self.name}'
 
 
-class Checklist(models.Model):
-    name = models.CharField(max_length=100, default='')
-    created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
 class CodingQuestion(models.Model):
     problem = models.ForeignKey('problem.Problem', on_delete=models.CASCADE)
     tag = models.ManyToManyField('question.Tag', through='TagCoding')

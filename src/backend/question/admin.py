@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import (
     Tag,
-    Checklist,
     CodingQuestion,
     TagCoding,
     ChoiceQuestion,
@@ -15,9 +14,6 @@ class TagAdmin(admin.ModelAdmin):
     list_display = ('name', 'weight', 'difficulty', 'created_at', 'updated_at')
     search_fields = ('name',)
 
-@admin.register(Checklist)
-class ChecklistAdmin(admin.ModelAdmin):
-    list_display = ('name', 'created_at', 'updated_at')
 
 @admin.register(CodingQuestion)
 class CodingQuestionAdmin(admin.ModelAdmin):
