@@ -61,6 +61,7 @@ class ChoiceQuestion(models.Model):
     difficulty = models.IntegerField(default=0)
     choice = models.JSONField(default=get_default_json)
     answer = models.IntegerField(default=1, help_text='binary form of the correct answer')
+    explain = models.CharField(blank=True, max_length=2000)
     text_hint = models.CharField(blank=True, max_length=1000)
     text_hint_2 = models.CharField(blank=True, max_length=1000)
     created_at = models.DateTimeField(default=timezone.now)
