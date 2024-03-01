@@ -6,8 +6,12 @@ def get_default_json():
 
 class Milestone(models.Model):
     name = models.CharField(max_length=100, default='')
+    type = models.CharField(default='implement', max_length=1000)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Problem(models.Model):
