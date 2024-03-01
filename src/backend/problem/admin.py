@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Problem, TagProblem, ProblemFrequency, Checklist
+from .models import Problem, TagProblem, ProblemFrequency, Milestone
 
-@admin.register(Checklist)
+@admin.register(Milestone)
 class ChecklistAdmin(admin.ModelAdmin):
     list_display = ('name', 'created_at', 'updated_at')
 

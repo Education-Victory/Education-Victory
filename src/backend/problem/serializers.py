@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Problem, Checklist
+from .models import Problem, Milestone
 
 class ProblemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,5 +8,5 @@ class ProblemSerializer(serializers.ModelSerializer):
 
 class ChecklistSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Checklist
+        model = Milestone
         fields = ('name',)

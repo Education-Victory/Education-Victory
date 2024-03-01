@@ -39,7 +39,7 @@ class TagChoiceAdmin(admin.ModelAdmin):
 
 @admin.register(UserSubmission)
 class UserSubmissionAdmin(admin.ModelAdmin):
-    list_display = ('user', 'content_type', 'object_id', 'checklist', 'created_at', 'updated_at')
+    list_display = ('user', 'content_type', 'object_id', 'milestone', 'created_at', 'updated_at')
     list_filter = ('content_type', 'user')
 
 @admin.register(TestCase)

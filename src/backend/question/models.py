@@ -82,7 +82,7 @@ class UserSubmission(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     type_of_question = GenericForeignKey('content_type', 'object_id')
-    checklist = models.IntegerField(default=1, help_text='binary form of checked checklist')
+    milestone = models.IntegerField(default=1, help_text='binary form of checked milestone')
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
