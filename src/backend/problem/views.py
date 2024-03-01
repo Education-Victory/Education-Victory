@@ -11,7 +11,6 @@ class ProblemViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = Problem.objects.all()
         name = self.request.query_params.get('name', None)
-        print(name)
         if name is not None:
             name = name.replace('-', ' ')
             queryset = queryset.filter(name=name)

@@ -27,7 +27,7 @@ from rest_framework.schemas import get_schema_view
 
 # Sets up the viewsets for models and maps them to appropriate URLs using SimpleRouter
 router = routers.DefaultRouter()
-router.register(r'resource', question_views.ResourceViewSet, basename='resource')
+router.register(r'question', question_views.QuestionViewSet, basename='question')
 router.register(r'problem', problem_views.ProblemViewSet, basename='problem')
 
 
@@ -44,8 +44,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('api/evaluation_simple/', common_views.evaluation_simple),
-    path('api/question/', question_views.get_question_lst),
-    path('api/gen_task/', question_views.generate_daily_task),
     path('api/', include((router.urls, 'app_name'))),
     path('system-design/<str:name>/', problem_views.problem, name='problem'),
     path('evaluation/<str:type>/', common_views.evaluation, name='evaluation'),
