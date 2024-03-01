@@ -3,6 +3,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href={% static 'css/codeeditor.min.css' %}> </link>
+<link rel="stylesheet" href={% static 'css/swiper-bundle.min.css' %}> </link>
 {% endblock %}
 
 {% block content %}
@@ -11,223 +12,83 @@
   <div class="container is-fluid">
     <div class="columns">
       <div class="column is-6">
-        <div class="card custom-card">
+        <div class="card">
           <div class="card-content">
             <p class="title is-size-1 has-text-centered">[[ problem.name ]] </p>
-            <div class="content render-markdown">
-              <p class="is-size-4">[[ problem.desc.desc ]]</p>
+            <div class="content render-markdown mb-6">
+              <p class="is-size-4" v-if="problem.desc">[[ problem.desc.desc ]]</p>
+            </div>
+            <div class="card">
+              <header class="card-header">
+                <p class="card-header-title">
+                  Milestones
+                </p>
+              </header>
+              <div class="card-content">
+                <div class="content">
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="blue">
+                      [[ problem.checklist ]]
+                    </label>
+                  </div>
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" name="colors" value="blue">
+                    </label>
+                  </div>
+                </div>
+              </div>
             </div>
           </div> <!-- end card content -->
         </div> <!-- end card -->
       </div> <!-- end column -->
       <div class="column is-6">
-        <div class="card custom-card">
+        <div class="card">
           <div class="card-content">
             <div class="tabs is-centered">
-                <ul>
-                  <li>
-                    <a>
-                      <span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
-                      <span>Understand</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a>
-                      <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
-                      <span>Analyze</span>
-                    </a>
-                  </li>
-                  <li>
-                      <a>
-                      <!-- Tab content -->
-                      <span class="icon is-small"><i class="fas fa-film" aria-hidden="true"></i></span>
-                      <span>Implement</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a>
-                      <!-- Tab content -->
-                      <span class="icon is-small"><i class="fas fa-film" aria-hidden="true"></i></span>
-                      <span>Review</span>
-                    </a>
-                  </li>
-                </ul>
-              </div> <!-- end tab -->
-             <div class="content practice-panel">
-                <p></p>
-                <div class="field mb-5">
-                  <label class="label">Question1: </label>
-                  <p>Which statements are true regarding the problem described in the text?</p>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="red">
-                      The target represents the combined amount you and your friend are willing to contribute.
-                    </label>
-                  </div>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="green">
-                      Each item in the nums array can only be used once in the sum.
-                    </label>
-                  </div>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="blue">
-                      You need to find the sum of all items in the nums array.
-                    </label>
-                  </div>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="yellow">
-                      The solution should identify the positions of the two items that add up to the exact target amount.
-                    </label>
-                  </div>
-                </div> <!-- end field -->
-                <br>
-                <div class="field">
-                  <label class="label">Question2: </label>
-                  <p>Consider the following <code>nums</code> array and <code>target</code> value:</p>
-                <p><code>nums</code> = [5, 1, 9, 3, 7, 4]</p>
-                <p><code>target</code> = 11</p>
-                <p>Which pair of indices from the <code>nums</code> array contain values that add up to the <code>target</code>?</p>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="red">
-                      Indices 0 and 2 (values 5 and 9)
-                    </label>
-                  </div>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="green">
-                      Indices 1 and 3 (values 1 and 3)
-                    </label>
-                  </div>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="blue">
-                      Indices 2 and 4 (values 9 and 7)
-                    </label>
-                  </div>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="yellow">
-                      Indices 0 and 1 (values 5 and 1)
-                    </label>
-                  </div>
-                </div> <!-- end field -->
-              </div> <!-- end content -->
-             <div class="content practice-panel">
-               <div class="field mb-5">
-                  <label class="label">Question1: </label>
-                  <p>Which data structures you would use to solve this problem?</p>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="red">
-                      Binary Tree
-                    </label>
-                  </div>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="green">
-                      Stack
-                    </label>
-                  </div>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="blue">
-                      Heap
-                    </label>
-                  </div>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="yellow">
-                      Array
-                    </label>
-                  </div>
-                </div> <!-- end field -->
-                <br>
-                <div class="field mb-5">
-                  <label class="label">Question2: </label>
-                  <p>Which algorithm & data structure you would use to solve this problem?</p>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="red">
-                      Binary Tree
-                    </label>
-                  </div>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="green">
-                      Stack
-                    </label>
-                  </div>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="blue">
-                      Heap
-                    </label>
-                  </div>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="yellow">
-                      Array
-                    </label>
-                  </div>
-                </div> <!-- end field -->
-             </div> 
-              <!-- Implement ------------------>
-              <div>
-                <div class="columns">
-                  <div class="column is-narrow">
-                    <div class="select">
-                      <select id="language-selector">
-                        <option value="Python3">Python3</option>
-                        <option value="Java">Java</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="column is-narrow">
-                    <div class="buttons">
-                      <button class="button is-info">Small Hint</button>
-                      <button class="button is-info">Big Hint</button>
-                      <button class="button is-link">Code Hint</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="notification is-info is-light">
-                  <button class="delete"></button>
-                    bcd
-                </div>
-                <codemirror></codemirror>
-              </div> <!-- end content -->
-
+              <ul>
+                <li :class="{'is-active': activeTab === 'understand'}">
+                  <a @click="setActiveTab('understand')">
+                    <span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
+                    Understand
+                  </a></li>
+                <li :class="{'is-active': activeTab === 'analyze'}">
+                  <a @click="setActiveTab('analyze')">
+                    <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
+                      Analyze
+                  </a></li>
+                <li :class="{'is-active': activeTab === 'implement'}">
+                  <a @click="setActiveTab('implement')">
+                    <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
+                    Implement
+                  </a>
+                </li>
+              </ul>
+            </div> <!-- end tab -->
+            <div class="swiper">
+              <div class="swiper-container" v-if="question && question.length > 0">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide" v-for="(qu, i) in question" :key="qu.id">
+                    <div class="field mb-5">
+                      <label class="label">[[ qu.desc.desc ]]</label>
+                      <div class="control" v-for="(choice, index) in qu.desc.choice" :key="index">
+                        <label class="checkbox">
+                          <input type="checkbox" :name="'choice' + i + '-' + index" :value="choice">
+                          [[ choice ]]
+                        </label>
+                      </div> <!-- end control -->
+                      <label class="label">explainent</label>
+                    </div> <!-- end field -->
+                  </div> <!-- end swiper-slide -->
+                </div> <!-- end swiper-wrapper -->
+                <div class="swiper-pagination"></div>
+              </div> <!-- end swiper-container -->
+              </div> <!-- end swiper -->
             </div> <!-- end card-content -->
-            <footer class="card-footer">
-              <a href="#" class="card-footer-item"><i class="fas fa-film" aria-hidden="true"></i>&nbsp;Submit</a>
-            </footer>
           </div> <!-- end card -->
           <br>
-          <div class="card">
-            <div class="card-content">
-              <div class="tabs is-boxed">
-                <ul>
-                  <li class="is-active"><a>Milestones</a></li>
-                </ul>
-              </div>
-              <div class="control">
-                <label class="checkbox">
-                  <input type="checkbox" name="colors" value="blue">
-                  Passed Question 1
-                </label>
-              </div>
-              <div class="control">
-                <label class="checkbox">
-                  <input type="checkbox" name="colors" value="blue">
-                  Passed Question 2
-                </label>
-              </div>
-            </div> <!-- end card content -->
-          </div> <!-- end card -->
+          
         </div> <!-- end column -->
     </div> <!-- end columns -->
 </div> <!-- end container -->
@@ -235,6 +96,7 @@
 </span>
 {% endblock %}
 {% block extra_script %}
+  <script src={% static 'js/swiper-bundle.min.js' %}></script>
   <script src={% static 'js/codeeditor.min.js' %}></script>
   <script src={% static 'js/marked.min.js' %}></script>
     <script>
@@ -248,40 +110,67 @@
       data () {
         return {
            root: root,
-           problem: null,
-           resource_type: 'question', 
+           problem: [],
+           all_question: {},
+           question: {},
+           resource: {},
+           activeTab: 'understand',
+        }
+      },
+      watch: {
+        question: function(newQuestion, oldQuestion) {
+          this.$nextTick(() => {
+            this.initializeSwiper();
+          });
         }
       },
       mounted () {
-        axios.get(root + '/api/problem/?name=' + problem_name)
-          .then(response => {
-              if (response.data && response.data.length > 0) {
-                  this.problem = response.data[0];
-              } else {
-                  console.error('Unexpected data structure from API');
-                  this.message = 'An error occurred while fetching the problem.';
-              }
-          })
-          .catch(error => {
-              console.error('Error fetching problem:', error);
-              this.message = 'An error occurred while fetching the problem.';
-          });
-        axios.get(root + '/api/resource/?resource_type=' + this.resource_type + '&name='  + problem_name + '&type=' + type)
-          .then(response => {
-              if (response.data && response.data.length > 0) {
-                  this.resource = response.data[0];
-              } else {
-                  console.error('Unexpected data structure from API');
-                  this.message = 'An error occurred while fetching the problem.';
-              }
-          })
-          .catch(error => {
-              console.error('Error fetching problem:', error);
-              this.message = 'An error occurred while fetching the problem.';
-          });
-
+        this.fetchProblem();
+        this.fetchQuestion();
       },
       methods: {
+        setActiveTab(tabName) {
+            this.activeTab = tabName;
+            this.question = this.all_question[this.activeTab];
+        },
+        initializeSwiper() {
+  if (this.swiperInstance) {
+    this.swiperInstance.destroy();
+  }
+  this.$nextTick(() => {
+    this.swiperInstance = new Swiper('.swiper-container', {
+      slidesPerView: 1,
+      spaceBetween: 30,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true, // Ensure pagination is clickable
+      },
+    });
+  });
+},
+        fetchQuestion() {
+            axios.get(root + '/api/question/?name='  + problem_name)
+              .then(response => {
+                  this.all_question = response.data;
+                  this.question = this.all_question[this.activeTab];
+              })
+              .catch(error => {
+                  this.message = 'An error occurred while fetching the problem.';
+              });
+          },
+        fetchProblem() {
+          axios.get(root + '/api/problem/?name=' + problem_name)
+            .then(response => {
+                if (response.data && response.data.length > 0) {
+                    this.problem = response.data[0];
+                } else {
+                    this.message = 'An error occurred while fetching the problem.';
+                }
+            })
+            .catch(error => {
+                this.message = 'An error occurred while fetching the problem.';
+            });
+          },
       },
       computed: {
       }

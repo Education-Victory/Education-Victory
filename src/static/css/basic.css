@@ -86,7 +86,6 @@ html {
 }
 
 .render-markdown, .practice-panel {
-  height: 80vh;
   overflow-y: auto;
 }
 
