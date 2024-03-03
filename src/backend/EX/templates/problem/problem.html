@@ -2,178 +2,124 @@
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet" href={% static 'css/codeeditor.min.css' %}> </link>
-<link rel="stylesheet" href={% static 'css/swiper-bundle.min.css' %}> </link>
+<link rel="stylesheet" href="{% static 'css/codeeditor.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
 {% endblock %}
 
 {% block content %}
 <span id="vue-span">
-  <section class="section">
-  <div class="container is-fluid">
-    <div class="columns">
-      <div class="column is-6">
-        <div class="card">
-          <div class="card-content">
-            <p class="title is-size-1 has-text-centered">[[ problem.name ]] </p>
-            <div class="content render-markdown mb-6">
-              <p class="is-size-4" v-if="problem.desc">[[ problem.desc.desc ]]</p>
-            </div>
-            <div class="card">
-              <header class="card-header">
-                <p class="card-header-title">
-                  Milestones
-                </p>
-              </header>
-              <div class="card-content">
-                <div class="content">
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="blue">
-                      [[ problem.checklist ]]
-                    </label>
-                  </div>
-                  <div class="control">
-                    <label class="checkbox">
-                      <input type="checkbox" name="colors" value="blue">
-                    </label>
-                  </div>
+    <section class="section">
+        <div class="container is-fluid">
+            <div class="columns">
+                <!-- Problem Description Column -->
+                <div class="column is-6">
+                    <div class="card">
+                        <div class="card-content">
+                            <p class="title is-size-1 has-text-centered">[[ problem.name ]]</p>
+                            <div class="content render-markdown mb-6">
+                                <p class="is-size-4" v-if="problem.desc">[[ problem.desc.desc ]]</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
+                
+                <!-- Tabs and Questionnaire Column -->
+                <div class="column is-6">
+                    <div class="card">
+                        <div class="card-content">
+                            <!-- Tabs for Understand, Analyze, Implement -->
+                            <div class="tabs is-centered">
+                                <ul>
+                                    <li :class="{'is-active': activeTab === 'understand'}">
+                                        <a @click="setActiveTab('understand')">
+                                            <span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
+                                            Understand
+                                        </a>
+                                    </li>
+                                    <li :class="{'is-active': activeTab === 'analyze'}">
+                                        <a @click="setActiveTab('analyze')">
+                                            <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
+                                            Analyze
+                                        </a>
+                                    </li>
+                                    <li :class="{'is-active': activeTab === 'implement'}">
+                                        <a @click="setActiveTab('implement')">
+                                            <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
+                                            Implement
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Milestones Section -->
+                            <div class="card">
+                                <header class="card-header">
+                                    <p class="card-header-title">Milestones</p>
+                                </header>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <div class="control" v-for="(milestone, index) in filteredMilestones" :key="index">
+                                            <label class="checkbox">
+                                                <input type="checkbox" :name="'milestone' + milestone.id">
+                                                [[ milestone.name ]]
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            
+                            <!-- Questionnaire Section -->
+                            <div class="card">
+                                <header class="card-header">
+                                    <p class="card-header-title">Questionnaire</p>
+                                </header>
+                                <div class="card-content">
+                                    <div class="swiper">
+                                        <div class="swiper-container" v-if="question && question.length > 0">
+                                            <div class="swiper-wrapper">
+                                                <div class="swiper-slide" v-for="(qu, i) in question" :key="qu.id">
+                                                    <div class="field mb-5">
+                                                        <label class="label">[[ qu.desc.desc ]]</label>
+                                                        <div class="control" v-for="(choice, index) in qu.desc.choice" :key="index">
+                                                            <label class="checkbox" :class="{'has-background-grey': qu.isIncorrect && qu.userChoices[index], 'has-background-success': qu.isCorrect && qu.userChoices[index]}">
+                                                                <input type="checkbox" :name="'choice' + i + '-' + index" :value="choice" v-model="qu.userChoices[index]" @change="toggleChoice(i, index)" :disabled="qu.isCorrect || qu.isIncorrect">
+                                                                [[ choice ]]
+                                                            </label>
+                                                        </div>
+                                                        <p class="is-size-3" v-if="qu.isIncorrect && !qu.isCorrect">Incorrect</p>
+                                                        <p class="is-size-3" v-if="qu.isCorrect">Correct</p>
+                                                    </div>
+                                                    <button @click="qu.show_explanation = !qu.show_explanation" class="button is-small is-info">Show Explanation</button>
+                                                    <div :class="{'invisible-text': !qu.show_explanation}">
+                                                        <p>[[ qu.explain ]]</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-pagination"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
             </div>
-          </div> <!-- end card content -->
-        </div> <!-- end card -->
-      </div> <!-- end column -->
-      <div class="column is-6">
-        <div class="card">
-          <div class="card-content">
-            <div class="tabs is-centered">
-              <ul>
-                <li :class="{'is-active': activeTab === 'understand'}">
-                  <a @click="setActiveTab('understand')">
-                    <span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
-                    Understand
-                  </a></li>
-                <li :class="{'is-active': activeTab === 'analyze'}">
-                  <a @click="setActiveTab('analyze')">
-                    <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
-                      Analyze
-                  </a></li>
-                <li :class="{'is-active': activeTab === 'implement'}">
-                  <a @click="setActiveTab('implement')">
-                    <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
-                    Implement
-                  </a>
-                </li>
-              </ul>
-            </div> <!-- end tab -->
-            <div class="swiper">
-              <div class="swiper-container" v-if="question && question.length > 0">
-                <div class="swiper-wrapper">
-                  <div class="swiper-slide" v-for="(qu, i) in question" :key="qu.id">
-                    <div class="field mb-5">
-                      <label class="label">[[ qu.desc.desc ]]</label>
-                      <div class="control" v-for="(choice, index) in qu.desc.choice" :key="index">
-                        <label class="checkbox">
-                          <input type="checkbox" :name="'choice' + i + '-' + index" :value="choice">
-                          [[ choice ]]
-                        </label>
-                      </div> <!-- end control -->
-                      <label class="label">explainent</label>
-                    </div> <!-- end field -->
-                  </div> <!-- end swiper-slide -->
-                </div> <!-- end swiper-wrapper -->
-                <div class="swiper-pagination"></div>
-              </div> <!-- end swiper-container -->
-              </div> <!-- end swiper -->
-            </div> <!-- end card-content -->
-          </div> <!-- end card -->
-          <br>
-          
-        </div> <!-- end column -->
-    </div> <!-- end columns -->
-</div> <!-- end container -->
-</section>
+        </div>
+    </section>
 </span>
 {% endblock %}
+
 {% block extra_script %}
-  <script src={% static 'js/swiper-bundle.min.js' %}></script>
-  <script src={% static 'js/codeeditor.min.js' %}></script>
-  <script src={% static 'js/marked.min.js' %}></script>
-    <script>
+<script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'js/codeeditor.min.js' %}"></script>
+<script src="{% static 'js/marked.min.js' %}"></script>
+<script>
     var root = '{{ root }}';
     const path_array = window.location.pathname.split('/');
     const problem_name = path_array.filter(part => part.length > 0).pop();
     const type = 'understand';
-    var app = new Vue({
-      delimiters: ['[[', ']]'],
-      el: '#vue-span',
-      data () {
-        return {
-           root: root,
-           problem: [],
-           all_question: {},
-           question: {},
-           resource: {},
-           activeTab: 'understand',
-        }
-      },
-      watch: {
-        question: function(newQuestion, oldQuestion) {
-          this.$nextTick(() => {
-            this.initializeSwiper();
-          });
-        }
-      },
-      mounted () {
-        this.fetchProblem();
-        this.fetchQuestion();
-      },
-      methods: {
-        setActiveTab(tabName) {
-            this.activeTab = tabName;
-            this.question = this.all_question[this.activeTab];
-        },
-        initializeSwiper() {
-  if (this.swiperInstance) {
-    this.swiperInstance.destroy();
-  }
-  this.$nextTick(() => {
-    this.swiperInstance = new Swiper('.swiper-container', {
-      slidesPerView: 1,
-      spaceBetween: 30,
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true, // Ensure pagination is clickable
-      },
-    });
-  });
-},
-        fetchQuestion() {
-            axios.get(root + '/api/question/?name='  + problem_name)
-              .then(response => {
-                  this.all_question = response.data;
-                  this.question = this.all_question[this.activeTab];
-              })
-              .catch(error => {
-                  this.message = 'An error occurred while fetching the problem.';
-              });
-          },
-        fetchProblem() {
-          axios.get(root + '/api/problem/?name=' + problem_name)
-            .then(response => {
-                if (response.data && response.data.length > 0) {
-                    this.problem = response.data[0];
-                } else {
-                    this.message = 'An error occurred while fetching the problem.';
-                }
-            })
-            .catch(error => {
-                this.message = 'An error occurred while fetching the problem.';
-            });
-          },
-      },
-      computed: {
-      }
-    })
-  </script>
+</script>
+<script src="{% static 'js/app/problem.js' %}"></script>
 {% endblock %}

@@ -96,3 +96,21 @@ html {
   min-height: 130vh; /* or whatever height you prefer */
   overflow-y: auto;
 }
+
+.invisible-text {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.swiper-slide {
+  padding-bottom: 6rem;
+}
+
+.has-background-grey {
+  background-color: #e0e0e0;
+}
+
+.has-background-success {
+  background-color: #4caf50;
+}
+
