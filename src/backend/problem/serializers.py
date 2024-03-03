@@ -8,17 +8,14 @@ class MilestoneSerializer(serializers.ModelSerializer):
 
 
 class ProblemSerializer(serializers.ModelSerializer):
-    milestone_name = serializers.SerializerMethodField()
+    milestone_detail = MilestoneSerializer(source='milestone', many=True, read_only=True)
 
     class Meta:
         model = Problem
         fields = '__all__'
 
-    def get_milestone_name(self, obj):
-        return [milestone.name for milestone in obj.milestone.all()]
 
-
-class ChecklistSerializer(serializers.ModelSerializer):
+class MilestoneSerializer(serializers.ModelSerializer):
     class Meta:
         model = Milestone
         fields = ('name',)

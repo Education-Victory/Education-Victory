@@ -29,6 +29,7 @@ from rest_framework.schemas import get_schema_view
 router = routers.DefaultRouter()
 router.register(r'question', question_views.QuestionViewSet, basename='question')
 router.register(r'problem', problem_views.ProblemViewSet, basename='problem')
+router.register(r'submission', question_views.UserSubmissionViewSet)
 
 
 urlpatterns = [
