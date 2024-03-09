@@ -1,6 +1,13 @@
 from django.conf import settings
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth import get_user_model
+from question.models import Tag
+from .models import UserAbility
+
+User = get_user_model()
 
 def home(request):
     # HTML for home page
@@ -89,3 +96,25 @@ def evaluation_simple(request):
     }
     return JsonResponse(question_lst)
 
+def set_user_ability(user_id, ability_score=50):
+    # Fetch the user by ID
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        print(f"User with ID {user_id} does not exist.")
+        return
+
+    all_tags = Tag.objects.all()
+
+    for tag in all_tags:
+        UserAbility.objects.update_or_create(
+            user=user,
+            tag=tag,
+            defaults={'ability_score': ability_score}
+        )
+
+
+@receiver(post_save, sender=User)
+def create_user_ability(sender, instance, created, **kwargs):
+    if created:  # Check if a new instance was created
+        set_user_ability(instance.id, default_ability_score)

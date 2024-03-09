@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from question.models import Tag
 
 def get_default_json():
     return {}
@@ -30,3 +31,15 @@ class Company(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class UserAbility(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='abilities')
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name='user_abilities')
+    ability_score = models.IntegerField(default=50)
+
+    class Meta:
+        unique_together = ('user', 'tag')
+
+    def __str__(self):
+        return f'{self.user.username} - {self.tag.name}: {self.ability_score}'
