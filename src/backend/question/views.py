@@ -130,3 +130,10 @@ class UserSubmissionViewSet(viewsets.ModelViewSet):
             return latest_submissions_list
         else:
             return queryset.none()  # Return empty queryset if problem_name or question_type is not provided
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        # Serialize the queryset
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)

@@ -26,6 +26,12 @@ class ChoiceQuestionSerializer(serializers.ModelSerializer):
 
 
 class UserSubmissionSerializer(serializers.ModelSerializer):
+    question_name = serializers.SerializerMethodField()
+
     class Meta:
         model = UserSubmission
         fields = '__all__'
+
+    def get_question_name(self, obj):
+        question = obj.type_of_question
+        return str(question) if question else None
