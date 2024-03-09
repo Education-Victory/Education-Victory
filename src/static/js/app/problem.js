@@ -18,10 +18,10 @@ var app = new Vue({
           });
         }
       },
-      mounted () {
-        this.fetchProblem();
-        this.fetchQuestion();
-        this.fetchSubmission();
+      mounted: async function() {
+        await this.fetchProblem();
+        await this.fetchQuestion();
+        await this.updateQuestionsWithSubmission();
       },
       methods: {
         setActiveTab(tabName) {
@@ -42,6 +42,34 @@ var app = new Vue({
               },
             });
           });
+        },
+        updateQuestionsWithSubmission() {
+            this.fetchSubmission().then(() => {
+              this.submission.forEach(sub => {
+                for (let category in this.all_question) {
+                  const questionIndex = this.all_question[category].findIndex(
+                    q => q.name === sub.question_name
+                  );
+                  // If a matching question is found
+                  if (questionIndex !== -1) {
+                    const question = this.all_question[category][questionIndex];
+                    const userChoices = JSON.parse(sub.content);
+
+                    Vue.set(question, 'userChoices', userChoices);
+                    Vue.set(question, 'isCorrect', sub.correct);
+                    Vue.set(question, 'isIncorrect', !sub.correct);
+                    Vue.set(question, 'disabled', true);
+                  }
+                }
+              });
+            });
+          },
+        resetQuestion(i) {
+          const question = this.question[i];
+          Vue.set(question, 'userChoices', new Array(question.desc.choice.length).fill(false));
+          Vue.set(question, 'isCorrect', false);
+          Vue.set(question, 'isIncorrect', false);
+          Vue.set(question, 'disabled', false);
         },
         submitAnswer(questionId, questionType, isCorrect, content) {
           axios.post('/api/submission/submit-answer/', {
@@ -93,7 +121,7 @@ var app = new Vue({
           // Update the question state based on correctness
           Vue.set(question, 'isCorrect', isCorrect && !hasIncorrectSelection);
           Vue.set(question, 'isIncorrect', hasIncorrectSelection);
-
+          Vue.set(question, 'disabled', question.isCorrect || question.isIncorrect);
 
           if (hasIncorrectSelection | (isCorrect && !hasIncorrectSelection)) {
             const questionId = this.question[questionIndex].id;
@@ -103,11 +131,12 @@ var app = new Vue({
           }
         },
         fetchQuestion() {
-          axios.get(root + '/api/question/?name='  + problem_name)
+          return axios.get(root + '/api/question/?name='  + problem_name)
             .then(response => {
               this.all_question = response.data;
               Object.keys(this.all_question).forEach((category) => {
                 this.all_question[category].forEach((question) => {
+                  Vue.set(question, 'disabled', false);
                   Vue.set(question, 'show_explanation', false);
                   Vue.set(question, 'userChoices', new Array(question.desc.choice.length).fill(false));
                   const binaryAnswer = question.answer.toString(2).padStart(question.desc.choice.length, '0').split('').reverse();
@@ -130,17 +159,17 @@ var app = new Vue({
             });
         },
         fetchSubmission() {
-          axios.get(root + '/api/submission/?name='  + problem_name + '&type=' + this.activeTab)
+          return axios.get(root + '/api/submission/?name='  + problem_name + '&type=' + this.activeTab)
             .then(response => {
               // Handle the response, e.g., storing it in your Vue component's data
-              this.submissions = response.data;
+              this.submission = response.data;
             })
             .catch(error => {
               console.error('An error occurred while fetching the submissions:', error);
             });
         },
         fetchProblem() {
-          axios.get(root + '/api/problem/?name=' + problem_name)
+          return axios.get(root + '/api/problem/?name=' + problem_name)
             .then(response => {
                 if (response.data && response.data.length > 0) {
                     this.problem = response.data[0];
@@ -152,13 +181,39 @@ var app = new Vue({
                 this.message = 'An error occurred while fetching the problem.';
             });
           },
-        },
+        findQuestionByName(questionName) {
+          for (let category in this.all_question) {
+            const question = this.all_question[category].find(q => q.name === questionName);
+            if (question) {
+              return question;
+            }
+          }
+          return null;
+        }
+      },
       computed: {
         filteredMilestones() {
           if (!this.problem.milestone_detail) {
             return [];
           }
           return this.problem.milestone_detail.filter(milestone => milestone.type === this.activeTab);
+        },
+         milestoneCompletionStatus() {
+            let completionStatus = {};
+            this.problem.milestone_detail.forEach(milestone => {
+              // Initially assume all questions under the milestone are correct
+              let allCorrect = true;
+              // Check each question related to the milestone
+              milestone.question.forEach(question => {
+                const questionInAllQuestions = this.findQuestionByName(question.name);
+                if (!questionInAllQuestions || !questionInAllQuestions.isCorrect) {
+                  allCorrect = false;
+                }
+              });
+              // Set the completion status for the milestone
+              completionStatus[milestone.id] = allCorrect;
+            });
+            return completionStatus;
         }
       }
     })

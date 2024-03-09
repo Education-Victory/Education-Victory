@@ -59,10 +59,10 @@
                                 <div class="card-content">
                                     <div class="content">
                                         <div class="control" v-for="(milestone, index) in filteredMilestones" :key="index">
-                                            <label class="checkbox">
-                                                <input type="checkbox" :name="'milestone' + milestone.id">
-                                                [[ milestone.name ]]
-                                            </label>
+                                          <label class="checkbox">
+                                            <input type="checkbox" :checked="milestoneCompletionStatus[milestone.id]" disabled>
+                                            [[ milestone.name ]]
+                                          </label>
                                         </div>
                                     </div>
                                 </div>
@@ -83,7 +83,7 @@
                                                         <label class="label">[[ qu.desc.desc ]]</label>
                                                         <div class="control" v-for="(choice, index) in qu.desc.choice" :key="index">
                                                             <label class="checkbox" :class="{'has-background-grey': qu.isIncorrect && qu.userChoices[index], 'has-background-success': qu.isCorrect && qu.userChoices[index]}">
-                                                                <input type="checkbox" :name="'choice' + i + '-' + index" :value="choice" v-model="qu.userChoices[index]" @change="toggleChoice(i, index)" :disabled="qu.isCorrect || qu.isIncorrect">
+                                                                <input type="checkbox" :name="'choice' + i + '-' + index" :value="choice" v-model="qu.userChoices[index]" @change="toggleChoice(i, index)" :disabled="qu.disabled">
                                                                 [[ choice ]]
                                                             </label>
                                                         </div>
@@ -91,6 +91,7 @@
                                                         <p class="is-size-3" v-if="qu.isCorrect">Correct</p>
                                                     </div>
                                                     <button @click="qu.show_explanation = !qu.show_explanation" class="button is-small is-info">Show Explanation</button>
+                                                    <button @click="resetQuestion(i)" class="button is-small is-success">Reset</button>
                                                     <div :class="{'invisible-text': !qu.show_explanation}">
                                                         <p>[[ qu.explain ]]</p>
                                                     </div>
