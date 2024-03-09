@@ -11,13 +11,13 @@ from .models import (
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('name', 'weight', 'difficulty', 'created_at', 'updated_at')
+    list_display = ('name', 'frequency', 'difficulty', 'created_at', 'updated_at')
     search_fields = ('name',)
 
 
 @admin.register(CodingQuestion)
 class CodingQuestionAdmin(admin.ModelAdmin):
-    list_display = ('desc', 'problem', 'difficulty', 'created_at', 'updated_at')
+    list_display = ('desc', 'problem', 'stage', 'difficulty', 'created_at', 'updated_at')
     list_filter = ('difficulty',)
     search_fields = ('desc', 'default_code')
 
@@ -28,8 +28,8 @@ class TagCodingAdmin(admin.ModelAdmin):
 
 @admin.register(ChoiceQuestion)
 class ChoiceQuestionAdmin(admin.ModelAdmin):
-    list_display = ('desc', 'problem', 'type', 'explain', 'difficulty', 'created_at', 'updated_at')
-    list_filter = ('type', 'difficulty')
+    list_display = ('desc', 'problem', 'stage', 'explain', 'difficulty', 'created_at', 'updated_at')
+    list_filter = ('stage', 'difficulty')
     search_fields = ('desc',)
 
 @admin.register(TagChoice)

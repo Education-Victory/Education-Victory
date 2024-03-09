@@ -11,8 +11,11 @@ def get_default_json():
 
 class Tag(models.Model):
     name = models.CharField(max_length=100, default='greedy')
-    weight = models.IntegerField(default=1, help_text='bigger means more important')
-    difficulty = models.IntegerField(default=1, help_text='bigger means more difficult')
+    category = models.CharField(max_length=100, default='algorithm')
+    frequency = models.IntegerField(
+        default=1, help_text='The larger the number, the higher the frequency')
+    difficulty = models.IntegerField(
+        default=1, help_text='The larger the number, the higher the difficulty')
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -23,7 +26,7 @@ class Tag(models.Model):
 class CodingQuestion(models.Model):
     problem = models.ForeignKey('problem.Problem', on_delete=models.CASCADE)
     tag = models.ManyToManyField('question.Tag', through='TagCoding')
-    type = models.CharField(default='implement', max_length=1000)
+    stage = models.CharField(default='implement', max_length=1000)
     desc = models.JSONField(default=get_default_json)
     default_code = models.TextField(max_length=4000)
     difficulty = models.IntegerField(default=0)
@@ -56,7 +59,7 @@ class ChoiceQuestion(models.Model):
 
     problem = models.ForeignKey('problem.Problem', on_delete=models.CASCADE)
     tag = models.ManyToManyField('question.Tag', through='TagChoice')
-    type = models.CharField(default='understand', max_length=1000)
+    stage = models.CharField(default='understand', max_length=1000)
     desc = models.JSONField(default=get_default_json)
     answer_type = models.IntegerField(choices=TYPE, default=0)
     difficulty = models.IntegerField(default=0)
