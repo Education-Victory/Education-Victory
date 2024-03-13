@@ -4,6 +4,10 @@ from django.http import JsonResponse
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
+from django.db.models import Q
+from rest_framework import viewsets, filters
+from rest_framework.permissions import IsAuthenticated
+from .serializers import UserAbilitySerializer
 from question.models import Tag
 from .models import UserAbility
 
@@ -118,3 +122,18 @@ def set_user_ability(user_id, ability_score=50):
 def create_user_ability(sender, instance, created, **kwargs):
     if created:  # Check if a new instance was created
         set_user_ability(instance.id, default_ability_score)
+
+
+class UserAbilityViewSet(viewsets.ModelViewSet):
+    serializer_class = UserAbilitySerializer
+    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['tag__category']
+
+    def get_queryset(self):
+        user = self.request.user
+        tag_category = self.request.query_params.get('tag_category', None)
+        queryset = UserAbility.objects.filter(user=user)
+        if tag_category:
+            queryset = queryset.filter(tag__category=tag_category)
+        return queryset

@@ -10,8 +10,10 @@ def get_default_json():
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=100, default='greedy')
     category = models.CharField(max_length=100, default='algorithm')
+    group = models.CharField(max_length=100, default='data_structure')
+    name = models.CharField(max_length=100, default='Greedy')
+    short_name = models.CharField(max_length=100, default='Grd')
     frequency = models.IntegerField(
         default=1, help_text='The larger the number, the higher the frequency')
     difficulty = models.IntegerField(

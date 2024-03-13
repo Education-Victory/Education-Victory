@@ -11,7 +11,7 @@ from .models import (
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('name', 'frequency', 'difficulty', 'created_at', 'updated_at')
+    list_display = ('name', 'group', 'frequency', 'difficulty', 'created_at', 'updated_at')
     search_fields = ('name',)
 
 

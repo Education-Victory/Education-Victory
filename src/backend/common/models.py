@@ -43,3 +43,12 @@ class UserAbility(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - {self.tag.name}: {self.ability_score}'
+
+
+class AbilityHistory(models.Model):
+    user_ability = models.ForeignKey(UserAbility, on_delete=models.CASCADE)
+    recorded_date = models.DateField(auto_now_add=True)
+    ability_score = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.user_ability.user.username} - {self.user_ability.tag.name}: {self.ability_score} on {self.recorded_date}'
