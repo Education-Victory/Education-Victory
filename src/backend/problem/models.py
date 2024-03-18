@@ -8,8 +8,8 @@ def get_default_json():
 class Problem(models.Model):
     CATEGORY_CHOICE = (
         ('algorithm', 'Algorithm'),
-        ('system design', 'System Design'),
-        ('computer science', 'Computer Science'),
+        ('system_design', 'System Design'),
+        ('computer_science', 'Computer Science'),
         ('behavioral', 'Behavioral'),
         ('resume', 'Resume'),
     )
