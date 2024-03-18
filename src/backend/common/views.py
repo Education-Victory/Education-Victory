@@ -7,9 +7,9 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from rest_framework import viewsets, filters
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserAbilitySerializer
+from .serializers import UserAbilitySerializer, UserActivitySerializer
 from question.models import Tag
-from .models import UserAbility
+from .models import UserAbility, UserActivity
 
 User = get_user_model()
 
@@ -100,17 +100,14 @@ def evaluation_simple(request):
     }
     return JsonResponse(question_lst)
 
-def set_user_ability(user_id, ability_score=50):
-    # Fetch the user by ID
-    try:
-        user = User.objects.get(pk=user_id)
-    except User.DoesNotExist:
-        print(f"User with ID {user_id} does not exist.")
-        return
+def set_user_ability(user_id, algorithm=30, system_design=30):
 
     all_tags = Tag.objects.all()
+    user = User.objects.get(pk=user_id)
 
     for tag in all_tags:
+        user_level = algorithm if tag.category == 'algorithm' else system_design
+        ability_score = user_level - (tag.difficulty - 20) // 3
         UserAbility.objects.update_or_create(
             user=user,
             tag=tag,
@@ -121,7 +118,7 @@ def set_user_ability(user_id, ability_score=50):
 @receiver(post_save, sender=User)
 def create_user_ability(sender, instance, created, **kwargs):
     if created:  # Check if a new instance was created
-        set_user_ability(instance.id, default_ability_score)
+        set_user_ability(instance.id)
 
 
 class UserAbilityViewSet(viewsets.ModelViewSet):
@@ -137,3 +134,8 @@ class UserAbilityViewSet(viewsets.ModelViewSet):
         if tag_category:
             queryset = queryset.filter(tag__category=tag_category)
         return queryset
+
+
+class UserActivityViewSet(viewsets.ModelViewSet):
+    queryset = UserActivity.objects.all()
+    serializer_class = UserActivitySerializer

@@ -29,7 +29,7 @@ from rest_framework.schemas import get_schema_view
 router = routers.DefaultRouter()
 router.register(r'question', question_views.QuestionViewSet, basename='question')
 router.register(r'problem', problem_views.ProblemViewSet, basename='problem')
-router.register(r'submission', question_views.UserSubmissionViewSet)
+router.register(r'submission', common_views.UserActivityViewSet)
 router.register(r'ability', common_views.UserAbilityViewSet, basename='userability')
 
 
@@ -45,6 +45,7 @@ urlpatterns = [
     ), name='swagger-ui'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path('api/recommend/', problem_views.recommend_problem, name='recommend_problem'),
     path('api/evaluation_simple/', common_views.evaluation_simple),
     path('api/', include((router.urls, 'app_name'))),
     path('system-design/<str:name>/', problem_views.problem, name='problem'),
