@@ -1,35 +1,33 @@
 import math
 from rest_framework import serializers
-from .models import CodingQuestion, ChoiceQuestion, UserSubmission
+from .models import Question, Milestone
+from common.models import UserActivity
 
 
-class CodingQuestionSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField()
 
-    class Meta:
-        model = CodingQuestion
-        fields = '__all__'
-
-    def get_name(self, obj):
-        return str(obj)
-
-
-class ChoiceQuestionSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField()
+class MilestoneSerializer(serializers.ModelSerializer):
+    question = serializers.SerializerMethodField()
 
     class Meta:
-        model = ChoiceQuestion
+        model = Milestone
         fields = '__all__'
 
-    def get_name(self, obj):
-        return str(obj)
+    def get_question(self, obj):
+        question_list = []
+        for mq in obj.milestonequestion_set.all():
+            return []
+
+class QuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = '__all__'  # Adjust fields as necessary
 
 
-class UserSubmissionSerializer(serializers.ModelSerializer):
+class UserActivitySerializer(serializers.ModelSerializer):
     question_name = serializers.SerializerMethodField()
 
     class Meta:
-        model = UserSubmission
+        model = UserActivity
         fields = '__all__'
 
     def get_question_name(self, obj):

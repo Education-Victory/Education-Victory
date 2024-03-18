@@ -1,13 +1,10 @@
 from django.contrib import admin
 from .models import (
     Tag,
-    CodingQuestion,
-    TagCoding,
-    ChoiceQuestion,
-    TagChoice,
-    UserSubmission,
-    TestCase,
+    Question,
+    TagQuestion,
 )
+from common.models import UserActivity
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
@@ -15,34 +12,18 @@ class TagAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 
-@admin.register(CodingQuestion)
-class CodingQuestionAdmin(admin.ModelAdmin):
-    list_display = ('desc', 'problem', 'stage', 'difficulty', 'created_at', 'updated_at')
+@admin.register(Question)
+class QuestionAdmin(admin.ModelAdmin):
+    list_display = ('desc', 'problem', 'step', 'difficulty', 'created_at', 'updated_at')
     list_filter = ('difficulty',)
     search_fields = ('desc', 'default_code')
 
-@admin.register(TagCoding)
-class TagCodingAdmin(admin.ModelAdmin):
-    list_display = ('tag', 'coding_question', 'weight')
+@admin.register(TagQuestion)
+class TagQuestionAdmin(admin.ModelAdmin):
+    list_display = ('tag', 'question', 'weight')
     list_filter = ('tag',)
 
-@admin.register(ChoiceQuestion)
-class ChoiceQuestionAdmin(admin.ModelAdmin):
-    list_display = ('desc', 'problem', 'stage', 'explain', 'difficulty', 'created_at', 'updated_at')
-    list_filter = ('stage', 'difficulty')
-    search_fields = ('desc',)
-
-@admin.register(TagChoice)
-class TagChoiceAdmin(admin.ModelAdmin):
-    list_display = ('tag', 'choice_question', 'weight')
-    list_filter = ('tag',)
-
-@admin.register(UserSubmission)
-class UserSubmissionAdmin(admin.ModelAdmin):
-    list_display = ('user', 'content_type', 'object_id', 'created_at', 'updated_at')
-    list_filter = ('content_type', 'user')
-
-@admin.register(TestCase)
-class TestCaseAdmin(admin.ModelAdmin):
-    list_display = ('coding_question', 'case_input', 'case_output', 'created_at', 'updated_at')
-    search_fields = ('coding_question__desc',)
+@admin.register(UserActivity)
+class UserActivityAdmin(admin.ModelAdmin):
+    list_display = ('user', 'a_type', 'created_at', 'updated_at')
+    list_filter = ('user', 'a_type')

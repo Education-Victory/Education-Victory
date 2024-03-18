@@ -1,7 +1,7 @@
-from rest_framework import serializers
-from .models import UserAbility
 from django.contrib.auth import get_user_model
+from rest_framework import serializers
 from question.models import Tag
+from .models import UserAbility, UserActivity
 
 User = get_user_model()
 
@@ -20,3 +20,9 @@ class UserAbilitySerializer(serializers.ModelSerializer):
 
     def get_tag_group(self, obj):  # Method to get the tag group
         return obj.tag.group
+
+
+class UserActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserActivity
+        fields = ['id', 'user', 'a_type', 'content', 'created_at', 'updated_at']

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericTabularInline
 from django.utils.html import format_html
-from .models import Problem, TagProblem, ProblemFrequency, Milestone, MilestoneQuestion
+from .models import Problem, TagProblem, ProblemFrequency
 
 
 @admin.register(Problem)
@@ -22,25 +22,8 @@ class TagProblemAdmin(admin.ModelAdmin):
 
 @admin.register(ProblemFrequency)
 class ProblemFrequencyAdmin(admin.ModelAdmin):
-    list_display = ('problem', 'stage', 'company', 'location', 'created_at')
-    list_filter = ('stage', 'company', 'location')
-    search_fields = ('problem__name', 'company', 'location')
+    list_display = ('problem', 'company', 'location', 'created_at')
+    list_filter = ('company', 'location')
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
 
-
-class MilestoneAdmin(admin.ModelAdmin):
-    readonly_fields = ['related_questions_summary']
-
-    def related_questions_summary(self, obj):
-        # Fetching all related MilestoneQuestion objects
-        related_questions = obj.milestonequestion_set.all()
-        if related_questions:
-            # Building a HTML list of related questions for display
-            questions_list = ''.join([f'<li>{str(question)}</li>' for question in related_questions])
-            return format_html(f'<ul>{questions_list}</ul>')
-        return "No questions linked"
-    related_questions_summary.short_description = "Related Questions"
-
-admin.site.register(Milestone, MilestoneAdmin)
-admin.site.register(MilestoneQuestion)
