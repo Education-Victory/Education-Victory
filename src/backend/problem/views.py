@@ -3,7 +3,6 @@ from django.conf import settings
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.db.models import F
-from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -24,11 +23,6 @@ def get_weak_tag(user, category, num=3):
     ).order_by('ability_score')[:num]
 
     return weak_tag_ability
-
-
-@receiver(post_save, sender=Question)
-def update_tag_problem(sender, instance, **kwargs):
-    instance.update_tag_problem()
 
 
 class ProblemViewSet(ModelViewSet):

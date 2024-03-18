@@ -28,7 +28,7 @@ class Question(models.Model):
     step = models.CharField(default='implement', max_length=1000)
     difficulty = models.IntegerField(default=1)
     desc = models.JSONField(default=get_default_json)
-    info = models.JSONField(default=get_default_json)
+    info = models.JSONField(default=get_default_json, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -55,7 +55,7 @@ class Tag(models.Model):
 class TagQuestion(models.Model):
     tag = models.ForeignKey('question.Tag', on_delete=models.CASCADE)
     question = models.ForeignKey('question.Question', on_delete=models.CASCADE)
-    weight = models.IntegerField()
+    weight = models.IntegerField(default=10)
 
     class Meta:
         unique_together = [['tag', 'question']]

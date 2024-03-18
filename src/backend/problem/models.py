@@ -34,7 +34,7 @@ class TagProblem(models.Model):
     # is the maximum difficulty level among all the questions associated with that problem.
     difficulty = models.IntegerField(
         default=10, help_text='The larger the number, the higher the difficulty')
-    weight = models.IntegerField()
+    weight = models.IntegerField(default=10)
 
     class Meta:
         unique_together = [['tag', 'problem']]
