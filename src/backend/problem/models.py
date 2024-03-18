@@ -30,6 +30,10 @@ class Problem(models.Model):
 class TagProblem(models.Model):
     tag = models.ForeignKey('question.Tag', on_delete=models.CASCADE)
     problem = models.ForeignKey('problem.Problem', on_delete=models.CASCADE)
+    # The calculation method for the difficulty level of a tag for a specific Problem
+    # is the maximum difficulty level among all the questions associated with that problem.
+    difficulty = models.IntegerField(
+        default=10, help_text='The larger the number, the higher the difficulty')
     weight = models.IntegerField()
 
     class Meta:
