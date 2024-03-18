@@ -1,0 +1,304 @@
+{% extends "basic.html" %}
+{% load static %}
+{% block extra_css %}
+  <style>
+ .is-vertical-tabs > ul {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .tab-content {
+    display: none;
+    animation: fadeInLeft .5s;
+  }
+  .tab-content.is-active {
+    display: block;
+  }
+
+    /* Custom timeline styles */
+    .timeline {
+      position: relative;
+      padding-left: 20px;
+      list-style: none;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 10px;
+      width: 2px;
+      background-color: #e5e5e5;
+    }
+
+    .timeline-item {
+      margin-bottom: 20px;
+    }
+
+    .timeline-marker {
+      display: block;
+      width: 12px;
+      height: 12px;
+      background-color: #3273dc;
+      border-radius: 50%;
+      position: absolute;
+      left: 4px;
+      top: 0;
+    }
+
+    .timeline-content {
+      padding-left: 30px;
+    }
+    .tab-li {
+       position: relative;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+<span id="vue-span">
+  <section class="section">
+    <div class="container">
+      <h1 class="mt-10 mb-10 title is-size-2-mobile is-size-3-tablet" style="letter-spacing: -0.04em;">Practice</h1>
+      <div class="columns">
+        <div class="column is-4">
+        </div>
+        <div class="column is-6">
+          <div ref="mapContainer" id="mapContainer"></div>
+          <div ref="legendContainer"></div>
+        </div>
+         <div class="column is-2">
+           <div class="tabs is-vertical is-vertical-tabs">
+             <ul>
+               <li :class="{ 'is-active': activeTab === 'algorithm' }" @click="changeTab('algorithm')"><a>Algorithm</a></li>
+               <li :class="{ 'is-active': activeTab === 'system_design' }" @click="changeTab('system_design')"><a>System Design</a></li>
+               <li :class="{ 'is-active': activeTab === 'behavioral_question' }" @click="changeTab('behavioral_question')"><a>Behavioral Question</a></li>
+             </ul>
+           </div>
+          </div>
+      </div>
+    </div>
+  </section>
+</span>
+
+{% endblock %}
+{% block extra_script %}
+  <script src="{% static 'js/d3.7.8.5.js' %}"></script>
+  <script src="{% static 'js/gridmap.js' %}"></script>
+  <script src="{% static 'js/legend.js' %}"></script>
+  <script src="{% static 'js/plot.umd.min.js' %}"></script>
+  <script>
+    var root = '{{ root }}';
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken,
+      },
+    };
+    var app = new Vue({
+      delimiters: ['[[', ']]'],
+      el: '#vue-span',
+      data () {
+        const formatNum = d3.format(","); // Local variable
+        return {
+           width: 650,
+           mapData: [],
+           mapWidth: 635,
+           margin: (800 - 635) / 2,
+           focus: null,
+           activeTab: 'algorithm',
+           timeout: null,
+           tabs: [
+             { label: 'Tab 1', content: 'Content for Tab 1', isActive: true },
+             { label: 'Tab 2', content: 'Content for Tab 2', isActive: false },
+           ],
+           colorScale: d3.scaleThreshold()
+              .domain([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+              .range([
+                '#f7fbff', // Color for scores 0-9
+                '#deebf7',
+                '#c6dbef',
+                '#9ecae1',
+                '#6baed6',
+                '#4292c6',
+                '#2171b5',
+                '#08519c',
+                '#08306b',
+                '#041945',
+                '#000000'  // Color for score 100
+              ])
+            }
+      },
+      mounted () {
+        this.fetchMapData();
+        this.updateState(null);
+      },
+      methods: {
+        fetchMapData() {
+          const url = root + '/api/ability/?tag_category=' + this.activeTab;
+          const cell_per_col = 9;
+          axios.get(url)
+            .then(response => {
+              this.mapData = response.data.map((item, index) => {
+                const col = index % cell_per_col;
+                const row = Math.floor(index / cell_per_col);
+
+                return {
+                  col: col,
+                  row: row,
+                  tag: item.tag_short_name,
+                  total: item.ability_score
+                };
+              });
+
+              const extent = [0, Math.max(...this.mapData.map(d => d.total))]; // Calculate extent based on the new mapData
+              this.colors = d3.scaleSequential(d3.interpolateRdPu).domain(extent); // Update colors scale
+              this.cells = this.createCells(this.mapData, extent, this.colors, d3.format(",")); // Update cells
+              this.createGridMap();
+            })
+            .catch(error => {
+              console.error('There was an error fetching the map data:', error);
+            });
+        },
+        changeTab(newTab) {
+          this.activeTab = newTab;
+          this.fetchMapData();
+        },
+        createGridMap() {
+          this.$refs.mapContainer.innerHTML = '';
+          const mapWidth = 635;
+          const margin = (this.width - this.mapWidth) / 2;
+          const gridMap = d3.select(
+            Plot.plot({
+              width: this.width,
+              height: 400,
+              padding: 0,
+              marginTop: 10,
+              marginBottom: 10,
+              marginLeft: margin,
+              marginRight: margin,
+              x: { axis: null },
+              y: { axis: null },
+              color: { type: "identity" },
+              marks: this.cells
+            })
+          );
+          this.$refs.mapContainer.appendChild(gridMap.node());
+          const rect = gridMap.selectAll("rect");
+          rect.on("pointerover", this.highlight)
+              .on("pointerout", this.restore)
+              .on("click", this.handleClick)
+              .on("pointerdown", this.handlePointerDown)
+              .on("pointerup", this.handlePointerUp)
+              .style("cursor", "default");
+        },
+        createCells(mapData, extent, colors, formatNum) {
+          const threshold = extent[1] / 3;
+          const calculateFontSize = (cellWidth) => {
+            return `${cellWidth / 6}px`;
+          };
+          const cellWidth = this.mapWidth / 10;
+          return [
+            Plot.cell(mapData, {
+              x: "col",
+              y: "row",
+              rx: 6,
+              ry: 6,
+              fill: (d) => {
+                if (d.total >= 0 && d.total <= 100) {
+                  return this.colorScale(d.total); // Use the linear scale for values between 0 and 100
+                } else {
+                  return colors(d.total); // Use the original scale for other values
+                }
+              },
+              stroke: (d) => {
+                if (d.total >= 0 && d.total <= 100) {
+                  return this.colorScale(d.total);
+                } else {
+                  return colors(d.total);
+                }
+              },
+              strokeWidth: 0,
+              inset: 1
+            }),
+            Plot.text(mapData, {
+              x: "col",
+              y: "row",
+              fontWeight: "bold",
+              fontSize: calculateFontSize(cellWidth),
+              fill: (d) => (d.total < threshold ? "#333" : "#eee"),
+              text: (d) => `${d.tag}\n${formatNum(d.total)}`
+            })
+          ];
+        },
+        highlight(e) {
+          if (focus !== null) return;
+          const index = getTargetIndex(e);
+          fill(index, true);
+          if (timeout) clearTimeout(timeout);
+          timeout = setTimeout(
+              () => updateState(index >= 0 ? lookupState(index) : null),
+              25
+          );
+        },
+        restore(e) {
+          if (this.focus !== null) return;
+          const index = this.getTargetIndex(e);
+          this.fill(index);
+        },
+        fill(index, highlight = false, darker = 0) {
+          if (index >= 0) {
+            const color = highlight ? "#edc949" : this.colors(this.mapData[index].total);
+            d3.select(`#map-container rect:nth-child(${index + 1})`)
+              .attr("fill", darker ? d3.color(color).darker(darker) : color)
+              .attr("stroke-width", highlight ? 1 : 0);
+          }
+        },
+        handleClick(e) {
+          const index = this.getTargetIndex(e);
+          if (this.focus === index) {
+            this.focus = null;
+            return;
+          }
+
+          if (this.focus !== null) this.fill(this.focus);
+          if (index >= 0) {
+            this.fill(index, true);
+            this.focus = index;
+            this.updateState(this.lookupState(index));
+          } else {
+            this.focus = null;
+            this.updateState(null);
+          }
+        },
+        handlePointerDown(e) {
+          const index = this.getTargetIndex(e);
+          if (index >= 0) this.fill(index, true, 0.25);
+        },
+        handlePointerUp(e) {
+          const index = this.getTargetIndex(e);
+          if (index >= 0) this.fill(index, true);
+        },
+        getTargetIndex(e) {
+          let tar = e.target;
+          if (tar instanceof SVGTSpanElement) tar = tar.parentElement;
+          return tar instanceof SVGTextElement || tar instanceof SVGRectElement
+              ? [...tar.parentElement.children].indexOf(tar) : -1;
+        },
+        lookupState(index) {
+          return this.mapData[index].tag;
+        },
+        updateState(state) {
+          const mapElement = document.getElementById('map');
+          if (mapElement) {
+            mapElement.value = state;
+            mapElement.dispatchEvent(new CustomEvent("input"));
+          }
+        },
+      }
+    })
+  </script>
+{% endblock %}
+
+
+

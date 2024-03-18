@@ -102,10 +102,6 @@ html {
   pointer-events: none;
 }
 
-.swiper-slide {
-  padding-bottom: 6rem;
-}
-
 .has-background-grey {
   background-color: #e0e0e0;
 }
