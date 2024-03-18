@@ -101,7 +101,6 @@ def evaluation_simple(request):
     return JsonResponse(question_lst)
 
 def set_user_ability(user_id, algorithm=30, system_design=30):
-
     all_tags = Tag.objects.all()
     user = User.objects.get(pk=user_id)
 
