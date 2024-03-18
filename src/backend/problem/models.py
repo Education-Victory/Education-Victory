@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from question.models import Tag
 
 def get_default_json():
     return {}
@@ -16,6 +17,7 @@ class Problem(models.Model):
 
     name = models.CharField(max_length=100)
     category = models.CharField(max_length=100, choices=CATEGORY_CHOICE, default='algorithm')
+    tags = models.ManyToManyField(Tag, through='TagProblem')
     desc = models.JSONField(default=get_default_json)
     upvote = models.IntegerField(default=1)
     downvote = models.IntegerField(default=1)

@@ -24,7 +24,7 @@ class Question(models.Model):
     )
     problem = models.ForeignKey('problem.Problem', on_delete=models.CASCADE)
     q_type = models.IntegerField(choices=QTYPE, default=0)
-    tag = models.ManyToManyField('question.Tag', through='TagQuestion')
+    tag = models.ManyToManyField('question.Tag')
     step = models.CharField(default='implement', max_length=1000)
     difficulty = models.IntegerField(default=1)
     desc = models.JSONField(default=get_default_json)
@@ -51,14 +51,6 @@ class Tag(models.Model):
 
     def __str__(self):
         return f'{self.name}'
-
-class TagQuestion(models.Model):
-    tag = models.ForeignKey('question.Tag', on_delete=models.CASCADE)
-    question = models.ForeignKey('question.Question', on_delete=models.CASCADE)
-    weight = models.IntegerField(default=10)
-
-    class Meta:
-        unique_together = [['tag', 'question']]
 
 
 class QuestionMilestone(models.Model):
