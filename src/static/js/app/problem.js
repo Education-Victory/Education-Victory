@@ -5,7 +5,6 @@ var app = new Vue({
         return {
            root: root,
            problem: [],
-           all_question: {},
            question: {},
            resource: {},
            activeTab: 'understand',
@@ -20,13 +19,14 @@ var app = new Vue({
       },
       mounted: async function() {
         await this.fetchProblem();
-        await this.fetchQuestion();
-        await this.updateQuestionsWithSubmission();
       },
       methods: {
+        renderMarkdown(markdownText) {
+          return marked.parse(markdownText);
+        },
         setActiveTab(tabName) {
             this.activeTab = tabName;
-            this.question = this.all_question[this.activeTab] || [];
+            this.question = this.problem.questions[this.activeTab] || [];
         },
         initializeSwiper() {
           if (this.swiperInstance) {
@@ -35,7 +35,6 @@ var app = new Vue({
           this.$nextTick(() => {
             this.swiperInstance = new Swiper('.swiper-container', {
               slidesPerView: 1,
-              autoHeight: true,
               pagination: {
                 el: '.swiper-pagination',
                 clickable: true, // Ensure pagination is clickable
@@ -130,34 +129,6 @@ var app = new Vue({
             this.submitAnswer(questionId, questionType, question.isCorrect, content);
           }
         },
-        fetchQuestion() {
-          return axios.get(root + '/api/question/?name='  + problem_name)
-            .then(response => {
-              this.all_question = response.data;
-              Object.keys(this.all_question).forEach((category) => {
-                this.all_question[category].forEach((question) => {
-                  Vue.set(question, 'disabled', false);
-                  Vue.set(question, 'show_explanation', false);
-                  Vue.set(question, 'userChoices', new Array(question.desc.choice.length).fill(false));
-                  const binaryAnswer = question.answer.toString(2).padStart(question.desc.choice.length, '0').split('').reverse();
-                  const answerSet = new Set();
-                  binaryAnswer.forEach((bit, index) => {
-                    if (bit === '1') {
-                      answerSet.add(index);
-                    }
-                  });
-                  Vue.set(question, 'answerSet', answerSet);
-                  Vue.set(question, 'isCorrect', false); // Assuming default is false
-                  Vue.set(question, 'isIncorrect', false); // Assuming default is false
-                });
-              });
-              this.question = this.all_question[this.activeTab];
-            })
-            .catch(error => {
-              console.error('An error occurred while fetching the questions:', error);
-              this.message = 'An error occurred while fetching the problem.';
-            });
-        },
         fetchSubmission() {
           return axios.get(root + '/api/submission/?name='  + problem_name + '&type=' + this.activeTab)
             .then(response => {
@@ -171,16 +142,19 @@ var app = new Vue({
         fetchProblem() {
           return axios.get(root + '/api/problem/?name=' + problem_name)
             .then(response => {
-                if (response.data && response.data.length > 0) {
-                    this.problem = response.data[0];
-                } else {
-                    this.message = 'An error occurred while fetching the problem.';
-                }
-            })
-            .catch(error => {
-                this.message = 'An error occurred while fetching the problem.';
-            });
-          },
+    if (response.data && response.data.length > 0) {
+        this.problem = response.data[0];
+        if (this.problem.questions && this.problem.questions[this.activeTab]) {
+            this.question = this.problem.questions[this.activeTab];
+        } else {
+            // Handle the case where questions are not available
+            this.question = [];
+        }
+    } else {
+        this.message = 'An error occurred while fetching the problem.';
+    }
+})
+},
         findQuestionByName(questionName) {
           for (let category in this.all_question) {
             const question = this.all_question[category].find(q => q.name === questionName);

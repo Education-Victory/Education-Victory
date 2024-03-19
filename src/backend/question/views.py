@@ -18,8 +18,17 @@ from common.serializers import UserActivitySerializer
 LAST_YEAR = timezone.now() - timedelta(days=365)
 
 
-class QuestionViewSet(viewsets.ViewSet):
-    pass
+class QuestionViewSet(viewsets.ModelViewSet):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        problem_name = self.request.query_params.get('problem', None)
+        if problem_name:
+            problem_name = problem_name.replace('-', ' ')
+            queryset = queryset.filter(problem__name=problem_name)
+        return queryset
 
 
 class UserActivityViewSet(viewsets.ModelViewSet):
