@@ -38,7 +38,7 @@ def update_tag_problem_difficulty(problem, tag):
         # If there are questions associated with the tag, find the highest difficulty.
         highest_difficulty = 0
         for question in questions_with_tag:
-            question_difficulty = question.difficulty * tag.difficulty
+            question_difficulty = question.difficulty * 0.01 * tag.difficulty
             highest_difficulty = max(highest_difficulty, question_difficulty)
 
         # Update the TagProblem instance with the new highest difficulty.

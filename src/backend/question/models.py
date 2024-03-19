@@ -26,7 +26,7 @@ class Question(models.Model):
     q_type = models.IntegerField(choices=QTYPE, default=0)
     tag = models.ManyToManyField('question.Tag')
     step = models.CharField(default='implement', max_length=1000)
-    difficulty = models.IntegerField(default=1)
+    difficulty = models.IntegerField(default=100, help_text='percentage of difficulty')
     desc = models.JSONField(default=get_default_json)
     info = models.JSONField(default=get_default_json, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
