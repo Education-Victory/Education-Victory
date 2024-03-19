@@ -39,7 +39,7 @@ class Question(models.Model):
 
 class Tag(models.Model):
     category = models.CharField(max_length=100, default='algorithm')
-    group = models.CharField(max_length=100, default='data_structure')
+    group = models.CharField(max_length=100, default='data-structure')
     name = models.CharField(max_length=100, default='Greedy')
     short_name = models.CharField(max_length=100, default='Grd')
     frequency = models.IntegerField(

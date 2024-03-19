@@ -9,8 +9,8 @@ def get_default_json():
 class Problem(models.Model):
     CATEGORY_CHOICE = (
         ('algorithm', 'Algorithm'),
-        ('system_design', 'System Design'),
-        ('computer_science', 'Computer Science'),
+        ('system-design', 'System Design'),
+        ('computer-science', 'Computer Science'),
         ('behavioral', 'Behavioral'),
         ('resume', 'Resume'),
     )
@@ -44,7 +44,7 @@ class TagProblem(models.Model):
 
 class ProblemFrequency(models.Model):
     STAGE_CHOICES = (
-        ('coding', 'Coding'),
+        ('oa', 'OA'),
         ('phone', 'Phone'),
         ('onsite', 'Onsite'),
     )

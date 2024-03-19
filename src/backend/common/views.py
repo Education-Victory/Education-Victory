@@ -100,12 +100,20 @@ def evaluation_simple(request):
     }
     return JsonResponse(question_lst)
 
-def set_user_ability(user_id, algorithm=30, system_design=30):
+def set_user_ability(user_id, default_ability=None):
+    if not default_ability:
+        default_ability = {
+            'algorithm': 30, 'system-design': 30, 'computer-science': 30,
+            'behavioral': 30, 'resume': 30
+        }
+
     all_tags = Tag.objects.all()
     user = User.objects.get(pk=user_id)
 
     for tag in all_tags:
-        user_level = algorithm if tag.category == 'algorithm' else system_design
+        # Get the default level for the tag's category, fall back to a default value if the category isn't in the dict
+        user_level = default_ability.get(tag.category, 20)  # 20 is a fallback default value
+
         ability_score = user_level - (tag.difficulty - 20) // 3
         UserAbility.objects.update_or_create(
             user=user,

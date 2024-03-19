@@ -14,7 +14,7 @@ class QuestionAdmin(admin.ModelAdmin):
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('name', 'group', 'frequency', 'difficulty', 'created_at', 'updated_at')
+    list_display = ('name', 'category', 'group', 'frequency', 'difficulty', 'created_at', 'updated_at')
     search_fields = ('name',)
 
 
