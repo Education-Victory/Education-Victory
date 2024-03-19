@@ -9,6 +9,7 @@ from common.models import UserActivity
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('desc', 'problem', 'step', 'difficulty', 'created_at', 'updated_at')
     list_filter = ('difficulty',)
+    filter_horizontal = ('tag',)
 
 
 @admin.register(Tag)

@@ -3,18 +3,6 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
 <style>
-   .is-vertical-tabs > ul {
-     display: flex;
-     flex-direction: column;
-     height: 100%;
-   }
-   .tab-content {
-     display: none;
-     animation: fadeInLeft .5s;
-   }
-   .tab-content.is-active {
-     display: block;
-   }
    /* Custom timeline styles */
    .timeline {
      position: relative;
@@ -46,49 +34,47 @@
    .timeline-content {
      padding-left: 30px;
    }
-   .tab-li {
-     position: relative;
-   }
 </style>
 {% endblock %}
 {% block content %}
 <span id="vue-span">
-   <section class="section">
-      <!-- Swiper -->
-      <div class="container">
-         <div class="swiper">
-            <div class="swiper-container">
-               <!-- Additional required wrapper -->
-               <div class="swiper-wrapper">
-                  <!-- Slides -->
-                  <div class="swiper-slide">
-                     <!-- Your Bulma card content -->
-                     <div class="card">
-                        <div class="card-content">
-                           <p class="title">Daily Tips</p>
-                           <p class="subtitle">Daily small tips related to interviews</p>
-                           <p>
-                              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                           </p>
+  <section class="section">
+    <div class="container">
+        <div class="columns">
+            <!-- Left card with is-4 size -->
+            <div class="column is-4">
+                <div class="card">
+                    <header class="card-header">
+                        <p class="card-header-title">
+                            Card Title Left
+                        </p>
+                    </header>
+                    <div class="card-content">
+                        <div class="content">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
                         </div>
-                     </div>
-                  </div>
-                  <div class="swiper-slide">
-                     <!-- Your Bulma card content -->
-                     <div class="card">
-                        <div class="card-content">
-                           <p class="title">Statistics</p>
-                           <p class="subtitle">Your ability value and growth progress</p>
-                           <img src=""/>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="swiper-pagination"></div>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-   </section>
+
+            <!-- Right card with is-8 size -->
+            <div class="column is-8">
+                <div class="card">
+                    <header class="card-header">
+                        <p class="card-header-title">
+                            Card Title Right
+                        </p>
+                    </header>
+                    <div class="card-content">
+                        <div class="content">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
    <section>
       <div class="container">
          <div class="columns">
@@ -207,7 +193,6 @@
 </span>
 {% endblock %}
 {% block extra_script %}
-<script src="{% static 'js/swiper-bundle.min.js' %}"></script>
 <script>
    var root = '{{ root }}';
    const config = {
@@ -226,18 +211,5 @@
      methods: {
      }
    })
-   var mySwiper = new Swiper('.swiper-container', {
-     direction: 'horizontal',
-     loop: true,
-     slidesPerView: 1,
-     pagination: {
-       el: '.swiper-pagination',
-     },
-   
-     navigation: {
-       nextEl: '.swiper-button-next',
-       prevEl: '.swiper-button-prev',
-     },
-   });
 </script>
 {% endblock %}
