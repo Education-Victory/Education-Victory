@@ -1,215 +1,209 @@
-{% extends "basic.html" %}
-{% load static %}
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+{% extends "basic.html" %} {% load static %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}" />
 <style>
-   /* Custom timeline styles */
-   .timeline {
-     position: relative;
-     padding-left: 20px;
-     list-style: none;
-   }
-   .timeline::before {
-     content: '';
-     position: absolute;
-     top: 0;
-     bottom: 0;
-     left: 10px;
-     width: 2px;
-     background-color: #e5e5e5;
-   }
-   .timeline-item {
-     margin-bottom: 20px;
-   }
-   .timeline-marker {
-     display: block;
-     width: 12px;
-     height: 12px;
-     background-color: #3273dc;
-     border-radius: 50%;
-     position: absolute;
-     left: 4px;
-     top: 0;
-   }
-   .timeline-content {
-     padding-left: 30px;
-   }
+  /* Custom timeline styles */
+  .timeline {
+    position: relative;
+    padding-left: 20px;
+    list-style: none;
+  }
+  .card.mb-4 {
+    cursor: pointer;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 10px;
+    width: 2px;
+    background-color: #e5e5e5;
+  }
+  .timeline-item {
+    margin-bottom: 20px;
+  }
+  .timeline-marker {
+    display: block;
+    width: 12px;
+    height: 12px;
+    background-color: #3273dc;
+    border-radius: 50%;
+    position: absolute;
+    left: 4px;
+    top: 0;
+  }
+  .timeline-content {
+    padding-left: 30px;
+  }
 </style>
-{% endblock %}
-{% block content %}
+{% endblock %} {% block content %}
 <span id="vue-span">
   <section class="section">
     <div class="container">
-        <div class="columns">
-            <!-- Left card with is-4 size -->
-            <div class="column is-4">
-                <div class="card">
-                    <header class="card-header">
-                        <p class="card-header-title">
-                            Card Title Left
-                        </p>
-                    </header>
-                    <div class="card-content">
-                        <div class="content">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-                        </div>
-                    </div>
-                </div>
+      <div class="columns">
+        <!-- Left card with is-4 size -->
+        <div class="column is-4">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">
+                Card Title Left
+              </p>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+              </div>
             </div>
-
-            <!-- Right card with is-8 size -->
-            <div class="column is-8">
-                <div class="card">
-                    <header class="card-header">
-                        <p class="card-header-title">
-                            Card Title Right
-                        </p>
-                    </header>
-                    <div class="card-content">
-                        <div class="content">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-    </div>
-</section>
-   <section>
-      <div class="container">
-         <div class="columns">
-            <!-- Left column with two cards -->
-            <div class="column is-4">
-               <!-- Card 1 -->
-               <div class="card mb-4">
-                  <div class="card-content">
-                     <p class="title">Recommend</p>
-                     <!-- Card content -->
-                  </div>
-               </div>
-               <!-- Card 2 -->
-               <div class="card mb-4">
-                  <div class="card-content">
-                     <p class="title">Algorithm</p>
-                     <!-- Card content -->
-                  </div>
-               </div>
-               <!-- Card 3 -->
-               <div class="card mb-4">
-                  <div class="card-content">
-                     <p class="title">System Design</p>
-                     <!-- Card content -->
-                  </div>
-               </div>
-               <!-- Card 4 -->
-               <div class="card">
-                  <div class="card-content">
-                     <p class="title">Behavioral Question</p>
-                     <!-- Card content -->
-                  </div>
-               </div>
+
+        <!-- Right card with is-8 size -->
+        <div class="column is-8">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">
+                Card Title Right
+              </p>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </div>
             </div>
-            <!-- Right column with the timeline -->
-            <div class="column">
-               <ul class="timeline">
-                  <!-- Timeline item 1 -->
-                  <li class="timeline-item">
-                     <div class="timeline-marker"></div>
-                     <div class="timeline-content">
-                        <div class="card">
-                           <div class="card-content">
-                              <span class="tag is-info top">New</span>
-                              <div class="content is-flex is-justify-content-space-between is-align-items-center">
-                                 <div>
-                                    <h2 class="title is-size-5 mb-1">Binary tree</h2>
-                                    <span class="is-size-6">HIGH</span>
-                                 </div>
-                              </div>
-                              <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
-                                 <p class="mb-0 is-size-6" >Estimated time</p>
-                                 <span class="tag is-success is-light">60 minutes</span>
-                              </div>
-                              <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
-                                 <p class="mb-0 is-size-6">Content</p>
-                                 <span class="tag is-success is-light">5 questions</span>
-                              </div>
-                           </div>
-                           <div class="card-footer">
-                              <div class="card-footer-item" style="width: 100%;">
-                                 <div class="is-flex is-justify-content-space-between is-align-items-center" style="width: 100%;">
-                                    <a class="button is-link ml-auto" href="#">Start</a>
-                                 </div>
-                              </div>
-                           </div>
-                           <!-- end card-footer -->
-                        </div>
-                        <!-- end card -->
-                     </div>
-                  </li>
-                  <!-- Timeline item 2 -->
-                  <li class="timeline-item">
-                     <div class="timeline-marker"></div>
-                     <div class="timeline-content">
-                        <div class="card">
-                           <div class="card-content">
-                              <p class="title is-4">Binary Search</p>
-                              <p class="subtitle is-6">15 minutes</p>
-                              <!-- More content here -->
-                           </div>
-                        </div>
-                     </div>
-                  </li>
-                  <!-- Timeline item 3 -->
-                  <li class="timeline-item">
-                     <div class="timeline-marker"></div>
-                     <div class="timeline-content">
-                        <div class="card">
-                           <div class="card-content">
-                              <p class="title is-4">Merge Sort</p>
-                              <p class="subtitle is-6">20 minutes</p>
-                              <!-- More content here -->
-                           </div>
-                        </div>
-                     </div>
-                  </li>
-                  <!-- Timeline item 4 -->
-                  <li class="timeline-item">
-                     <div class="timeline-marker"></div>
-                     <div class="timeline-content">
-                        <div class="card">
-                           <div class="card-content">
-                              <p class="title is-4">Dynamic Programming</p>
-                              <p class="subtitle is-6">30 minutes</p>
-                              <!-- More content here -->
-                           </div>
-                        </div>
-                     </div>
-                  </li>
-               </ul>
-            </div>
-         </div>
+          </div>
+        </div>
       </div>
-   </section>
+    </div>
+  </section>
+  <section>
+    <div class="container">
+      <div class="columns">
+        <!-- Left column with cards -->
+        <div class="column is-4">
+          <div class="card mb-4" @click="updateCategory('recommend')">
+            <div class="card-content">
+              <p class="title">Recommend</p>
+            </div>
+          </div>
+          <div class="card mb-4" @click="updateCategory('system-design')">
+            <div class="card-content">
+              <p class="title">System Design</p>
+            </div>
+          </div>
+          <div class="card mb-4" @click="updateCategory('behavioral')">
+            <div class="card-content">
+              <p class="title">Behavioral Question</p>
+            </div>
+          </div>
+          <div class="card mb-4" @click="updateCategory('algorithm')">
+            <div class="card-content">
+              <p class="title">Algorithm</p>
+            </div>
+          </div>
+        </div>
+        <!-- Right column with the timeline -->
+        <div class="column">
+          <ul class="timeline">
+            <!-- Dynamically create timeline items for each problem -->
+            <li class="timeline-item" v-for="problem in problems" :key="problem.id">
+              <div class="timeline-marker"></div>
+              <div class="timeline-content">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="tag is-info top">New</span>
+                    <div class="content is-flex is-justify-content-space-between is-align-items-center">
+                      <div>
+                        <!-- Display problem name -->
+                        <h2 class="title is-size-5 mb-1">[[ problem.name ]]</h2>
+                        <!-- Display difficulty -->
+                        <span class="is-size-6">[[ problem.difficulty ]]</span>
+                      </div>
+                    </div>
+                    <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
+                      <!-- Calculate estimated time based on question types -->
+                      <p class="mb-0 is-size-6">Estimated time</p>
+                      <span class="tag is-success is-light">[[ calculateEstimatedTime(problem.questions.understand) ]] minutes</span>
+                    </div>
+                    <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
+                      <!-- Display number of questions -->
+                      <p class="mb-0 is-size-6">Content</p>
+                      <span class="tag is-success is-light">[[ problem.questions.understand.length ]] questions</span>
+                    </div>
+                  </div>
+                 <div class="card-footer">
+                  <div class="card-footer-item" style="width: 100%;">
+                    <div class="is-flex is-justify-content-space-between is-align-items-center" style="width: 100%;">
+                      <!-- Dynamically set the href using the root variable, category, and problem name -->
+                      <a :href="`${root}/${problem.category}/${problem.name.replace(/\s+/g, '-')}/`" class="button is-link ml-auto">Start</a>
+                    </div>
+                  </div>
+                </div>
+                  <!-- end card-footer -->
+                </div>
+                <!-- end card -->
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 </span>
-{% endblock %}
-{% block extra_script %}
+{% endblock %} {% block extra_script %}
 <script>
-   var root = '{{ root }}';
-   const config = {
-     headers: {
-       'Content-Type': 'application/json',
-       'X-CSRFToken': csrfToken,
-     },
-   };
-   var app = new Vue({
-     delimiters: ['[[', ']]'],
-     el: '#vue-span',
-     data () {
-     },
-     mounted () {
-     },
-     methods: {
-     }
-   })
+  var root = "{{ root }}";
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+  };
+  var app = new Vue({
+    delimiters: ["[[", "]]"],
+    el: "#vue-span",
+    data() {
+      return {
+        problems: [], // To store multiple problems
+        message: "",
+        category: "recommend",
+        root: root,
+      };
+    },
+    mounted() {
+      this.fetchProblem();
+    },
+    methods: {
+      fetchProblem() {
+        const url = `${root}/api/recommend/?category=${this.category}`;
+        axios
+          .get(url)
+          .then((response) => {
+            if (response.data) {
+              this.problems = response.data.problems; // Store the array of problems
+            } else {
+              this.message = "No problems found for the specified category.";
+            }
+          })
+          .catch((error) => {
+            console.error("An error occurred while fetching the problems:", error);
+            this.message = "An error occurred while fetching the problems.";
+          });
+      },
+      updateCategory(category) {
+        this.category = category;
+        this.fetchProblem();
+      },
+      calculateEstimatedTime(questions) {
+        let time = 0;
+        questions.forEach((question) => {
+          // Assuming q_type: 0 is a choice question and takes 5 minutes
+          // and q_type: 1 is a coding question and takes 20 minutes
+          time += question.q_type === 0 ? 5 : 20;
+        });
+        return time;
+      },
+    },
+  });
 </script>
 {% endblock %}
+
