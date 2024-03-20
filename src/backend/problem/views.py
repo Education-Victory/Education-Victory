@@ -2,7 +2,7 @@ from math import ceil
 from django.conf import settings
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.db.models import F, Subquery
+from django.db.models import F, Q, Subquery
 from django.dispatch import receiver
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -53,7 +53,9 @@ class RecommendProblemView(APIView):
         user_info = getattr(user, 'info', {})
         user_settings = user_info.get('settings', {'algorithm': 50, 'system-design': 30, 'behavioral': 20})
         total_problems = 10  # Total number of problems to return
-
+        # Define a margin or threshold for difficulty above the user's ability
+        difficulty_down = 10
+        difficulty_up = 20
         problems = []
         if category == 'recommend':
             for cat, percentage in user_settings.items():
@@ -64,35 +66,36 @@ class RecommendProblemView(APIView):
                 for tag in weak_tags:
                     if collected_problems >= num_problems:
                         break  # Stop if we have collected enough problems
-
+                    user_ability = UserAbility.objects.get(user=user, tag=tag).ability_score
                     category_problems = Problem.objects.filter(
                         tags=tag,  # Filter by current tag
-                        category=cat
+                        category=cat,
+                        tagproblem__difficulty__gte=user_ability - difficulty_down,
+                        tagproblem__difficulty__lte=user_ability + difficulty_margin
                     ).annotate(
                         difficulty=F('tagproblem__difficulty')
-                    ).order_by('-difficulty')[:num_problems - collected_problems]
-
+                    ).order_by('difficulty')[:num_problems - collected_problems]
                     problems.extend(list(category_problems))
                     collected_problems += len(category_problems)
         else:
-            # Similar logic for a specific category, fetching more tags
             weak_tags = get_weak_tag(user, category, num=3)  # Fetch more tags
             collected_problems = 0
-
             for tag in weak_tags:
                 if collected_problems >= total_problems:
                     break
+                user_ability = UserAbility.objects.get(user=user, tag=tag).ability_score
 
                 category_problems = Problem.objects.filter(
                     tags=tag,
-                    category=category
+                    category=category,
+                    tagproblem__difficulty__gte=user_ability - difficulty_down,
+                    tagproblem__difficulty__lte=user_ability + difficulty_margin
                 ).annotate(
                     difficulty=F('tagproblem__difficulty')
-                ).order_by('-difficulty')[:total_problems - collected_problems]
+                ).order_by('difficulty')[:total_problems - collected_problems]
 
                 problems.extend(list(category_problems))
                 collected_problems += len(category_problems)
 
-        # Serialize the problem instances
         serializer = ProblemSerializer(problems, many=True)
         return Response({'problems': serializer.data})
