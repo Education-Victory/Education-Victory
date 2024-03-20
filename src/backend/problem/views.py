@@ -8,8 +8,8 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from .models import Problem, TagProblem
-from .serializers import ProblemSerializer
-from question.models import Question
+from .serializers import ProblemSerializer, CustomProblemSerializer
+from question.models import Question, Tag
 from common.models import UserAbility
 
 
@@ -18,19 +18,23 @@ def problem(request, name):
         {'root': settings.ROOT, 'name': name, 'user_id': request.user.id})
 
 
-def get_weak_tag(user, category, num=3):
-    # First, get a queryset of tag IDs that exist in TagProblem.
+def get_tag_score(user, category, num=3):
     tags_in_tagproblem = TagProblem.objects.values_list('tag_id', flat=True).distinct()
-
-    # Now, filter UserAbility objects for the given user and category,
-    # ensuring that the tag is one of those present in TagProblem.
     weak_tag_ability = UserAbility.objects.filter(
         user=user,
         tag__category=category,
         tag_id__in=Subquery(tags_in_tagproblem)
-    ).order_by('ability_score')[:num]
+    ).select_related('tag').order_by('ability_score')[:num]
 
-    return [user_ability.tag for user_ability in weak_tag_ability]
+    return [
+        {
+            'tag_name': user_ability.tag.name,
+            'tag_group': user_ability.tag.group,
+            'tag_category': user_ability.tag.category,
+            'ability_score': user_ability.ability_score
+        }
+        for user_ability in weak_tag_ability
+    ]
 
 
 class ProblemViewSet(ModelViewSet):
@@ -52,50 +56,63 @@ class RecommendProblemView(APIView):
         category = request.query_params.get('category', 'recommend')
         user_info = getattr(user, 'info', {})
         user_settings = user_info.get('settings', {'algorithm': 50, 'system-design': 30, 'behavioral': 20})
-        total_problems = 10  # Total number of problems to return
-        # Define a margin or threshold for difficulty above the user's ability
+        total_problems = 10
         difficulty_down = 10
         difficulty_up = 20
         problems = []
         if category == 'recommend':
             for cat, percentage in user_settings.items():
                 num_problems = ceil(total_problems * (percentage / 100))
-                weak_tags = get_weak_tag(user, cat, num=3)  # Fetch more tags to have options
+                tag_scores = get_tag_score(user, cat, num=3)
                 collected_problems = 0
-
-                for tag in weak_tags:
+                for tag_info in tag_scores:
                     if collected_problems >= num_problems:
-                        break  # Stop if we have collected enough problems
-                    user_ability = UserAbility.objects.get(user=user, tag=tag).ability_score
+                        break
+                    tag_name = tag_info['tag_name']
+                    user_ability = tag_info['ability_score']
                     category_problems = Problem.objects.filter(
-                        tags=tag,  # Filter by current tag
+                        tags__name=tag_name,
                         category=cat,
                         tagproblem__difficulty__gte=user_ability - difficulty_down,
-                        tagproblem__difficulty__lte=user_ability + difficulty_margin
+                        tagproblem__difficulty__lte=user_ability + difficulty_up
                     ).annotate(
                         difficulty=F('tagproblem__difficulty')
-                    ).order_by('difficulty')[:num_problems - collected_problems]
-                    problems.extend(list(category_problems))
+                    ).distinct().order_by('difficulty')[:num_problems - collected_problems]
+                    for problem in category_problems:
+                        tag_instance = Tag.objects.get(name=tag_name)
+                        # Instead of fetching the tag instance separately, directly use tag_info
+                        # And directly use the annotated difficulty
+                        problems.append({
+                            'problem': problem,
+                            'tag': tag_instance,
+                            'user_ability': user_ability,
+                            'tag_difficulty': problem.difficulty  # Use the annotated difficulty
+                        })
                     collected_problems += len(category_problems)
         else:
-            weak_tags = get_weak_tag(user, category, num=3)  # Fetch more tags
-            collected_problems = 0
-            for tag in weak_tags:
+           tag_scores = get_tag_score(user, category, num=3)
+           collected_problems = 0
+           for tag_info in tag_scores:
                 if collected_problems >= total_problems:
                     break
-                user_ability = UserAbility.objects.get(user=user, tag=tag).ability_score
-
+                tag_name = tag_info['tag_name']
+                user_ability = tag_info['ability_score']
                 category_problems = Problem.objects.filter(
-                    tags=tag,
+                    tags__name=tag_name,
                     category=category,
                     tagproblem__difficulty__gte=user_ability - difficulty_down,
-                    tagproblem__difficulty__lte=user_ability + difficulty_margin
+                    tagproblem__difficulty__lte=user_ability + difficulty_up
                 ).annotate(
                     difficulty=F('tagproblem__difficulty')
-                ).order_by('difficulty')[:total_problems - collected_problems]
-
-                problems.extend(list(category_problems))
+                ).distinct().order_by('difficulty')[:total_problems - collected_problems]
+                for problem in category_problems:
+                    tag_instance = Tag.objects.get(name=tag_name)
+                    problems.append({
+                        'problem': problem,
+                        'tag': tag_instance,
+                        'user_ability': user_ability,
+                        'tag_difficulty': problem.difficulty  # Use the annotated difficulty
+                    })
                 collected_problems += len(category_problems)
-
-        serializer = ProblemSerializer(problems, many=True)
+        serializer = CustomProblemSerializer(problems, many=True)
         return Response({'problems': serializer.data})
