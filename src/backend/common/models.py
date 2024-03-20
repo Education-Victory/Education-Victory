@@ -23,6 +23,7 @@ class Company(models.Model):
 class User(AbstractUser):
     avatar = models.URLField(max_length=1000, blank=True)
     info = models.JSONField(default=get_default_json)
+    tag = models.ManyToManyField(Tag, through='UserAbility')
     is_premium = models.BooleanField(default=False)
     premium_expired_day = models.DateTimeField(
         default=timezone.make_aware(datetime.datetime(2000, 5, 1, 12, 0)))
@@ -31,8 +32,8 @@ class User(AbstractUser):
 
 
 class UserAbility(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='abilities')
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name='user_abilities')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     ability_score = models.IntegerField(default=50)
 
     class Meta:
