@@ -14,6 +14,21 @@
               <div class="content render-markdown mb-6" v-if="problem.desc" v-html="renderMarkdown(problem.desc.desc)"></div>
             </div>
           </div>
+              <div class="card">
+                <header class="card-header">
+                  <p class="card-header-title">Milestones</p>
+                </header>
+                <div class="card-content">
+                  <div class="content">
+                    <div class="control" v-for="(milestone, index) in filteredMilestones" :key="index">
+                      <label class="checkbox">
+                        <input type="checkbox" :checked="milestoneCompletionStatus[milestone.id]" disabled />
+                        [[ milestone.name ]]
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
         </div>
         <!-- Tabs and Questionnaire Column -->
         <div class="column is-6">
@@ -48,25 +63,7 @@
                   </li>
                 </ul>
               </div>
-              <!-- Milestones Section -->
-              <div class="card">
-                <header class="card-header">
-                  <p class="card-header-title">Milestones</p>
-                </header>
-                <div class="card-content">
-                  <div class="content">
-                    <div class="control" v-for="(milestone, index) in filteredMilestones" :key="index">
-                      <label class="checkbox">
-                        <input type="checkbox" :checked="milestoneCompletionStatus[milestone.id]" disabled />
-                        [[ milestone.name ]]
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <br />
 
-              <!-- Questionnaire Section -->
               <div class="card">
                 <header class="card-header">
                   <p class="card-header-title">Question</p>
@@ -84,7 +81,6 @@
                                 [[ choice ]]
                               </label>
                             </div>
-                            <!-- Explanation and Correctness Indicator Here -->
                           </div>
                         </div>
                       </div>

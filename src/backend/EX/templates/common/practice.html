@@ -1,42 +1,10 @@
-{% extends "basic.html" %} {% load static %} {% block extra_css %}
+{% extends "basic.html" %}
+{% load static %}
+{% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}" />
-<style>
-  /* Custom timeline styles */
-  .timeline {
-    position: relative;
-    padding-left: 20px;
-    list-style: none;
-  }
-  .card.mb-4 {
-    cursor: pointer;
-  }
-  .timeline::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 10px;
-    width: 2px;
-    background-color: #e5e5e5;
-  }
-  .timeline-item {
-    margin-bottom: 20px;
-  }
-  .timeline-marker {
-    display: block;
-    width: 12px;
-    height: 12px;
-    background-color: #3273dc;
-    border-radius: 50%;
-    position: absolute;
-    left: 4px;
-    top: 0;
-  }
-  .timeline-content {
-    padding-left: 30px;
-  }
-</style>
-{% endblock %} {% block content %}
+<link rel="stylesheet" href="{% static 'css/practice.css' %}" />
+{% endblock %}
+{% block content %}
 <span id="vue-span">
   <section class="section">
     <div class="container">
@@ -46,7 +14,7 @@
           <div class="card">
             <header class="card-header">
               <p class="card-header-title">
-                Card Title Left
+                Your Practice Statistics
               </p>
             </header>
             <div class="card-content">
@@ -62,7 +30,7 @@
           <div class="card">
             <header class="card-header">
               <p class="card-header-title">
-                Card Title Right
+                Daily Tips
               </p>
             </header>
             <div class="card-content">
@@ -82,22 +50,22 @@
         <div class="column is-4">
           <div class="card mb-4" @click="updateCategory('recommend')">
             <div class="card-content">
-              <p class="title">Recommend</p>
+              <p>Recommend</p>
             </div>
           </div>
           <div class="card mb-4" @click="updateCategory('system-design')">
             <div class="card-content">
-              <p class="title">System Design</p>
+              <p>System Design</p>
             </div>
           </div>
           <div class="card mb-4" @click="updateCategory('behavioral')">
             <div class="card-content">
-              <p class="title">Behavioral Question</p>
+              <p>Behavioral Question</p>
             </div>
           </div>
           <div class="card mb-4" @click="updateCategory('algorithm')">
             <div class="card-content">
-              <p class="title">Algorithm</p>
+              <p>Algorithm</p>
             </div>
           </div>
         </div>
@@ -105,7 +73,8 @@
         <div class="column">
           <ul class="timeline">
             <!-- Dynamically create timeline items for each problem -->
-            <li class="timeline-item" v-for="problem in problems" :key="problem.id">
+            <div class="columns">
+              <li class="column timeline-item" v-for="item in problems" :key="item.problem.id">
               <div class="timeline-marker"></div>
               <div class="timeline-content">
                 <div class="card">
@@ -114,27 +83,30 @@
                     <div class="content is-flex is-justify-content-space-between is-align-items-center">
                       <div>
                         <!-- Display problem name -->
-                        <h2 class="title is-size-5 mb-1">[[ problem.name ]]</h2>
-                        <!-- Display difficulty -->
-                        <span class="is-size-6">[[ problem.difficulty ]]</span>
+                        <h2 class="title is-size-5 mb-1">[[ item.problem.name ]]</h2>
                       </div>
                     </div>
                     <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
                       <!-- Calculate estimated time based on question types -->
-                      <p class="mb-0 is-size-6">Estimated time</p>
-                      <span class="tag is-success is-light">[[ calculateEstimatedTime(problem.questions.understand) ]] minutes</span>
+                      <p class="mb-0 is-size-6">Milestones</p>
+                      <progress class="progress ml-4 is-primary practice-progress" :value="40" max="100">[[ item.problem.progress ]]%</progress>
                     </div>
                     <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
-                      <!-- Display number of questions -->
-                      <p class="mb-0 is-size-6">Content</p>
-                      <span class="tag is-success is-light">[[ problem.questions.understand.length ]] questions</span>
+                      <!-- Calculate estimated time based on question types -->
+                      <p class="mb-0 is-size-6">Difficulty</p>
+                      <span class="tag is-success is-light">[[ item.tag_difficulty ]]</span>
+                    </div>
+                    <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
+                      <!-- Calculate estimated time based on question types -->
+                      <p class="mb-0 is-size-6">Practice time</p>
+                      <span class="tag is-success is-light">[[ calculateEstimatedTime(item.problem.questions) ]] minutes</span>
                     </div>
                   </div>
                  <div class="card-footer">
-                  <div class="card-footer-item" style="width: 100%;">
-                    <div class="is-flex is-justify-content-space-between is-align-items-center" style="width: 100%;">
+                  <div class="card-footer-item">
+                    <div class="is-flex" style="width: 100%;">
                       <!-- Dynamically set the href using the root variable, category, and problem name -->
-                      <a :href="`${root}/${problem.category}/${problem.name.replace(/\s+/g, '-')}/`" class="button is-link ml-auto">Start</a>
+                      <a :href="`${root}/${item.problem.category}/${item.problem.name.replace(/\s+/g, '-')}/`" class="button is-link ml-auto">Start</a>
                     </div>
                   </div>
                 </div>
@@ -143,6 +115,7 @@
                 <!-- end card -->
               </div>
             </li>
+              </div>
           </ul>
         </div>
       </div>
@@ -174,36 +147,51 @@
     },
     methods: {
       fetchProblem() {
-        const url = `${root}/api/recommend/?category=${this.category}`;
-        axios
-          .get(url)
-          .then((response) => {
-            if (response.data) {
-              this.problems = response.data.problems; // Store the array of problems
-            } else {
-              this.message = "No problems found for the specified category.";
-            }
-          })
-          .catch((error) => {
-            console.error("An error occurred while fetching the problems:", error);
-            this.message = "An error occurred while fetching the problems.";
-          });
-      },
+  const url = `${root}/api/recommend/?category=${this.category}`;
+  axios
+    .get(url)
+    .then((response) => {
+      if (response.data) {
+        this.problems = response.data.problems;
+      }
+    })
+    .catch((error) => {
+      console.error("An error occurred while fetching the problems:", error);
+      this.message = "An error occurred while fetching the problems.";
+    });
+},
       updateCategory(category) {
         this.category = category;
         this.fetchProblem();
       },
       calculateEstimatedTime(questions) {
-        let time = 0;
-        questions.forEach((question) => {
-          // Assuming q_type: 0 is a choice question and takes 5 minutes
-          // and q_type: 1 is a coding question and takes 20 minutes
-          time += question.q_type === 0 ? 5 : 20;
-        });
-        return time;
-      },
+          let totalTime = 0;
+          // Iterate over each step in the questions object
+          for (const step in questions) {
+            if (questions.hasOwnProperty(step)) {
+              questions[step].forEach((question) => {
+                // Adjust time addition based on question type
+                switch (question.q_type) {
+                  case 0: // Choice question
+                    totalTime += 5;
+                    break;
+                  case 1: // Coding question
+                    totalTime += 20;
+                    break;
+                  case 2: // New question type
+                    totalTime += 10;
+                    break;
+                  default:
+                    // Handle unexpected q_type values if necessary
+                    break;
+                }
+              });
+            }
+          }
+
+          return totalTime;
+        },
     },
   });
 </script>
 {% endblock %}
-
