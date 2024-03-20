@@ -1,6 +1,6 @@
 import math
 from rest_framework import serializers
-from .models import Question, Milestone
+from .models import Question, Milestone, Tag
 from common.models import UserActivity
 
 
@@ -21,6 +21,12 @@ class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = '__all__'  # Adjust fields as necessary
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = '__all__'
 
 
 class UserActivitySerializer(serializers.ModelSerializer):

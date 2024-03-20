@@ -142,19 +142,19 @@ var app = new Vue({
         fetchProblem() {
           return axios.get(root + '/api/problem/?name=' + problem_name)
             .then(response => {
-    if (response.data && response.data.length > 0) {
-        this.problem = response.data[0];
-        if (this.problem.questions && this.problem.questions[this.activeTab]) {
-            this.question = this.problem.questions[this.activeTab];
-        } else {
-            // Handle the case where questions are not available
-            this.question = [];
-        }
-    } else {
-        this.message = 'An error occurred while fetching the problem.';
-    }
-})
-},
+                if (response.data && response.data.length > 0) {
+                    this.problem = response.data.problems;
+                    if (this.problem.questions && this.problem.questions[this.activeTab]) {
+                        this.question = this.problem.questions[this.activeTab];
+                    } else {
+                        // Handle the case where questions are not available
+                        this.question = [];
+                    }
+                } else {
+                    this.message = 'An error occurred while fetching the problem.';
+                }
+            })
+        },
         findQuestionByName(questionName) {
           for (let category in this.all_question) {
             const question = this.all_question[category].find(q => q.name === questionName);
