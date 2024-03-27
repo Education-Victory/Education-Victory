@@ -48,24 +48,24 @@
       <div class="columns">
         <!-- Left column with cards -->
         <div class="column is-4">
-          <div class="card mb-4" @click="updateCategory('recommend')">
+          <div class="card mb-4" @click="updateCategory('recommend')" :class="{'is-active': category === 'recommend'}">
             <div class="card-content">
-              <p>Recommend</p>
+              <p class="has-text-weight-semibold">Recommend</p>
             </div>
           </div>
-          <div class="card mb-4" @click="updateCategory('system-design')">
+          <div class="card mb-4" @click="updateCategory('system-design')" :class="{'is-active': category === 'system-design'}">
             <div class="card-content">
-              <p>System Design</p>
+              <p class="has-text-weight-semibold">System Design</p>
             </div>
           </div>
-          <div class="card mb-4" @click="updateCategory('behavioral')">
+          <div class="card mb-4" @click="updateCategory('behavioral')" :class="{'is-active': category === 'behavioral'}">
             <div class="card-content">
-              <p>Behavioral Question</p>
+              <p class="has-text-weight-semibold">Behavioral Question</p>
             </div>
           </div>
-          <div class="card mb-4" @click="updateCategory('algorithm')">
+          <div class="card mb-4" @click="updateCategory('algorithm')" :class="{'is-active': category === 'algorithm'}">
             <div class="card-content">
-              <p>Algorithm</p>
+              <p class="has-text-weight-semibold">Algorithm</p>
             </div>
           </div>
         </div>
@@ -83,30 +83,33 @@
                     <div class="content is-flex is-justify-content-space-between is-align-items-center">
                       <div>
                         <!-- Display problem name -->
-                        <h2 class="title is-size-5 mb-1">[[ item.problem.name ]]</h2>
+                        <h2 class="title is-size-5 mb-2">[[ item.problem.name ]]</h2>
+                        <span class="tag is-light">[[ item.tag.group ]]</span>
+                        <span class="tag is-light">[[ item.tag.name ]]</span>
+                        <span class="tag is-success is-light" :class="getBackgroundColor(item)">Difficulty [[ item.tag_difficulty ]]%</span>
                       </div>
                     </div>
                     <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
                       <!-- Calculate estimated time based on question types -->
                       <p class="mb-0 is-size-6">Milestones</p>
-                      <progress class="progress ml-4 is-primary practice-progress" :value="40" max="100">[[ item.problem.progress ]]%</progress>
+                      <progress class="progress ml-4 is-primary practice-progress" :value="[[ item.problem.milestones[0].milestone_completeness ]]" max="100">[[ item.problem.milestones.milestone_completeness ]]%</progress>
                     </div>
                     <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
                       <!-- Calculate estimated time based on question types -->
-                      <p class="mb-0 is-size-6">Difficulty</p>
-                      <span class="tag is-success is-light">[[ item.tag_difficulty ]]</span>
+                      <p class="mb-0 is-size-6">Your Ability</p>
+                      <span class="tag is-success is-light">[[ item.user_ability ]]%</span>
                     </div>
                     <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
                       <!-- Calculate estimated time based on question types -->
                       <p class="mb-0 is-size-6">Practice time</p>
-                      <span class="tag is-success is-light">[[ calculateEstimatedTime(item.problem.questions) ]] minutes</span>
+                      <span class="tag is-light">[[ calculateEstimatedTime(item.problem.questions) ]] minutes</span>
                     </div>
                   </div>
                  <div class="card-footer">
                   <div class="card-footer-item">
                     <div class="is-flex" style="width: 100%;">
                       <!-- Dynamically set the href using the root variable, category, and problem name -->
-                      <a :href="`${root}/${item.problem.category}/${item.problem.name.replace(/\s+/g, '-')}/`" class="button is-link ml-auto">Start</a>
+                      <a :href="`${root}/${item.problem.category}/${item.problem.name.replace(/\s+/g, '-')}/`" class="button is-info ml-auto">Start</a>
                     </div>
                   </div>
                 </div>
@@ -146,20 +149,30 @@
       this.fetchProblem();
     },
     methods: {
+      getBackgroundColor(item) {
+        const diff = item.tag_difficulty - item.user_ability;
+        if (diff < 0) {
+          return 'is-success';
+        } else if (diff > 0 && diff < 10) {
+          return 'is-warning';
+        } else if (diff >= 10) {
+          return 'is-danger';
+        }
+      },
       fetchProblem() {
-  const url = `${root}/api/recommend/?category=${this.category}`;
-  axios
-    .get(url)
-    .then((response) => {
-      if (response.data) {
-        this.problems = response.data.problems;
-      }
-    })
-    .catch((error) => {
-      console.error("An error occurred while fetching the problems:", error);
-      this.message = "An error occurred while fetching the problems.";
-    });
-},
+      const url = `${root}/api/recommend/?category=${this.category}`;
+      axios
+        .get(url)
+        .then((response) => {
+          if (response.data) {
+            this.problems = response.data.problems;
+          }
+        })
+        .catch((error) => {
+          console.error("An error occurred while fetching the problems:", error);
+          this.message = "An error occurred while fetching the problems.";
+        });
+    },
       updateCategory(category) {
         this.category = category;
         this.fetchProblem();
