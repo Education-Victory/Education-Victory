@@ -114,5 +114,5 @@ class RecommendProblemView(APIView):
                         'tag_difficulty': problem.difficulty  # Use the annotated difficulty
                     })
                 collected_problems += len(category_problems)
-        serializer = CustomProblemSerializer(problems, many=True)
+        serializer = CustomProblemSerializer(problems, many=True, context={'request': request})
         return Response({'problems': serializer.data})
