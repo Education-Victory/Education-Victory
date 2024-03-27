@@ -6,16 +6,12 @@ from common.models import UserActivity
 
 
 class MilestoneSerializer(serializers.ModelSerializer):
-    question = serializers.SerializerMethodField()
+    state = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Milestone
         fields = '__all__'
 
-    def get_question(self, obj):
-        question_list = []
-        for mq in obj.milestonequestion_set.all():
-            return []
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:

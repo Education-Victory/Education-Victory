@@ -26,6 +26,11 @@ class Question(models.Model):
     q_type = models.IntegerField(choices=QTYPE, default=0)
     tag = models.ManyToManyField('question.Tag')
     step = models.CharField(default='implement', max_length=1000)
+    milestone = models.ManyToManyField(
+        'Milestone',
+        through='QuestionMilestone',
+        through_fields=('question', 'milestone'),
+    )
     difficulty = models.IntegerField(default=100, help_text='percentage of difficulty')
     desc = models.JSONField(default=get_default_json)
     info = models.JSONField(default=get_default_json, blank=True)
@@ -54,6 +59,7 @@ class Tag(models.Model):
 
 
 class QuestionMilestone(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     milestone = models.ForeignKey(Milestone, on_delete=models.CASCADE)
     state = models.BooleanField(default=False)
