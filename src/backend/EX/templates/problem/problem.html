@@ -1,6 +1,7 @@
 {% extends "basic.html" %} {% load static %} {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/codeeditor.min.css' %}" />
 <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}" />
+<link rel="stylesheet" href="{% static 'css/problem.css' %}" />
 {% endblock %} {% block content %}
 <span id="vue-span">
   <section class="section">
@@ -77,13 +78,24 @@
                             <label class="label">[[ qu.desc.desc ]]</label>
                             <div class="control" v-for="(choice, index) in qu.desc.choice" :key="index">
                               <label class="checkbox">
-                                <input type="checkbox"/>
+                                <input type="checkbox" v-model="qu.selectedChoices[index]">
                                 [[ choice ]]
                               </label>
-                            </div> <!-- end control -->
+                            </div>
                           </div> <!-- end field -->
-                          <div class="buttons is-pulled-right">
-                          <button class="button is-info">Submit</button>
+                          <div class="buttons subResetButton">
+                          <button class="button is-info" @click="submitQuestion">Submit</button>
+                          <button class="button is-info" @click="resetQuestion">Reset</button>
+                          </div>
+                          <div v-if="qu.showExplanation" class="card mb-5">
+                            <header class="card-header">
+                              <p class="card-header-title">
+                                [[ qu.isCorrect ]]
+                              </p>
+                            </header>
+                            <div class="card-content">
+                                <div class="content render-markdown" v-if="qu.desc.explain" v-html="renderMarkdown(qu.desc.explain)"></div>
+                            </div>
                         </div>
                         </div> <!-- end swiper-slide -->
                       </div>

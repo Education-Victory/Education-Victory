@@ -31,7 +31,7 @@ router.register(r'question', question_views.QuestionViewSet, basename='question'
 router.register(r'problem', problem_views.ProblemViewSet, basename='problem')
 router.register(r'submission', common_views.UserActivityViewSet)
 router.register(r'ability', common_views.UserAbilityViewSet, basename='userability')
-problem_views.RecommendProblemView
+router.register(r'activity', common_views.UserActivityViewSet, basename='useractivity')
 
 
 urlpatterns = [
