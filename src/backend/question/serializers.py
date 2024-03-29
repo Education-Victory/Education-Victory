@@ -13,16 +13,17 @@ class MilestoneSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class QuestionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Question
-        fields = '__all__'  # Adjust fields as necessary
-
-
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = '__all__'
+
+
+class QuestionSerializer(serializers.ModelSerializer):
+    tags = TagSerializer(many=True, read_only=True, source='tag')
+    class Meta:
+        model = Question
+        fields = '__all__'  # Adjust fields as necessary
 
 
 class UserActivitySerializer(serializers.ModelSerializer):

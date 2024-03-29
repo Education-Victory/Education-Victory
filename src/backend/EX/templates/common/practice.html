@@ -128,12 +128,6 @@
 {% endblock %} {% block extra_script %}
 <script>
   var root = "{{ root }}";
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": csrfToken,
-    },
-  };
   var app = new Vue({
     delimiters: ["[[", "]]"],
     el: "#vue-span",
