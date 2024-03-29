@@ -2,3 +2,48 @@
     display: flex;
     justify-content: flex-end;
 }
+
+.has-background-success {
+  background-color: $success;
+}
+
+.has-background-warning {
+  background-color: $warning;
+}
+
+.timer-content {
+    display: flex;
+    flex-direction: row; /* Align children horizontally */
+    justify-content: center; /* Center children horizontally in the main axis */
+    align-items: center; /* Center children vertically in the cross axis */
+    height: 100%; /* Make sure the container takes up full height */
+    gap: 10px; /* Adds space between the countdown and the button */
+}
+
+.timer-card-content {
+    padding: 0.2rem;
+}
+
+#countdown ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex; /* Make it flex to align items in a row */
+    text-align: center;
+    margin: 0; /* Adjust as needed */
+}
+
+#countdown ul li {
+    display: flex; /* Align text and numbers vertically */
+    flex-direction: column; /* Stack them vertically */
+    font-size: 0.6em;
+    list-style-type: none;
+    padding: 0.5em;
+    text-transform: uppercase;
+    justify-content: center; /* Center the content vertically */
+    align-items: center; /* Center the content horizontally */
+}
+
+#countdown ul li span {
+    display: block;
+    font-size: 2rem;
+}

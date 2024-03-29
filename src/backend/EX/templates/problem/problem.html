@@ -21,7 +21,7 @@
                    <p class="card-header-title">Milestones</p>
                     <div class="control" v-for="(milestone, index) in this.problem.milestones" :key="index">
                       <label class="checkbox">
-                        <input type="checkbox" disabled />
+                        <input type="checkbox" :checked="milestone.state" disabled />
                         [[ milestone.name ]]
                       </label>
                     </div>
@@ -62,34 +62,46 @@
                   </li>
                 </ul>
               </div>
+              
               <div class="card">
                 <div class="card-content">
-                  <div class="content is-flex is-justify-content-space-between is-align-items-center">
-                      <div>
-                        <span class="tag is-success is-light">dfdsf</span>
-                        <span class="tag is-success is-light">dfsdfd</span>
-                      </div>
-                    </div>
                   <div class="swiper">
                     <div class="swiper-container" v-if="question && question.length > 0">
                       <div class="swiper-wrapper">
                         <div class="swiper-slide" v-for="(qu, i) in question" :key="qu.id">
+                         <div class="timer-card-content">
+                      <div class="timer-content">
+                        <div id="countdown">
+                            <ul>
+                              <li><span>[[ minutes ]]</span>Minutes</li>
+                              <li><span>[[ seconds ]]</span>Seconds</li>
+                            </ul>
+                          </div>
+                          <button class="button is-success" @click="toggleTimer">[[ qu.timerRunning ? 'Stop Timer' : 'Start Timer' ]]</button>
+                      </div>
+                    </div>
+                          <div class="content is-flex is-justify-content-space-between is-align-items-center">
+                            <div>
+                              <span class="tag is-success is-light">dfdsf</span>
+                              <span class="tag is-success is-light">dfsdfd</span>
+                            </div>
+                          </div>
                           <div class="field mb-5">
                             <label class="label">[[ qu.desc.desc ]]</label>
                             <div class="control" v-for="(choice, index) in qu.desc.choice" :key="index">
                               <label class="checkbox">
-                                <input type="checkbox" v-model="qu.selectedChoices[index]">
+                                <input type="checkbox" v-model="qu.selectedChoices[index]" :disabled="qu.isSubmitted">
                                 [[ choice ]]
                               </label>
                             </div>
                           </div> <!-- end field -->
                           <div class="buttons subResetButton">
+                          
                           <button class="button is-info" @click="submitQuestion">Submit</button>
-                          <button class="button is-info" @click="resetQuestion">Reset</button>
                           </div>
                           <div v-if="qu.showExplanation" class="card mb-5">
-                            <header class="card-header">
-                              <p class="card-header-title">
+                            <header class="card-header" :class="{'has-background-success': qu.isCorrect === 'Correct', 'has-background-warning': qu.isCorrect !== 'Correct'}">
+                              <p class="card-header-title" :class="{'has-text-white': qu.isCorrect === 'Correct', 'has-text-dark': qu.isCorrect !== 'Correct'}">
                                 [[ qu.isCorrect ]]
                               </p>
                             </header>
