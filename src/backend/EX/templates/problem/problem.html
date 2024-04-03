@@ -81,9 +81,8 @@
                       </div>
                     </div>
                           <div class="content is-flex is-justify-content-space-between is-align-items-center">
-                            <div>
-                              <span class="tag is-success is-light">dfdsf</span>
-                              <span class="tag is-success is-light">dfsdfd</span>
+                            <div v-for="(t, index) in qu.tags" :key="index">
+                              <span class="tag is-success is-light">[[ t.name ]]</span>
                             </div>
                           </div>
                           <div class="field mb-5">

@@ -154,19 +154,19 @@
         }
       },
       fetchProblem() {
-      const url = `${root}/api/recommend/?category=${this.category}`;
-      axios
-        .get(url)
-        .then((response) => {
-          if (response.data) {
-            this.problems = response.data.problems;
-          }
-        })
-        .catch((error) => {
-          console.error("An error occurred while fetching the problems:", error);
-          this.message = "An error occurred while fetching the problems.";
-        });
-    },
+        const url = `${root}/api/recommend/?category=${this.category}`;
+        axios
+          .get(url)
+          .then((response) => {
+            if (response.data) {
+              this.problems = response.data.problems;
+            }
+          })
+          .catch((error) => {
+            console.error("An error occurred while fetching the problems:", error);
+            this.message = "An error occurred while fetching the problems.";
+          });
+      },
       updateCategory(category) {
         this.category = category;
         this.fetchProblem();
