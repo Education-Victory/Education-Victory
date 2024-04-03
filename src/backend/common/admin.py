@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Company, UserAbility
+from .models import User, Company, UserAbility, UserActivity, UserSubmission
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -21,3 +21,14 @@ class UserAbilityAdmin(admin.ModelAdmin):
     list_display = ('user', 'tag', 'ability_score')  # Columns to display in the admin list view
     list_filter = ('user', 'tag')  # Filters on the right sidebar
     search_fields = ('user__username', 'tag__name')
+
+
+@admin.register(UserActivity)
+class UserActivityAdmin(admin.ModelAdmin):
+    list_display = ('user', 'a_type', 'created_at', 'updated_at')
+    list_filter = ('user', 'a_type')
+
+@admin.register(UserSubmission)
+class UserSubmissionAdmin(admin.ModelAdmin):
+    list_display = ('user_id', 'problem_id', 'question_id', 'created_at', 'updated_at')
+    list_filter = ('user_id', 'problem_id', 'question_id')

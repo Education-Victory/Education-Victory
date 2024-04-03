@@ -59,3 +59,14 @@ class UserActivity(models.Model):
     content = models.JSONField(default=get_default_json)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class UserSubmission(models.Model):
+    user_id = models.IntegerField(default=1)
+    problem_id = models.IntegerField(default=1)
+    question_id = models.IntegerField(default=1)
+    content = models.JSONField(default=get_default_json)
+    is_correct = models.BooleanField(default=False)
+    time_spent = models.IntegerField(default=0)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)

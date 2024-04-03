@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from question.models import Tag
-from .models import UserAbility, UserActivity
+from .models import UserAbility, UserActivity, UserSubmission
 
 User = get_user_model()
 
@@ -25,4 +25,10 @@ class UserAbilitySerializer(serializers.ModelSerializer):
 class UserActivitySerializer(serializers.ModelSerializer):
     class Meta:
         model = UserActivity
-        fields = ['id', 'user', 'a_type', 'content', 'created_at', 'updated_at']
+        fields = '__all__'
+
+
+class UserSubmissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserSubmission
+        fields = '__all__'
