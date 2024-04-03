@@ -2,14 +2,18 @@ from django.conf import settings
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.db.models.signals import post_save
+from django.db import transaction
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from rest_framework import viewsets, filters
+from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserAbilitySerializer, UserActivitySerializer
-from question.models import Tag
-from .models import UserAbility, UserActivity
+from .serializers import UserAbilitySerializer, UserActivitySerializer, UserSubmissionSerializer
+from question.models import Question, Tag, Milestone, QuestionMilestone
+from .models import UserAbility, UserActivity, UserSubmission
+
 
 User = get_user_model()
 
@@ -146,3 +150,41 @@ class UserAbilityViewSet(viewsets.ModelViewSet):
 class UserActivityViewSet(viewsets.ModelViewSet):
     queryset = UserActivity.objects.all()
     serializer_class = UserActivitySerializer
+
+
+class UserSubmissionViewSet(viewsets.ModelViewSet):
+    queryset = UserSubmission.objects.all()
+    serializer_class = UserSubmissionSerializer
+
+    def create(self, request, *args, **kwargs):
+        with transaction.atomic():  # Ensure data integrity with transaction
+            response = super().create(request, *args, **kwargs)
+
+            if response.status_code == status.HTTP_201_CREATED:
+                submission_data = response.data
+                if submission_data.get('is_correct'):
+                    # Extract necessary data from the submission
+                    user = request.user
+                    problem_id = submission_data.get('problem_id')
+                    question_id = submission_data.get('question_id')
+
+                    # Step 1: Find all questions related to the problem
+                    related_questions = Question.objects.filter(problem_id=problem_id)
+
+                    # Step 2: Collect all unique milestones for those questions
+                    # Note: This uses a set to avoid duplicate milestones
+                    milestones = set()
+                    for question in related_questions:
+                        for milestone in question.milestone.all():
+                            milestones.add(milestone)
+
+                    # Step 3: Update or create QuestionMilestone for each milestone
+                    for milestone in milestones:
+                        QuestionMilestone.objects.update_or_create(
+                            user=user,
+                            question_id=question_id,  # Assuming you want to link to the current question
+                            milestone=milestone,
+                            defaults={'state': True}
+                        )
+
+            return response

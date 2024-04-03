@@ -5,8 +5,6 @@ from .models import (
     Milestone,
     QuestionMilestone
 )
-from common.models import UserActivity
-
 
 class QuestionMilestoneInline(admin.TabularInline):
     model = QuestionMilestone
@@ -25,12 +23,6 @@ class QuestionAdmin(admin.ModelAdmin):
 class TagAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'group', 'frequency', 'difficulty', 'created_at', 'updated_at')
     search_fields = ('name',)
-
-
-@admin.register(UserActivity)
-class UserActivityAdmin(admin.ModelAdmin):
-    list_display = ('user', 'a_type', 'created_at', 'updated_at')
-    list_filter = ('user', 'a_type')
 
 
 @admin.register(Milestone)

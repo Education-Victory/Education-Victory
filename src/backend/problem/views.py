@@ -9,7 +9,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from .models import Problem, TagProblem
 from .serializers import ProblemSerializer, CustomProblemSerializer
-from question.models import Question, Tag
+from question.models import Question, Tag, Milestone
 from common.models import UserAbility
 
 
@@ -48,7 +48,6 @@ class ProblemViewSet(ModelViewSet):
             name = name.replace('-', ' ')
             queryset = queryset.filter(name=name)
         return queryset
-
 
 class RecommendProblemView(APIView):
     def get(self, request, *args, **kwargs):
@@ -116,3 +115,7 @@ class RecommendProblemView(APIView):
                 collected_problems += len(category_problems)
         serializer = CustomProblemSerializer(problems, many=True, context={'request': request})
         return Response({'problems': serializer.data})
+
+
+def submission(request):
+    pass

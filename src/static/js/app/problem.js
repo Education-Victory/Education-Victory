@@ -105,7 +105,7 @@ var app = new Vue({
                                 question.showExplanation = false;
                                 question.isCorrect = false;
                                 question.isSubmitted = false;
-                                question.timer = 120;
+                                question.timer = 60;
                                 question.timerRunning = true;
                             });
                         });
@@ -121,14 +121,15 @@ var app = new Vue({
         submitQuestion() {
             let selectedChoices = this.getSelectedChoices();
             let isCorrect = this.checkAnswer(selectedChoices);
+            let timeSpent = Math.max(0, 60 - this.currentQuestion.timer);
             let submissionData = {
                 user: this.userId,
-                a_type: 0,
+                problem_id: this.problem.id,
+                question_id: this.currentQuestion.id,
+                is_correct: isCorrect,
+                time_spent: timeSpent,
                 content: {
-                    problem: this.problem.id,
-                    question: this.currentQuestion.id,
                     selectedChoices: selectedChoices,
-                    isCorrect: isCorrect
                 }
             };
             const config = {
@@ -136,7 +137,7 @@ var app = new Vue({
                     'X-CSRFToken': csrfToken
                 }
             };
-            axios.post('/api/activity/', submissionData, config)
+            axios.post('/api/submission/', submissionData, config)
                 .then(response => {
                     this.currentQuestion.showExplanation = true;
                     this.currentQuestion.isCorrect = isCorrect ? "Correct" : "Incorrect";
@@ -144,6 +145,7 @@ var app = new Vue({
                     if (this.currentQuestion.timerInterval) {
                         clearInterval(this.currentQuestion.timerInterval);
                     }
+                    this.fetchAndUpdateMilestones();
                 })
                 .catch(error => {
                     console.error("Submission failed", error);
@@ -165,6 +167,24 @@ var app = new Vue({
         checkAnswer(selectedChoices) {
             const correctAnswer = this.currentQuestion.desc.answer;
             return selectedChoices === correctAnswer;
+        },
+        fetchAndUpdateMilestones() {
+            return axios.get(this.root + '/api/problem/?name=' + problem_name)
+                .then(response => {
+                    if (response.data && response.data.length > 0) {
+                        const problemData = response.data[0];
+                        Object.keys(problemData.questions).forEach(category => {
+                            problemData.questions[category].forEach(question => {
+                            });
+                        });
+                        this.problem.milestones = problemData.milestones;
+                    } else {
+                        this.message = 'An error occurred while fetching the problem.';
+                    }
+                })
+                .catch(error => {
+                    this.message = 'An error occurred while fetching the problem.';
+                });
         },
         startTimerForCurrentQuestion() {
     if (this.currentQuestion.timerInterval) {
