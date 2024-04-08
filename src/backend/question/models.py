@@ -20,7 +20,7 @@ class Question(models.Model):
     QTYPE = (
         (0, 'Choice'),
         (1, 'Coding'),
-        (2, 'Voice'),
+        (2, 'Content'),
     )
     problem = models.ForeignKey('problem.Problem', on_delete=models.CASCADE)
     q_type = models.IntegerField(choices=QTYPE, default=0)
