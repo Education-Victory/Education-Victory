@@ -47,3 +47,8 @@
     display: block;
     font-size: 2rem;
 }
+
+.question-textarea {
+    min-width: 96%;
+    max-width: 96%;
+}

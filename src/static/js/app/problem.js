@@ -42,31 +42,29 @@ var app = new Vue({
             return marked.parse(markdownText);
         },
         setActiveTab(tabName) {
-    this.activeTab = tabName;
-    // Check if the selected tab has questions
-    if (this.problem && this.problem.questions && this.problem.questions[tabName]) {
-        // Cleanup before changing the question
-        if (this.currentQuestion.timerInterval) {
-            clearInterval(this.currentQuestion.timerInterval);
+        this.activeTab = tabName;
+        // Check if the selected tab has questions
+        if (this.problem && this.problem.questions && this.problem.questions[tabName]) {
+            // Cleanup before changing the question
+            if (this.currentQuestion.timerInterval) {
+                clearInterval(this.currentQuestion.timerInterval);
+            }
+
+            this.question = this.problem.questions[tabName];
+            this.currentQuestion = this.question[0] || {};
+
+            // Setup after changing the question
+            if (this.currentQuestion.timerRunning) {
+                this.startTimerForCurrentQuestion();
+            }
+        } else {
+            this.question = [];
+            this.currentQuestion = {};
         }
-
-        this.question = this.problem.questions[tabName];
-        this.currentQuestion = this.question[0] || {};
-
-        // Setup after changing the question
-        if (this.currentQuestion.timerRunning) {
-            this.startTimerForCurrentQuestion();
-        }
-    } else {
-        this.question = [];
-        this.currentQuestion = {};
-    }
-
-    // Re-initialize Swiper to reflect the change in questions
-    this.$nextTick(() => {
-        this.initializeSwiper();
-    });
-},
+        this.$nextTick(() => {
+            this.initializeSwiper();
+        });
+    },
         initializeSwiper() {
     if (this.swiperInstance && typeof this.swiperInstance.destroy === 'function') {
         this.swiperInstance.destroy(true, true); // Pass true to both parameters for a complete cleanup
@@ -101,11 +99,16 @@ var app = new Vue({
                         const problemData = response.data[0];
                         Object.keys(problemData.questions).forEach(category => {
                             problemData.questions[category].forEach(question => {
-                                question.selectedChoices = new Array(question.desc.choice.length).fill(false);
+                                if(question.q_type === 2) {
+                                    question.selectedChoices = "";
+                                    question.timer = 120;
+                                } else {
+                                    question.selectedChoices = new Array(question.desc.choice.length).fill(false);
+                                    question.timer = 60;
+                                }
                                 question.showExplanation = false;
                                 question.isCorrect = false;
                                 question.isSubmitted = false;
-                                question.timer = 60;
                                 question.timerRunning = true;
                             });
                         });
@@ -119,19 +122,21 @@ var app = new Vue({
                 });
         },
         submitQuestion() {
-            let selectedChoices = this.getSelectedChoices();
-            let isCorrect = this.checkAnswer(selectedChoices);
             let timeSpent = Math.max(0, 60 - this.currentQuestion.timer);
-            let submissionData = {
-                user: this.userId,
-                problem_id: this.problem.id,
-                question_id: this.currentQuestion.id,
-                is_correct: isCorrect,
-                time_spent: timeSpent,
-                content: {
-                    selectedChoices: selectedChoices,
-                }
-            };
+            if(question.q_type === 0) {
+                let selectedChoices = this.getSelectedChoices();
+                let isCorrect = this.checkAnswer(selectedChoices);
+                let submissionData = {
+                    user: this.userId,
+                    problem_id: this.problem.id,
+                    question_id: this.currentQuestion.id,
+                    is_correct: isCorrect,
+                    time_spent: timeSpent,
+                    content: {
+                        selectedChoices: selectedChoices,
+                    }
+                };
+            }
             const config = {
                 headers: {
                     'X-CSRFToken': csrfToken

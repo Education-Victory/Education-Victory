@@ -1,40 +1,43 @@
-{% extends "basic.html" %} {% load static %} {% block extra_css %}
+{% extends "basic.html" %}
+{% load static %}
+{% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/codeeditor.min.css' %}" />
 <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}" />
 <link rel="stylesheet" href="{% static 'css/problem.css' %}" />
-{% endblock %} {% block content %}
+{% endblock %}
+{% block content %}
 <span id="vue-span">
-  <section class="section">
-    <div class="container is-fluid">
-      <div class="columns">
+  <section class="section"> <!-- start section -->
+    <div class="container is-fluid"> <!-- start container -->
+      <div class="columns"> <!-- start columns -->
         <!-- Problem Description Column -->
-        <div class="column is-6">
-          <div class="card">
-            <div class="card-content">
+        <div class="column is-6"> <!-- start column is-6 -->
+          <div class="card"> <!-- start card -->
+            <div class="card-content"> <!-- start card-content -->
               <p class="title has-text-centered" v-if="problem">[[ problem.name ]]</p>
               <div class="content render-markdown mb-6" v-if="problem && problem.desc" v-html="renderMarkdown(problem.desc.desc)"></div>
-            </div>
-          </div>
-              <div class="card">
-                <div class="card-content">
-                  <div class="content">
-                   <p class="card-header-title">Milestones</p>
-                    <div class="control" v-for="(milestone, index) in this.problem.milestones" :key="index">
-                      <label class="checkbox">
-                        <input type="checkbox" :checked="milestone.state" disabled />
-                        [[ milestone.name ]]
-                      </label>
-                    </div>
-                  </div>
+            </div> <!-- end card-content -->
+          </div> <!-- end card -->
+          <div class="card"> <!-- start card -->
+            <div class="card-content"> <!-- start card-content -->
+              <div class="content"> <!-- start content -->
+                <p class="card-header-title">Milestones</p>
+                <div class="control" v-if="problem.milestones" v-for="(milestone, index) in problem.milestones" :key="index">
+                  <label class="checkbox">
+                    <input type="checkbox" :checked="milestone.state" disabled />
+                    [[ milestone.name ]]
+                  </label>
                 </div>
-              </div>
-        </div>
+              </div> <!-- end content -->
+            </div> <!-- end card-content -->
+          </div> <!-- end card -->
+        </div> <!-- end column is-6 -->
         <!-- Tabs and Questionnaire Column -->
-        <div class="column is-6">
-          <div class="card">
-            <div class="card-content">
+        <div class="column is-6"> <!-- start column is-6 -->
+          <div class="card"> <!-- start card -->
+            <div class="card-content"> <!-- start card-content -->
               <!-- Tabs for Understand, Analyze, Implement -->
-              <div class="tabs is-centered">
+              <div class="tabs is-centered"> <!-- start tabs -->
                 <ul>
                   <li :class="{'is-active': activeTab === 'understand'}">
                     <a @click="setActiveTab('understand')">
@@ -61,70 +64,74 @@
                     </a>
                   </li>
                 </ul>
-              </div>
-              
-              <div class="card">
-                <div class="card-content">
-                  <div class="swiper">
-                    <div class="swiper-container" v-if="question && question.length > 0">
-                      <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-for="(qu, i) in question" :key="qu.id">
-                         <div class="timer-card-content">
-                      <div class="timer-content">
-                        <div id="countdown">
-                            <ul>
-                              <li><span>[[ minutes ]]</span>Minutes</li>
-                              <li><span>[[ seconds ]]</span>Seconds</li>
-                            </ul>
-                          </div>
-                          <button class="button is-success" @click="toggleTimer">[[ qu.timerRunning ? 'Stop Timer' : 'Start Timer' ]]</button>
-                      </div>
-                    </div>
-                          <div class="content is-flex is-justify-content-space-between is-align-items-center">
+              </div> <!-- end tabs -->
+              <div class="card"> <!-- start card -->
+                <div class="card-content"> <!-- start card-content -->
+                  <div class="swiper"> <!-- start swiper -->
+                    <div class="swiper-container" v-if="question && question.length > 0"> <!-- start swiper-container -->
+                      <div class="swiper-wrapper"> <!-- start swiper-wrapper -->
+                        <div v-if="qu" class="swiper-slide" v-for="(qu, i) in question" :key="qu.id"> <!-- start swiper-slide -->
+                          <div class="timer-card-content"> <!-- start timer-card-content -->
+                            <div class="timer-content"> <!-- start timer-content -->
+                              <div id="countdown"> <!-- start countdown -->
+                                <ul>
+                                  <li><span>[[ minutes ]]</span>Minutes</li>
+                                  <li><span>[[ seconds ]]</span>Seconds</li>
+                                </ul>
+                              </div> <!-- end countdown -->
+                              <button class="button is-success" @click="toggleTimer">[[ qu.timerRunning ? 'Stop Timer' : 'Start Timer' ]]</button>
+                            </div> <!-- end timer-content -->
+                          </div> <!-- end timer-card-content -->
+                          <div class="content is-flex is-justify-content-space-between is-align-items-center"> <!-- start content -->
                             <div v-for="(t, index) in qu.tags" :key="index">
                               <span class="tag is-success is-light">[[ t.name ]]</span>
                             </div>
-                          </div>
-                          <div class="field mb-5">
-                            <label class="label">[[ qu.desc.desc ]]</label>
-                            <div class="control" v-for="(choice, index) in qu.desc.choice" :key="index">
-                              <label class="checkbox">
-                                <input type="checkbox" v-model="qu.selectedChoices[index]" :disabled="qu.isSubmitted">
-                                [[ choice ]]
-                              </label>
-                            </div>
-                          </div> <!-- end field -->
-                          <div class="buttons subResetButton">
-                          
-                          <button class="button is-info" @click="submitQuestion">Submit</button>
-                          </div>
-                          <div v-if="qu.showExplanation" class="card mb-5">
-                            <header class="card-header" :class="{'has-background-success': qu.isCorrect === 'Correct', 'has-background-warning': qu.isCorrect !== 'Correct'}">
+                          </div> <!-- end content -->
+                          <div class="field mb-5"> <!-- start field -->
+                              <label class="label">[[ qu.desc.desc ]]</label>
+                              <template v-if="qu.q_type === 0">
+                                <div v-for="(choice, index) in qu.desc.choice" :key="index">
+                                  <label class="checkbox">
+                                    <input type="checkbox" v-model="qu.selectedChoices[index]" :disabled="qu.isSubmitted">
+                                    [[ choice ]]
+                                  </label>
+                                </div>
+                              </template>
+                              <div v-if="qu.q_type === 2">
+                                <textarea class="textarea question-textarea":placeholder="qu.desc.content" :disabled="qu.isSubmitted"></textarea>
+                              </div>
+                            </div> <!-- end field -->
+                          <div class="buttons subResetButton"> <!-- start buttons -->
+                            <button class="button is-info" @click="submitQuestion">Submit</button>
+                          </div> <!-- end buttons -->
+                          <div v-if="qu.showExplanation" class="card mb-5"> <!-- start card -->
+                            <header class="card-header" :class="{'has-background-success': qu.isCorrect === 'Correct', 'has-background-warning': qu.isCorrect !== 'Correct'}"> <!-- start card-header -->
                               <p class="card-header-title" :class="{'has-text-white': qu.isCorrect === 'Correct', 'has-text-dark': qu.isCorrect !== 'Correct'}">
                                 [[ qu.isCorrect ]]
                               </p>
-                            </header>
-                            <div class="card-content">
-                                <div class="content render-markdown" v-if="qu.desc.explain" v-html="renderMarkdown(qu.desc.explain)"></div>
-                            </div>
-                        </div>
+                            </header> <!-- end card-header -->
+                            <div class="card-content"> <!-- start card-content -->
+                              <div class="content render-markdown" v-if="qu.desc.explain" v-html="renderMarkdown(qu.desc.explain)"></div>
+                            </div> <!-- end card-content -->
+                          </div> <!-- end card -->
                         </div> <!-- end swiper-slide -->
-                      </div>
+                      </div> <!-- end swiper-wrapper -->
                       <br>
                       <div class="swiper-pagination"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                    </div> <!-- end swiper-container -->
+                  </div> <!-- end swiper -->
+                </div> <!-- end card-content -->
+              </div> <!-- end card -->
+            </div> <!-- end card-content -->
+          </div> <!-- end card -->
           <br />
-        </div>
-      </div>
-    </div>
-  </section>
+        </div> <!-- end column is-6 -->
+      </div> <!-- end columns -->
+    </div> <!-- end container -->
+  </section> <!-- end section -->
 </span>
-{% endblock %} {% block extra_script %}
+{% endblock %}
+{% block extra_script %}
 <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
 <script src="{% static 'js/codeeditor.min.js' %}"></script>
 <script src="{% static 'js/marked.min.js' %}"></script>
@@ -136,4 +143,3 @@
 </script>
 <script src="{% static 'js/app/problem.js' %}"></script>
 {% endblock %}
-
