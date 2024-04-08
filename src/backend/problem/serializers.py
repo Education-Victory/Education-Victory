@@ -47,7 +47,6 @@ class ProblemSerializer(serializers.ModelSerializer):
 
         total_milestones = milestones.count()
         milestone_completeness = int(completed_milestones / total_milestones * 100) if total_milestones else 0
-
         # Add the milestone_completeness to each milestone data
         for milestone_data in milestones_data.values():
             milestone_data["milestone"]['milestone_completeness'] = milestone_completeness

@@ -73,8 +73,8 @@
         <div class="column">
           <ul class="timeline">
             <!-- Dynamically create timeline items for each problem -->
-            <div class="columns">
-              <li class="column timeline-item" v-for="item in problems" :key="item.problem.id">
+            <div class="columns is-multiline">
+              <li class="column is-6 timeline-item" v-for="item in problems" :key="item.problem.id">
               <div class="timeline-marker"></div>
               <div class="timeline-content">
                 <div class="card">
@@ -92,7 +92,7 @@
                     <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
                       <!-- Calculate estimated time based on question types -->
                       <p class="mb-0 is-size-6">Milestones</p>
-                      <progress class="progress ml-4 is-primary practice-progress" :value="[[ item.problem.milestones[0].milestone_completeness ]]" max="100">[[ item.problem.milestones.milestone_completeness ]]%</progress>
+                      <progress v-if="item.problem.milestones && item.problem.milestones.length > 0" class="progress ml-4 is-primary practice-progress" :value="[[ item.problem.milestones[0].milestone_completeness ]]" max="100">[[ item.problem.milestones.milestone_completeness ]]%</progress>
                     </div>
                     <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
                       <!-- Calculate estimated time based on question types -->
