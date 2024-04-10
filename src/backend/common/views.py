@@ -162,7 +162,7 @@ class UserSubmissionViewSet(viewsets.ModelViewSet):
 
             if response.status_code == status.HTTP_201_CREATED:
                 submission_data = response.data
-                if submission_data.get('is_correct'):
+                if submission_data.get('g_type') == 0:
                     # Extract necessary data from the submission
                     user = request.user
                     problem_id = submission_data.get('problem_id')

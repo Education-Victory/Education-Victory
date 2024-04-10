@@ -62,11 +62,23 @@ class UserActivity(models.Model):
 
 
 class UserSubmission(models.Model):
+    GRADE = (
+        (0, 'Excellent'),
+        (1, 'Good'),
+        (2, 'Fair'),
+        (3, 'Weak'),
+    )
+    QTYPE = (
+        (0, 'Choice'),
+        (1, 'Coding'),
+        (2, 'Content'),
+    )
     user_id = models.IntegerField(default=1)
     problem_id = models.IntegerField(default=1)
     question_id = models.IntegerField(default=1)
+    q_type = models.IntegerField(choices=QTYPE, default=0)
+    g_type = models.IntegerField(choices=GRADE, default=0)
     content = models.JSONField(default=get_default_json)
-    is_correct = models.BooleanField(default=False)
     time_spent = models.IntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
