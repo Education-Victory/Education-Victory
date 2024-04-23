@@ -8,6 +8,9 @@ from question.models import Tag
 def get_default_json():
     return {}
 
+def sixty_days_later():
+    return timezone.now() + datetime.timedelta(days=60)
+
 
 class Company(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -27,6 +30,14 @@ class User(AbstractUser):
     is_premium = models.BooleanField(default=False)
     premium_expired_day = models.DateTimeField(
         default=timezone.make_aware(datetime.datetime(2000, 5, 1, 12, 0)))
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class UserInterviewInfo(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    company = models.CharField(default='Google', max_length=100)
+    interview_at = models.DateTimeField(default=sixty_days_later)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -62,22 +73,22 @@ class UserActivity(models.Model):
 
 
 class UserSubmission(models.Model):
-    GRADE = (
-        (0, 'Excellent'),
-        (1, 'Good'),
-        (2, 'Fair'),
-        (3, 'Weak'),
-    )
     QTYPE = (
         (0, 'Choice'),
         (1, 'Coding'),
         (2, 'Content'),
     )
+    GRADE = (
+        ('Excellent', 'Excellent'),
+        ('Good', 'Good'),
+        ('Fair', 'Fair'),
+        ('Weak', 'Weak'),
+    )
     user_id = models.IntegerField(default=1)
     problem_id = models.IntegerField(default=1)
     question_id = models.IntegerField(default=1)
     q_type = models.IntegerField(choices=QTYPE, default=0)
-    g_type = models.IntegerField(choices=GRADE, default=0)
+    g_type = models.CharField(choices=GRADE, default='Excellent', max_length=100)
     content = models.JSONField(default=get_default_json)
     time_spent = models.IntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now)
