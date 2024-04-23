@@ -1,3 +1,4 @@
+from django.template.defaultfilters import truncatewords
 from django.contrib import admin
 from .models import (
     Tag,
@@ -13,10 +14,17 @@ class QuestionMilestoneInline(admin.TabularInline):
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('desc', 'problem', 'step', 'difficulty', 'created_at', 'updated_at')
+    list_display = ('get_short_desc', 'problem', 'step', 'difficulty', 'created_at', 'updated_at')
     list_filter = ('difficulty',)
     filter_horizontal = ('tag',)
     inlines = (QuestionMilestoneInline,)
+
+    def get_short_desc(self, obj):
+        """
+        Returns the first 100 words of the description for display in the admin list.
+        """
+        return truncatewords(obj.desc, 20)  # Truncate to 100 words
+    get_short_desc.short_description = 'Description'  # Sets column name
 
 
 @admin.register(Tag)
