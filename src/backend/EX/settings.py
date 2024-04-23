@@ -60,6 +60,7 @@ elif ENVIRONMENT in ('TEST', 'PRODUCTION'):
     STATIC_URL = 'https://cdn.jsdelivr.net/gh/Education-Victory/Education-Victory/src/static/'
 
 
+OPENAI_SECRET_KEY = os.getenv('OPENAI_SECRET_KEY')
 # Application definition
 
 INSTALLED_APPS = [

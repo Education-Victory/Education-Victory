@@ -9,10 +9,12 @@ from django.db.models import Q
 from rest_framework import viewsets, filters
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserAbilitySerializer, UserActivitySerializer, UserSubmissionSerializer
+from .serializers import UserAbilitySerializer, UserActivitySerializer, UserSubmissionSerializer, ReviewSerializer
 from question.models import Question, Tag, Milestone, QuestionMilestone
 from .models import UserAbility, UserActivity, UserSubmission
+from .utils import evaluate_submission
 
 
 User = get_user_model()
@@ -188,3 +190,20 @@ class UserSubmissionViewSet(viewsets.ModelViewSet):
                         )
 
             return response
+
+
+
+class ReviewAPI(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = ReviewSerializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.validated_data
+            qu = Question.objects.get(pk=data['question_id'])
+            # Evaluate based on question desc, answer, explain and user submission
+            grade, tip = evaluate_submission(qu.desc['desc'], qu.desc['answer'], qu.desc['explain'], data['content'])
+            return Response({
+                'grade': grade,
+                'tip': tip,
+            })
+        else:
+            return Response(serializer.errors, status=400)

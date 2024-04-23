@@ -32,3 +32,11 @@ class UserSubmissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserSubmission
         fields = '__all__'
+
+
+class ReviewSerializer(serializers.Serializer):
+    user = serializers.IntegerField()
+    problem_id = serializers.IntegerField()
+    question_id = serializers.IntegerField()
+    q_type = serializers.IntegerField()
+    content = serializers.CharField()

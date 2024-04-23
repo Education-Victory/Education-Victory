@@ -47,6 +47,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('api/recommend/', problem_views.RecommendProblemView.as_view(), name='recommend_problem'),
+    path('api/review/', common_views.ReviewAPI.as_view(), name='api_review'),
     path('api/evaluation_simple/', common_views.evaluation_simple),
     path('api/', include((router.urls, 'app_name'))),
     path('system-design/<str:name>/', problem_views.problem, name='problem'),
