@@ -98,22 +98,36 @@
                                 </div>
                               </template>
                               <div v-if="qu.q_type === 2">
-                                <textarea class="textarea question-textarea":placeholder="qu.desc.content" :disabled="qu.isSubmitted"></textarea>
+                                <textarea class="textarea question-textarea":placeholder="qu.desc.content" :disabled="qu.isSubmitted" v-model="qu.textareaContent"></textarea>
                               </div>
                             </div> <!-- end field -->
                           <div class="buttons subResetButton"> <!-- start buttons -->
-                            <button class="button is-info" @click="submitQuestion">Submit</button>
+                            <button class="button is-info" :class="{'is-loading': isSubmitting}" @click="submitQuestion" :disabled="isSubmitting || currentQuestion.isSubmitted">Submit & Review</button>
                           </div> <!-- end buttons -->
                           <div v-if="qu.showExplanation" class="card mb-5"> <!-- start card -->
-                            <header class="card-header" :class="{'has-background-success': qu.isCorrect === 'Correct', 'has-background-warning': qu.isCorrect !== 'Correct'}"> <!-- start card-header -->
-                              <p class="card-header-title" :class="{'has-text-white': qu.isCorrect === 'Correct', 'has-text-dark': qu.isCorrect !== 'Correct'}">
-                                [[ qu.isCorrect ]]
-                              </p>
-                            </header> <!-- end card-header -->
-                            <div class="card-content"> <!-- start card-content -->
-                              <div class="content render-markdown" v-if="qu.desc.explain" v-html="renderMarkdown(qu.desc.explain)"></div>
-                            </div> <!-- end card-content -->
-                          </div> <!-- end card -->
+                              <header class="card-header" :class="{'has-background-success': isGradeSuccess(qu.grade), 'has-background-warning': !isGradeSuccess(qu.grade)}"> <!-- start card-header -->
+                                <p class="card-header-title" :class="{'has-text-white': isGradeSuccess(qu.grade), 'has-text-dark': !isGradeSuccess(qu.grade)}">
+                                  [[ qu.grade ]]
+                                </p>
+                              </header> <!-- end card-header -->
+                              <div class="card-content"> <!-- start card-content -->
+                                <!-- Content Section -->
+                                <div class="content">
+                                  <p class="title is-5">Answer</p>
+                                  <p>[[ qu.desc.answer ]]</p>
+                                </div>
+                                <!-- Explain Section -->
+                                <div class="content">
+                                  <p class="title is-5">Explain</p>
+                                  <div class="content render-markdown" v-if="qu.desc.explain" v-html="renderMarkdown(qu.desc.explain)"></div>
+                                </div>
+                                <!-- Improvement Tips Section -->
+                                <div class="content">
+                                  <p class="title is-5">Improvement Tips</p>
+                                  <div class="content render-markdown" v-if="qu.tip" v-html="renderMarkdown(qu.tip)"></div>
+                                </div>
+                              </div> <!-- end card-content -->
+                            </div> <!-- end card -->
                         </div> <!-- end swiper-slide -->
                       </div> <!-- end swiper-wrapper -->
                       <br>
