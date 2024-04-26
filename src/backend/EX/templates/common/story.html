@@ -1,0 +1,204 @@
+{% extends "basic.html" %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}" />
+<link rel="stylesheet" href="{% static 'css/practice.css' %}" />
+{% endblock %}
+{% block content %}
+<span id="vue-span">
+  <section class="section">
+    <div class="container">
+      <div class="columns">
+        <!-- Left card with is-4 size -->
+        <div class="column is-4">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">
+                Your Practice Statistics
+              </p>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right card with is-8 size -->
+        <div class="column is-8">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">
+                Daily Tips
+              </p>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="container">
+      <div class="columns">
+        <!-- Left column with cards -->
+        <div class="column is-4">
+          <div class="card mb-4" @click="updateCategory('recommend')" :class="{'is-active': category === 'recommend'}">
+            <div class="card-content">
+              <p class="has-text-weight-semibold">Recommend</p>
+            </div>
+          </div>
+          <div class="card mb-4" @click="updateCategory('system-design')" :class="{'is-active': category === 'system-design'}">
+            <div class="card-content">
+              <p class="has-text-weight-semibold">System Design</p>
+            </div>
+          </div>
+          <div class="card mb-4" @click="updateCategory('behavioral')" :class="{'is-active': category === 'behavioral'}">
+            <div class="card-content">
+              <p class="has-text-weight-semibold">Behavioral Question</p>
+            </div>
+          </div>
+          <div class="card mb-4" @click="updateCategory('algorithm')" :class="{'is-active': category === 'algorithm'}">
+            <div class="card-content">
+              <p class="has-text-weight-semibold">Algorithm</p>
+            </div>
+          </div>
+        </div>
+        <!-- Right column with the timeline -->
+        <div class="column">
+          <ul class="timeline">
+            <!-- Dynamically create timeline items for each problem -->
+            <div class="columns is-multiline">
+              <li class="column is-6 timeline-item" v-for="item in problems" :key="item.problem.id">
+              <div class="timeline-marker"></div>
+              <div class="timeline-content">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="tag is-info top">New</span>
+                    <div class="content is-flex is-justify-content-space-between is-align-items-center">
+                      <div>
+                        <!-- Display problem name -->
+                        <h2 class="title is-size-5 mb-2">[[ item.problem.name ]]</h2>
+                        <span class="tag is-light">[[ item.tag.group ]]</span>
+                        <span class="tag is-light">[[ item.tag.name ]]</span>
+                        <span class="tag is-success is-light" :class="getBackgroundColor(item)">Difficulty [[ item.tag_difficulty ]]%</span>
+                      </div>
+                    </div>
+                    <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
+                      <!-- Calculate estimated time based on question types -->
+                      <p class="mb-0 is-size-6">Milestones</p>
+                      <progress v-if="item.problem.milestones && item.problem.milestones.length > 0" class="progress ml-4 is-primary practice-progress" :value="[[ item.problem.milestones[0].milestone_completeness ]]" max="100">[[ item.problem.milestones.milestone_completeness ]]%</progress>
+                    </div>
+                    <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
+                      <!-- Calculate estimated time based on question types -->
+                      <p class="mb-0 is-size-6">Your Ability</p>
+                      <span class="tag is-success is-light">[[ item.user_ability ]]%</span>
+                    </div>
+                    <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
+                      <!-- Calculate estimated time based on question types -->
+                      <p class="mb-0 is-size-6">Practice time</p>
+                      <span class="tag is-light">[[ calculateEstimatedTime(item.problem.questions) ]] minutes</span>
+                    </div>
+                  </div>
+                 <div class="card-footer">
+                  <div class="card-footer-item">
+                    <div class="is-flex" style="width: 100%;">
+                      <!-- Dynamically set the href using the root variable, category, and problem name -->
+                      <a :href="`${root}/${item.problem.category}/${item.problem.name.replace(/\s+/g, '-')}/`" class="button is-info ml-auto">Start</a>
+                    </div>
+                  </div>
+                </div>
+                  <!-- end card-footer -->
+                </div>
+                <!-- end card -->
+              </div>
+            </li>
+              </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</span>
+{% endblock %} {% block extra_script %}
+<script>
+  var root = "{{ root }}";
+  var app = new Vue({
+    delimiters: ["[[", "]]"],
+    el: "#vue-span",
+    data() {
+      return {
+        problems: [], // To store multiple problems
+        message: "",
+        category: "recommend",
+        root: root,
+      };
+    },
+    mounted() {
+      this.fetchProblem();
+    },
+    methods: {
+      getBackgroundColor(item) {
+        const diff = item.tag_difficulty - item.user_ability;
+        if (diff < 0) {
+          return 'is-success';
+        } else if (diff > 0 && diff < 10) {
+          return 'is-warning';
+        } else if (diff >= 10) {
+          return 'is-danger';
+        }
+      },
+      fetchProblem() {
+        const url = `${root}/api/recommend/?category=${this.category}`;
+        axios
+          .get(url)
+          .then((response) => {
+            if (response.data) {
+              this.problems = response.data.problems;
+            }
+          })
+          .catch((error) => {
+            console.error("An error occurred while fetching the problems:", error);
+            this.message = "An error occurred while fetching the problems.";
+          });
+      },
+      updateCategory(category) {
+        this.category = category;
+        this.fetchProblem();
+      },
+      calculateEstimatedTime(questions) {
+          let totalTime = 0;
+          // Iterate over each step in the questions object
+          for (const step in questions) {
+            if (questions.hasOwnProperty(step)) {
+              questions[step].forEach((question) => {
+                // Adjust time addition based on question type
+                switch (question.q_type) {
+                  case 0: // Choice question
+                    totalTime += 5;
+                    break;
+                  case 1: // Coding question
+                    totalTime += 20;
+                    break;
+                  case 2: // New question type
+                    totalTime += 10;
+                    break;
+                  default:
+                    // Handle unexpected q_type values if necessary
+                    break;
+                }
+              });
+            }
+          }
+
+          return totalTime;
+        },
+    },
+  });
+</script>
+{% endblock %}
