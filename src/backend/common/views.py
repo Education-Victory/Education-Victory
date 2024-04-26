@@ -26,6 +26,9 @@ def home(request):
 def practice(request):
     return render(request, 'common/practice.html', {'root': settings.ROOT})
 
+def roadmap(request):
+    return render(request, 'common/roadmap.html', {'root': settings.ROOT})
+
 def evaluation(request, type):
     if type == 'coding':
         return render(request, 'common/evaluation/coding.html')

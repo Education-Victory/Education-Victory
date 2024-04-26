@@ -53,5 +53,6 @@ urlpatterns = [
     path('system-design/<str:name>/', problem_views.problem, name='problem'),
     path('evaluation/<str:type>/', common_views.evaluation, name='evaluation'),
     path('practice/', common_views.practice, name='practice'),
+    path('roadmap/', common_views.roadmap, name='roadmap'),
     path('', common_views.home, name='home'),
 ]
