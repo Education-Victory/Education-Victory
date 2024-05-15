@@ -110,3 +110,9 @@ html {
   background-color: #4caf50;
 }
 
+.custom-image {
+    width: 50%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}

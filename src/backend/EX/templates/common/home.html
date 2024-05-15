@@ -3,36 +3,44 @@
 
 {% block content %}
 <section class="section">
-  <div class="container pt-5">
+  <div class="container pt-5 mt-5 mb-5">
     <div class="mb-5 is-vcentered columns is-multiline">
-      <div class="column is-12 is-5-desktop mb-5 mr-auto">
-        <h2 class="is-size-2 is-size-3-mobile has-text-weight-bold">Efficient Practice For <br>Career Preparation</h2>
+      <div class="column is-6-desktop mb-5 mr-auto">
+        <h2 class="is-size-1 is-size-3-mobile has-text-weight-bold">Efficient Practice For <br>Career Preparation</h2>
         <br>
-        <p class="subtitle has-text-grey mb-6">Unlock your potential, transform career preparation into a personalized and enjoyable journey.</p>
+        <p class="subtitle has-text-grey mb-5">Unlock your potential, transform career preparation <br>into a personalized and enjoyable journey.</p>
         <div class="buttons">
-          <a href="{% url 'account_signup' %}" class="button is-primary">Join Us</a><a class="button" href="#">Learn more</a>
+          <a href="/story" class="button is-link is-medium">
+            Learn More
+          </a>
         </div>
       </div>
-      <div class="column is-12 is-6-desktop">
-          <img class="image is-fullwidth" src="{% static 'imgs/green-400-square.png' %}" alt="">
+      <div class="column is-6-desktop">
+          <img class="image custom-image" src="{% static 'imgs/home-title.png' %}" alt="">
       </div>
     </div> <!-- end column -->
   </div> <!-- end container -->
 </section>
-<section>
+<section class="hero is-medium is-dark">
+  <div class="hero-body">
+    <p class="title">"With deliberate practice, however, the goal is not just to reach your potential but to build it, to make things possible that were not possible before. This requires challenging homeostasis—getting out of your comfort zone—and forcing your brain or your body to adapt."</p>
+    <p class="subtitle">Peak: Secrets from the New Science of Expertise</p>
+  </div>
+</section>
+<section class="section">
 <div class="container">
   <div class="columns is-multiline is-mobile">
-    <div class="column is-4 front-column-div">
+    <div class="column is-6 front-column-div">
       <span>
-      <p class="is-size-2 has-text-weight-bold">Personalized Learning</p>
-      <p class="is-size-5 has-text-weight-light">Focus on the areas they need to improve in, learn at your own pace and own style.</p>
-      <a href="/" class="button is-dark is-medium front-a-button">
-        <strong>Get started</strong>
+      <p class="is-size-3 has-text-weight-bold">AI Coach For Tech Interview</p>
+      <p class="is-size-5 has-text-weight-light mb-5">Efficiently use AI Coach to prepare for software engineering interviews include Document Preparation, Technical Interviews, Behavioral Interviews and Professional Communication.</p>
+      <a href="https://ac.nlogk.com/" class="button is-dark is-medium">
+        Get started
       </a>
       </span>
     </div>
-    <div class="column is-8">
-      <img src={% static 'imgs/example-img-1.png' %}>
+    <div class="column is-6">
+      <img class="image custom-image" src={% static 'imgs/home-coach.png' %}>
     </div>
     <div class="empty-div"></div>
     <div class="column is-6">
@@ -90,16 +98,4 @@
   </div> <!-- end columns -->
 </div>
 </section>
-
-<section class="hero is-medium is-link has-text-centered">
-  <div class="hero-body">
-    <p class="title">
-      “Practice does not make perfect. Only perfect practice makes perfect.”
-    </p>
-    <p class="subtitle">
-      - Vince Lombardi
-    </p>
-  </div>
-</section>
-
 {% endblock %}
