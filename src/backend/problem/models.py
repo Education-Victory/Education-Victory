@@ -48,11 +48,18 @@ class ProblemFrequency(models.Model):
         ('phone', 'Phone'),
         ('onsite', 'Onsite'),
     )
+    JOB_CATEGORY = (
+        ('swe', 'Software Engineer'),
+        ('mle', 'Machine Learning Engineer'),
+        ('ds', 'Data Scientist'),
+    )
     problem = models.ForeignKey(
         Problem, on_delete=models.CASCADE, related_name='frequency_problem')
     stage = models.CharField(max_length=20, choices=STAGE_CHOICES, default='onsite')
+    job_category = models.CharField(max_length=20, choices=STAGE_CHOICES, default='swe')
     company = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=100, blank=True)
+    origin_content = models.CharField(max_length=4000, blank=True)
     origin_link = models.URLField(max_length=1000, blank=True, help_text="URL for origin post")
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
