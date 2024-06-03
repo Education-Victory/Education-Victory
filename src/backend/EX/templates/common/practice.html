@@ -8,64 +8,54 @@
 <span id="vue-span">
   <section class="section">
     <div class="container">
-      <div class="columns">
-        <!-- Left card with is-4 size -->
-        <div class="column is-4">
-          <div class="card">
-            <header class="card-header">
-              <p class="card-header-title">
-                Your Practice Statistics
-              </p>
-            </header>
-            <div class="card-content">
-              <div class="content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-              </div>
+       <div class="columns">
+         <div class="column is-offset-3">
+            <div v-for="(dropdown, index) in dropdowns" :key="index" class="dropdown mr-4" :class="{'is-active': dropdown.isActive}">
+                <div class="dropdown-trigger">
+                    <button class="button" aria-haspopup="true" aria-controls="'dropdown-menu-' + index" @click="toggleDropdown(index)">
+                        <span>[[ dropdown.label ]]</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="dropdown-menu" :id="'dropdown-menu-' + index" role="menu">
+                    <div class="dropdown-content">
+                        <a href="#" v-for="item in dropdown.items" class="dropdown-item" @click="updateDropdownLabel(index, item)">[[ item ]]</a>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Right card with is-8 size -->
-        <div class="column is-8">
-          <div class="card">
-            <header class="card-header">
-              <p class="card-header-title">
-                Daily Tips
-              </p>
-            </header>
-            <div class="card-content">
-              <div class="content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+          </div> <!-- end column -->
+        </div> <!-- end columns -->
     </div>
   </section>
   <section>
     <div class="container">
       <div class="columns">
         <!-- Left column with cards -->
-        <div class="column is-4">
-          <div class="card mb-4" @click="updateCategory('recommend')" :class="{'is-active': category === 'recommend'}">
+        <div class="column is-3">
+          <div class="card mb-4" @click="updateCategory('algorithm')" :class="{'is-active': category === 'algorithm'}">
             <div class="card-content">
-              <p class="has-text-weight-semibold">Recommend</p>
+              <p class="is-size-4 has-text-weight-semibold">Algorithm</p>
+              <hr class="bd-hr-p">
             </div>
           </div>
           <div class="card mb-4" @click="updateCategory('system-design')" :class="{'is-active': category === 'system-design'}">
             <div class="card-content">
-              <p class="has-text-weight-semibold">System Design</p>
+              <p class="is-size-4 has-text-weight-semibold">System Design</p>
+              <hr class="bd-hr-p">
+            </div>
+          </div>
+          <div class="card mb-4" @click="updateCategory('computer-science')" :class="{'is-active': category === 'computer-science'}">
+            <div class="card-content">
+              <p class="is-size-4 has-text-weight-semibold">Computer Science</p>
+              <hr class="bd-hr-p">
             </div>
           </div>
           <div class="card mb-4" @click="updateCategory('behavioral')" :class="{'is-active': category === 'behavioral'}">
             <div class="card-content">
-              <p class="has-text-weight-semibold">Behavioral Question</p>
-            </div>
-          </div>
-          <div class="card mb-4" @click="updateCategory('algorithm')" :class="{'is-active': category === 'algorithm'}">
-            <div class="card-content">
-              <p class="has-text-weight-semibold">Algorithm</p>
+              <p class="is-size-4 has-text-weight-semibold">Behavioral Question</p>
+              <hr class="bd-hr-p">
             </div>
           </div>
         </div>
@@ -108,7 +98,6 @@
                  <div class="card-footer">
                   <div class="card-footer-item">
                     <div class="is-flex" style="width: 100%;">
-                      <!-- Dynamically set the href using the root variable, category, and problem name -->
                       <a :href="`${root}/${item.problem.category}/${item.problem.name.replace(/\s+/g, '-')}/`" class="button is-info ml-auto">Start</a>
                     </div>
                   </div>
@@ -137,12 +126,39 @@
         message: "",
         category: "recommend",
         root: root,
+        dropdowns: [
+            {
+                label: 'Company',
+                isActive: false,
+                items: ['Google', 'Meta', 'Amazon', 'TikTok']
+            },
+            {
+                label: 'Stage',
+                isActive: false,
+                items: ['OA', 'Phone', 'Onsite']
+            },
+            {
+                label: 'Difficulty',
+                isActive: false,
+                items: ['Easy', 'Medium', 'Hard']
+            }
+        ]
       };
     },
     mounted() {
       this.fetchProblem();
     },
     methods: {
+      toggleDropdown(index) {
+          this.dropdowns[index].isActive = !this.dropdowns[index].isActive;
+          this.dropdowns.forEach((dropdown, idx) => {
+              if (idx !== index) dropdown.isActive = false;
+          });  
+      },  
+      updateDropdownLabel(index, item) {
+          this.dropdowns[index].label = item;
+          this.dropdowns[index].isActive = false; // Optionally close the dropdown
+      },  
       getBackgroundColor(item) {
         const diff = item.tag_difficulty - item.user_ability;
         if (diff < 0) {

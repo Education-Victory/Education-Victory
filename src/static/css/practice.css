@@ -42,6 +42,38 @@
 }
 
 .is-active {
-  background-color: #3e8ed0; /* Adjust the color as needed */
+  background-color: #3e8ed0;
   color: white;
+}
+
+.bd-hr-p {
+    background-color: hsl(171, 100%, 41%);
+    border-radius: 9999px;
+    height: .25rem;
+    width: 10rem;
+}
+
+.bd-hr-l {
+    background-color: hsl(217, 71%, 53%);
+    border-radius: 9999px;
+    height: .25rem;
+    width: 10rem;
+}
+
+.bd-hr-s {
+    background-color: hsl(141, 71%, 48%);
+    border-radius: 9999px;
+    height: .25rem;
+    width: 10rem;
+}
+
+.bd-hr-w {
+    background-color: hsl(48, 100%, 67%);
+    border-radius: 9999px;
+    height: .25rem;
+    width: 10rem;
+}
+
+.dropdown-menu {
+    min-width: 20rem;
 }
