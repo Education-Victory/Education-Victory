@@ -44,19 +44,19 @@ class TagProblem(models.Model):
 
 class ProblemFrequency(models.Model):
     STAGE_CHOICES = (
-        ('oa', 'OA'),
         ('phone', 'Phone'),
         ('onsite', 'Onsite'),
     )
-    JOB_CATEGORY = (
+    POSITION_TYPE = (
         ('swe', 'Software Engineer'),
+        ('fe', 'Frontend Engineer'),
         ('mle', 'Machine Learning Engineer'),
         ('ds', 'Data Scientist'),
     )
     problem = models.ForeignKey(
         Problem, on_delete=models.CASCADE, related_name='frequency_problem')
     stage = models.CharField(max_length=20, choices=STAGE_CHOICES, default='onsite')
-    job_category = models.CharField(max_length=20, choices=STAGE_CHOICES, default='swe')
+    position_type = models.CharField(max_length=20, choices=POSITION_TYPE, default='swe')
     company = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=100, blank=True)
     origin_content = models.CharField(max_length=4000, blank=True)
@@ -64,3 +64,14 @@ class ProblemFrequency(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
+
+class ProblemCompany(models.Model):
+    problem = models.ForeignKey('problem.Problem', on_delete=models.CASCADE)
+    company = models.ForeignKey('common.Company', on_delete=models.CASCADE)
+    popularity = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = ('problem', 'company')  # Ensures uniqueness for each problem-company pair
+
+    def __str__(self):
+        return f"{self.problem.name} - {self.company.name} ({self.popularity})"
