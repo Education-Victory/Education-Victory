@@ -1,11 +1,26 @@
 from rest_framework import serializers
-from .models import Problem, TagProblem
+from .models import Problem, TagProblem, ProblemFrequency
 from common.models import UserAbility
 from question.models import Question, Milestone, QuestionMilestone
 from question.serializers import QuestionSerializer, TagSerializer, MilestoneSerializer
 
 
 class ProblemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Problem
+        fields = '__all__'
+
+
+class ProblemFrequencySerializer(serializers.ModelSerializer):
+    problem = ProblemSerializer(read_only=True)
+    total_score = serializers.FloatField(read_only=True)
+
+    class Meta:
+        model = ProblemFrequency
+        fields = ('problem', 'stage', 'position_type', 'company', 'total_score')
+
+
+class FutureProblemSerializer(serializers.ModelSerializer):
     questions = serializers.SerializerMethodField()
     milestones = serializers.SerializerMethodField()
 
@@ -60,3 +75,4 @@ class CustomProblemSerializer(serializers.Serializer):
     tag = TagSerializer()
     user_ability = serializers.IntegerField()
     tag_difficulty = serializers.IntegerField()
+

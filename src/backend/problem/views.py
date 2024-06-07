@@ -1,14 +1,18 @@
 from math import ceil
+from datetime import timedelta
 from django.conf import settings
+from django.utils import timezone
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.db.models import F, Q, Subquery
+from django.db.models import ExpressionWrapper, F, IntegerField, Sum, Case, When, Subquery, OuterRef
+from django.db.models.functions import Now, ExtractDay
 from django.dispatch import receiver
+from django.utils.timezone import now
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from .models import Problem, TagProblem
-from .serializers import ProblemSerializer, CustomProblemSerializer
+from .models import Problem, ProblemFrequency, TagProblem
+from .serializers import ProblemSerializer, ProblemFrequencySerializer, CustomProblemSerializer
 from question.models import Question, Tag, Milestone
 from common.models import UserAbility
 
@@ -37,16 +41,47 @@ def get_tag_score(user, category, num=3):
     ]
 
 
-class ProblemViewSet(ModelViewSet):
-    queryset = Problem.objects.all()
-    serializer_class = ProblemSerializer
+class ProblemFrequencyViewSet(ModelViewSet):
+    queryset = ProblemFrequency.objects.all()
+    serializer_class = ProblemFrequencySerializer
 
     def get_queryset(self):
-        queryset = Problem.objects.all()
-        name = self.request.query_params.get('name', None)
-        if name is not None:
-            name = name.replace('-', ' ')
-            queryset = queryset.filter(name=name)
+        queryset = self.queryset
+        company = self.request.query_params.get('company')
+        category = self.request.query_params.get('category')
+        stage = self.request.query_params.get('stage')
+        position_type = self.request.query_params.get('position_type')
+
+        # Filter based on query parameters
+        if company:
+            queryset = queryset.filter(company=company)
+        if category:
+            queryset = queryset.filter(problem__category=category)
+        if stage:
+            queryset = queryset.filter(stage=stage)
+        if position_type:
+            queryset = queryset.filter(position_type=position_type)
+
+        # Fetch the data with related problem
+        queryset = queryset.select_related('problem')
+
+        # Calculate the score for each problem frequency in Python
+        problem_scores = {}
+        for entry in queryset:
+            days_since_created = (now() - entry.created_at).days
+            # Calculate score as an integer
+            score = int(100 / (1 + days_since_created / 60))
+            problem_scores[entry.id] = score
+
+        # Annotate total_score to the queryset and order by this score
+        queryset = queryset.annotate(
+            total_score=Case(
+                *[When(id=pk, then=problem_scores[pk]) for pk in problem_scores],
+                default=0,
+                output_field=IntegerField()
+            )
+        ).order_by('-total_score')  # Order by total_score descending
+
         return queryset
 
 class RecommendProblemView(APIView):
@@ -115,7 +150,3 @@ class RecommendProblemView(APIView):
                 collected_problems += len(category_problems)
         serializer = CustomProblemSerializer(problems, many=True, context={'request': request})
         return Response({'problems': serializer.data})
-
-
-def submission(request):
-    pass

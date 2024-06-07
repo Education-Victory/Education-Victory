@@ -1,113 +1,102 @@
-{% extends "basic.html" %}
-{% load static %}
-{% block extra_css %}
+{% extends "basic.html" %} {% load static %} {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}" />
 <link rel="stylesheet" href="{% static 'css/practice.css' %}" />
-{% endblock %}
-{% block content %}
+{% endblock %} {% block content %}
 <span id="vue-span">
   <section class="section">
     <div class="container">
-       <div class="columns">
-         <div class="column is-offset-3">
-            <div v-for="(dropdown, index) in dropdowns" :key="index" class="dropdown mr-4" :class="{'is-active': dropdown.isActive}">
-                <div class="dropdown-trigger">
-                    <button class="button" aria-haspopup="true" aria-controls="'dropdown-menu-' + index" @click="toggleDropdown(index)">
-                        <span>[[ dropdown.label ]]</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M6 9l6 6 6-6"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="dropdown-menu" :id="'dropdown-menu-' + index" role="menu">
-                    <div class="dropdown-content">
-                        <a href="#" v-for="item in dropdown.items" class="dropdown-item" @click="updateDropdownLabel(index, item)">[[ item ]]</a>
-                    </div>
-                </div>
-            </div>
-          </div> <!-- end column -->
-        </div> <!-- end columns -->
-    </div>
-  </section>
-  <section>
-    <div class="container">
       <div class="columns">
         <!-- Left column with cards -->
-        <div class="column is-3">
-          <div class="card mb-4" @click="updateCategory('algorithm')" :class="{'is-active': category === 'algorithm'}">
-            <div class="card-content">
-              <p class="is-size-4 has-text-weight-semibold">Algorithm</p>
-              <hr class="bd-hr-p">
-            </div>
-          </div>
-          <div class="card mb-4" @click="updateCategory('system-design')" :class="{'is-active': category === 'system-design'}">
-            <div class="card-content">
-              <p class="is-size-4 has-text-weight-semibold">System Design</p>
-              <hr class="bd-hr-p">
-            </div>
-          </div>
-          <div class="card mb-4" @click="updateCategory('computer-science')" :class="{'is-active': category === 'computer-science'}">
-            <div class="card-content">
-              <p class="is-size-4 has-text-weight-semibold">Computer Science</p>
-              <hr class="bd-hr-p">
-            </div>
-          </div>
-          <div class="card mb-4" @click="updateCategory('behavioral')" :class="{'is-active': category === 'behavioral'}">
-            <div class="card-content">
-              <p class="is-size-4 has-text-weight-semibold">Behavioral Question</p>
-              <hr class="bd-hr-p">
-            </div>
-          </div>
+        <div class="column is-2">
+          <aside class="menu">
+            <p class="menu-label">Company</p>
+            <ul class="menu-list">
+              <li v-for="(dropdown, index) in dropdowns" :key="index" class="dropdown" :class="{'is-active': dropdown.isActive}">
+                <a class="dropdown-trigger" @click="toggleDropdown(index)">
+                  <span>[[ dropdown.label ]]</span>
+                  <span class="icon is-small">
+                    <i class="fa-solid fa-angle-down" :class="{'is-active': dropdown.isActive}"></i>
+                  </span>
+                </a>
+                <div class="dropdown-menu" role="menu">
+                  <div class="dropdown-content">
+                    <a href="#" v-for="item in dropdown.items" class="dropdown-item" @click="updateDropdownLabel(index, item)">
+                      [[ item ]]
+                    </a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <p class="menu-label">Category</p>
+            <ul class="menu-list">
+              <li><a class="is-active">All</a></li>
+              <li><a>Algorithm</a></li>
+              <li><a>System Design</a></li>
+              <li><a>Behavioural</a></li>
+              <li><a>Computer Science</a></li>
+            </ul>
+            <p class="menu-label">Position Type</p>
+            <ul class="menu-list">
+              <li><a class="is-active">All</a></li>
+              <li><a>Software Engineer</a></li>
+              <li><a>Frontend Engineer</a></li>
+              <li><a>Machine Learning</a></li>
+              <li><a>Data Scientist</a></li>
+            </ul>
+            <p class="menu-label">Stage</p>
+            <ul class="menu-list">
+              <li><a class="is-active">All</a></li>
+              <li><a>Phone</a></li>
+              <li><a>Onsite</a></li>
+            </ul>
+          </aside>
         </div>
         <!-- Right column with the timeline -->
         <div class="column">
           <ul class="timeline">
             <!-- Dynamically create timeline items for each problem -->
             <div class="columns is-multiline">
-              <li class="column is-6 timeline-item" v-for="item in problems" :key="item.problem.id">
-              <div class="timeline-marker"></div>
-              <div class="timeline-content">
-                <div class="card">
-                  <div class="card-content">
-                    <span class="tag is-info top">New</span>
-                    <div class="content is-flex is-justify-content-space-between is-align-items-center">
-                      <div>
-                        <!-- Display problem name -->
-                        <h2 class="title is-size-5 mb-2">[[ item.problem.name ]]</h2>
-                        <span class="tag is-light">[[ item.tag.group ]]</span>
-                        <span class="tag is-light">[[ item.tag.name ]]</span>
-                        <span class="tag is-success is-light" :class="getBackgroundColor(item)">Difficulty [[ item.tag_difficulty ]]%</span>
+              <li class="column is-4 timeline-item" v-for="obj in problems" :key="obj.id">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                  <div class="card">
+                    <div class="card-content">
+                      <span class="tag is-info top">New</span>
+                      <div class="content is-flex is-justify-content-space-between is-align-items-center">
+                        <div>
+                          <!-- Display problem name -->
+                          <h2 class="title is-size-5 mb-2">[[ obj.problem.name ]]</h2>
+                          <span class="tag is-light">abc</span>
+                          <span class="tag is-light">eft</span>
+                        </div>
+                      </div>
+                      <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
+                        <p class="mb-0 is-size-6">Popularity</p>
+                        <progress class="progress ml-4 is-primary practice-progress" :value="[[ obj.total_score ]]" max="100">[[ obj.total_score ]]</progress>
+                      </div>
+                      <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
+                        <!-- Calculate estimated time based on question types -->
+                        <p class="mb-0 is-size-6">Frequency (Last Year)</p>
+                        <span class="tag is-success is-light">100%</span>
+                      </div>
+                      <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
+                        <!-- Calculate estimated time based on question types -->
+                        <p class="mb-0 is-size-6">Diffculty</p>
                       </div>
                     </div>
-                    <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
-                      <!-- Calculate estimated time based on question types -->
-                      <p class="mb-0 is-size-6">Milestones</p>
-                      <progress v-if="item.problem.milestones && item.problem.milestones.length > 0" class="progress ml-4 is-primary practice-progress" :value="[[ item.problem.milestones[0].milestone_completeness ]]" max="100">[[ item.problem.milestones.milestone_completeness ]]%</progress>
+                    <div class="card-footer">
+                      <div class="card-footer-item">
+                        <div class="is-flex" style="width: 100%;">
+                          <a class="button is-info ml-auto">Start</a>
+                        </div>
+                      </div>
                     </div>
-                    <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
-                      <!-- Calculate estimated time based on question types -->
-                      <p class="mb-0 is-size-6">Your Ability</p>
-                      <span class="tag is-success is-light">[[ item.user_ability ]]%</span>
-                    </div>
-                    <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
-                      <!-- Calculate estimated time based on question types -->
-                      <p class="mb-0 is-size-6">Practice time</p>
-                      <span class="tag is-light">[[ calculateEstimatedTime(item.problem.questions) ]] minutes</span>
-                    </div>
+                    <!-- end card-footer -->
                   </div>
-                 <div class="card-footer">
-                  <div class="card-footer-item">
-                    <div class="is-flex" style="width: 100%;">
-                      <a :href="`${root}/${item.problem.category}/${item.problem.name.replace(/\s+/g, '-')}/`" class="button is-info ml-auto">Start</a>
-                    </div>
-                  </div>
+                  <!-- end card -->
                 </div>
-                  <!-- end card-footer -->
-                </div>
-                <!-- end card -->
-              </div>
-            </li>
-              </div>
+              </li>
+            </div>
           </ul>
         </div>
       </div>
@@ -116,105 +105,57 @@
 </span>
 {% endblock %} {% block extra_script %}
 <script>
-  var root = "{{ root }}";
-  var app = new Vue({
-    delimiters: ["[[", "]]"],
-    el: "#vue-span",
-    data() {
-      return {
-        problems: [], // To store multiple problems
-        message: "",
-        category: "recommend",
-        root: root,
-        dropdowns: [
-            {
-                label: 'Company',
-                isActive: false,
-                items: ['Google', 'Meta', 'Amazon', 'TikTok']
-            },
-            {
-                label: 'Stage',
-                isActive: false,
-                items: ['OA', 'Phone', 'Onsite']
-            },
-            {
-                label: 'Difficulty',
-                isActive: false,
-                items: ['Easy', 'Medium', 'Hard']
-            }
-        ]
-      };
+var root = "{{ root }}";
+var app = new Vue({
+  delimiters: ["[[", "]]"],
+  el: "#vue-span",
+  data() {
+    return {
+      problems: [],
+      message: "",
+      category: "recommend",
+      root: root,
+      dropdowns: [
+        {
+          label: "All",
+          isActive: false,
+          items: ["Google", "Meta", "Amazon", "TikTok"],
+        },
+      ],
+    };
+  },
+  mounted() {
+    this.fetchProblem();
+  },
+  methods: {
+    toggleDropdown(index) {
+      this.dropdowns[index].isActive = !this.dropdowns[index].isActive;
+      this.dropdowns.forEach((dropdown, idx) => {
+        if (idx !== index) dropdown.isActive = false;
+      });
     },
-    mounted() {
+    updateDropdownLabel(index, item) {
+      this.dropdowns[index].label = item;
+      this.dropdowns[index].isActive = false;
+    },
+    fetchProblem() {
+      const url = `${this.root}/api/problem_list/`;
+      axios.get(url)
+        .then((response) => {
+          this.problems = response.data;
+          console.log(this.problems);
+        })
+        .catch((error) => {
+          console.error("An error occurred while fetching the problems:", error);
+          this.message = "An error occurred while fetching the problems.";
+        });
+    },
+    updateCategory(category) {
+      this.category = category;
       this.fetchProblem();
     },
-    methods: {
-      toggleDropdown(index) {
-          this.dropdowns[index].isActive = !this.dropdowns[index].isActive;
-          this.dropdowns.forEach((dropdown, idx) => {
-              if (idx !== index) dropdown.isActive = false;
-          });  
-      },  
-      updateDropdownLabel(index, item) {
-          this.dropdowns[index].label = item;
-          this.dropdowns[index].isActive = false; // Optionally close the dropdown
-      },  
-      getBackgroundColor(item) {
-        const diff = item.tag_difficulty - item.user_ability;
-        if (diff < 0) {
-          return 'is-success';
-        } else if (diff > 0 && diff < 10) {
-          return 'is-warning';
-        } else if (diff >= 10) {
-          return 'is-danger';
-        }
-      },
-      fetchProblem() {
-        const url = `${root}/api/recommend/?category=${this.category}`;
-        axios
-          .get(url)
-          .then((response) => {
-            if (response.data) {
-              this.problems = response.data.problems;
-            }
-          })
-          .catch((error) => {
-            console.error("An error occurred while fetching the problems:", error);
-            this.message = "An error occurred while fetching the problems.";
-          });
-      },
-      updateCategory(category) {
-        this.category = category;
-        this.fetchProblem();
-      },
-      calculateEstimatedTime(questions) {
-          let totalTime = 0;
-          // Iterate over each step in the questions object
-          for (const step in questions) {
-            if (questions.hasOwnProperty(step)) {
-              questions[step].forEach((question) => {
-                // Adjust time addition based on question type
-                switch (question.q_type) {
-                  case 0: // Choice question
-                    totalTime += 5;
-                    break;
-                  case 1: // Coding question
-                    totalTime += 20;
-                    break;
-                  case 2: // New question type
-                    totalTime += 10;
-                    break;
-                  default:
-                    // Handle unexpected q_type values if necessary
-                    break;
-                }
-              });
-            }
-          }
-
-          return totalTime;
-        },
-    },
-  });
+  },
+});
 </script>
 {% endblock %}
+
