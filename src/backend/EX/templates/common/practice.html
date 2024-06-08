@@ -66,8 +66,7 @@
                         <div>
                           <!-- Display problem name -->
                           <h2 class="title is-size-5 mb-2">[[ obj.problem.name ]]</h2>
-                          <span class="tag is-light">abc</span>
-                          <span class="tag is-light">eft</span>
+                          <span v-for="tag in obj.problem.tags" :key="tag.id" class="tag is-light">[[ tag.name ]]</span>
                         </div>
                       </div>
                       <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
@@ -76,12 +75,12 @@
                       </div>
                       <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
                         <!-- Calculate estimated time based on question types -->
-                        <p class="mb-0 is-size-6">Frequency (Last Year)</p>
-                        <span class="tag is-success is-light">100%</span>
+                        <p class="mb-0 is-size-6">Last Year Frequency</p>
+                        <span class="tag is-warning is-light">[[ obj.last_year_frequency ]]</span>
                       </div>
                       <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
-                        <!-- Calculate estimated time based on question types -->
                         <p class="mb-0 is-size-6">Diffculty</p>
+                        <span class="tag is-success is-light">[[ obj.difficulty ]] / 100</span>
                       </div>
                     </div>
                     <div class="card-footer">

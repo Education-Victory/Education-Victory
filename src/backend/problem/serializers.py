@@ -6,18 +6,21 @@ from question.serializers import QuestionSerializer, TagSerializer, MilestoneSer
 
 
 class ProblemSerializer(serializers.ModelSerializer):
+    tags = TagSerializer(many=True, read_only=True)
     class Meta:
         model = Problem
-        fields = '__all__'
+        fields = ('id', 'name', 'category', 'tags')
 
 
 class ProblemFrequencySerializer(serializers.ModelSerializer):
     problem = ProblemSerializer(read_only=True)
     total_score = serializers.FloatField(read_only=True)
+    last_year_frequency = serializers.IntegerField(read_only=True)
+    difficulty = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = ProblemFrequency
-        fields = ('problem', 'stage', 'position_type', 'company', 'total_score')
+        fields = ('problem', 'stage', 'position_type', 'last_year_frequency', 'difficulty', 'company', 'total_score')
 
 
 class FutureProblemSerializer(serializers.ModelSerializer):

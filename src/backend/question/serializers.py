@@ -16,7 +16,7 @@ class MilestoneSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = '__all__'
+        fields = ('id', 'category', 'group', 'name')
 
 
 class QuestionSerializer(serializers.ModelSerializer):
