@@ -27,27 +27,28 @@
                 </div>
               </li>
             </ul>
+            <!-- Category filter -->
             <p class="menu-label">Category</p>
             <ul class="menu-list">
-              <li><a @click="updateFilter('category', 'All')">All</a></li>
-              <li><a @click="updateFilter('category', 'Algorithm')">Algorithm</a></li>
-              <li><a @click="updateFilter('category', 'System Design')">System Design</a></li>
-              <li><a @click="updateFilter('category', 'Behavioural')">Behavioural</a></li>
-              <li><a @click="updateFilter('category', 'Computer Science')">Computer Science</a></li>
+              <li v-for="cat in ['All', 'Algorithm', 'System Design', 'Behavioural', 'Computer Science']" :key="cat">
+                <a :class="{'is-active': filters.category === cat}" @click="updateFilter('category', cat)">[[ cat ]]</a>
+              </li>
             </ul>
+
+            <!-- Position Type filter -->
             <p class="menu-label">Position Type</p>
             <ul class="menu-list">
-              <li><a @click="updateFilter('position_type', 'All')">All</a></li>
-              <li><a @click="updateFilter('position_type', 'Software Engineer')">Software Engineer</a></li>
-              <li><a @click="updateFilter('position_type', 'Frontend Engineer')">Frontend Engineer</a></li>
-              <li><a @click="updateFilter('position_type', 'Machine Learning')">Machine Learning</a></li>
-              <li><a @click="updateFilter('position_type', 'Data Scientist')">Data Scientist</a></li>
+              <li v-for="type in ['All', 'Software Engineer', 'Frontend Engineer', 'Machine Learning', 'Data Scientist']" :key="type">
+                <a :class="{'is-active': filters.position_type === type}" @click="updateFilter('position_type', type)">[[ type ]]</a>
+              </li>
             </ul>
+
+            <!-- Stage filter -->
             <p class="menu-label">Stage</p>
             <ul class="menu-list">
-              <li><a @click="updateFilter('stage', 'All')">All</a></li>
-              <li><a @click="updateFilter('stage', 'Phone')">Phone</a></li>
-              <li><a @click="updateFilter('stage', 'Onsite')">Onsite</a></li>
+              <li v-for="stage in ['All', 'Phone', 'Onsite']" :key="stage">
+                <a :class="{'is-active': filters.stage === stage}" @click="updateFilter('stage', stage)">[[ stage ]]</a>
+              </li>
             </ul>
           </aside>
         </div>
