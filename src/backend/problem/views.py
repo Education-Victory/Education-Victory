@@ -62,13 +62,13 @@ class ProblemFrequencyViewSet(ModelViewSet):
         position_type = self.request.query_params.get('position_type')
 
         # Filter based on query parameters
-        if company:
+        if company and company != 'All':
             queryset = queryset.filter(company=company)
-        if category:
+        if category and category != 'All':
             queryset = queryset.filter(problem__category=category)
-        if stage:
+        if stage and stage != 'All':
             queryset = queryset.filter(stage=stage)
-        if position_type:
+        if position_type and position_type != 'All':
             queryset = queryset.filter(position_type=position_type)
 
         # Calculate occurrences in the last year

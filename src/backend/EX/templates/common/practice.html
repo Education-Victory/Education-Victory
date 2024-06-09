@@ -15,12 +15,12 @@
                 <a class="dropdown-trigger" @click="toggleDropdown(index)">
                   <span>[[ dropdown.label ]]</span>
                   <span class="icon is-small">
-                    <i class="fa-solid fa-angle-down" :class="{'is-active': dropdown.isActive}"></i>
+                    <i class="fa fa-angle-down" :class="{'is-active': dropdown.isActive}"></i>
                   </span>
                 </a>
                 <div class="dropdown-menu" role="menu">
                   <div class="dropdown-content">
-                    <a href="#" v-for="item in dropdown.items" class="dropdown-item" @click="updateDropdownLabel(index, item)">
+                    <a href="#" v-for="item in dropdown.items" class="dropdown-item" @click.prevent="updateFilter('company', item)">
                       [[ item ]]
                     </a>
                   </div>
@@ -29,25 +29,25 @@
             </ul>
             <p class="menu-label">Category</p>
             <ul class="menu-list">
-              <li><a class="is-active">All</a></li>
-              <li><a>Algorithm</a></li>
-              <li><a>System Design</a></li>
-              <li><a>Behavioural</a></li>
-              <li><a>Computer Science</a></li>
+              <li><a @click="updateFilter('category', 'All')">All</a></li>
+              <li><a @click="updateFilter('category', 'Algorithm')">Algorithm</a></li>
+              <li><a @click="updateFilter('category', 'System Design')">System Design</a></li>
+              <li><a @click="updateFilter('category', 'Behavioural')">Behavioural</a></li>
+              <li><a @click="updateFilter('category', 'Computer Science')">Computer Science</a></li>
             </ul>
             <p class="menu-label">Position Type</p>
             <ul class="menu-list">
-              <li><a class="is-active">All</a></li>
-              <li><a>Software Engineer</a></li>
-              <li><a>Frontend Engineer</a></li>
-              <li><a>Machine Learning</a></li>
-              <li><a>Data Scientist</a></li>
+              <li><a @click="updateFilter('position_type', 'All')">All</a></li>
+              <li><a @click="updateFilter('position_type', 'Software Engineer')">Software Engineer</a></li>
+              <li><a @click="updateFilter('position_type', 'Frontend Engineer')">Frontend Engineer</a></li>
+              <li><a @click="updateFilter('position_type', 'Machine Learning')">Machine Learning</a></li>
+              <li><a @click="updateFilter('position_type', 'Data Scientist')">Data Scientist</a></li>
             </ul>
             <p class="menu-label">Stage</p>
             <ul class="menu-list">
-              <li><a class="is-active">All</a></li>
-              <li><a>Phone</a></li>
-              <li><a>Onsite</a></li>
+              <li><a @click="updateFilter('stage', 'All')">All</a></li>
+              <li><a @click="updateFilter('stage', 'Phone')">Phone</a></li>
+              <li><a @click="updateFilter('stage', 'Onsite')">Onsite</a></li>
             </ul>
           </aside>
         </div>
@@ -111,6 +111,12 @@ var app = new Vue({
   data() {
     return {
       problems: [],
+      filters: {
+        category: 'All',
+        position_type: 'All',
+        stage: 'All',
+        company: 'All'
+      },
       message: "",
       category: "recommend",
       root: root,
@@ -138,19 +144,35 @@ var app = new Vue({
       this.dropdowns[index].isActive = false;
     },
     fetchProblem() {
-      const url = `${this.root}/api/problem_list/`;
+      let queryParams = [];
+      Object.keys(this.filters).forEach(key => {
+        if (this.filters[key] !== 'All') {
+          queryParams.push(`${key}=${encodeURIComponent(this.filters[key])}`);
+        }
+      });
+
+      let queryString = queryParams.join('&');
+      let url = `${this.root}/api/problem_list/?${queryString}`;
+
       axios.get(url)
-        .then((response) => {
+        .then(response => {
           this.problems = response.data;
-          console.log(this.problems);
         })
-        .catch((error) => {
-          console.error("An error occurred while fetching the problems:", error);
-          this.message = "An error occurred while fetching the problems.";
+        .catch(error => {
+          console.error("Error fetching problems:", error);
+          this.message = "Error fetching problems.";
         });
     },
     updateCategory(category) {
       this.category = category;
+      this.fetchProblem();
+    },
+    updateFilter(filterType, filterValue) {
+      this.filters[filterType] = filterValue;
+      if (filterType === 'company') {
+        this.dropdowns[0].label = filterValue;
+        this.dropdowns[0].isActive = false;
+      }
       this.fetchProblem();
     },
   },
