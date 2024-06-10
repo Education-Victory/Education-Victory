@@ -176,3 +176,7 @@ _gh_pages
 _site
 dev
 test/output/
+
+old_practice.html
+old_problem.html
+old_problem.js

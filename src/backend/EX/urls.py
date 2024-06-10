@@ -29,6 +29,7 @@ from rest_framework.schemas import get_schema_view
 router = routers.DefaultRouter()
 router.register(r'question', question_views.QuestionViewSet, basename='question')
 router.register(r'problem_list', problem_views.ProblemFrequencyViewSet, basename='problemfrequency')
+router.register(r'problem', problem_views.ProblemViewSet, basename='problem')
 router.register(r'ability', common_views.UserAbilityViewSet, basename='userability')
 router.register(r'activity', common_views.UserActivityViewSet, basename='useractivity')
 router.register(r'submission', common_views.UserSubmissionViewSet, basename='usersubmission')
@@ -50,7 +51,7 @@ urlpatterns = [
     path('api/review/', common_views.ReviewAPI.as_view(), name='api_review'),
     path('api/evaluation_simple/', common_views.evaluation_simple),
     path('api/', include((router.urls, 'app_name'))),
-    path('system-design/<str:name>/', problem_views.problem, name='problem'),
+    path('problem/<str:name>/', problem_views.problem),
     path('evaluation/<str:type>/', common_views.evaluation, name='evaluation'),
     path('practice/', common_views.practice, name='practice'),
     path('roadmap/', common_views.roadmap, name='roadmap'),

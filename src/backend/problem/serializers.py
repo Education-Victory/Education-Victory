@@ -9,7 +9,7 @@ class ProblemSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, read_only=True)
     class Meta:
         model = Problem
-        fields = ('id', 'name', 'category', 'tags')
+        fields = ('id', 'name', 'desc', 'category', 'tags')
 
 
 class ProblemFrequencySerializer(serializers.ModelSerializer):
