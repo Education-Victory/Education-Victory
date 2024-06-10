@@ -41,6 +41,23 @@ def get_tag_score(user, category, num=3):
     ]
 
 
+class ProblemViewSet(ModelViewSet):
+    queryset = Problem.objects.all()
+    serializer_class = ProblemSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()  # Get the initial queryset
+        problem_name = self.request.query_params.get('name')
+
+        if problem_name:
+            # Replace hyphens with spaces to match the original format
+            formatted_name = problem_name.replace('-', ' ')
+            # Filter the queryset based on the exact match of the name
+            queryset = queryset.filter(name=formatted_name)
+
+        return queryset
+
+
 class ProblemFrequencyViewSet(ModelViewSet):
     queryset = ProblemFrequency.objects.all().select_related('problem').prefetch_related('problem__tags')
     serializer_class = ProblemFrequencySerializer

@@ -87,7 +87,7 @@
                     <div class="card-footer">
                       <div class="card-footer-item">
                         <div class="is-flex" style="width: 100%;">
-                          <a class="button is-info ml-auto">Start</a>
+                          <a class="button is-info ml-auto" @click="redirectToProblem(obj.problem.name)">Details</a>
                         </div>
                       </div>
                     </div>
@@ -175,6 +175,10 @@ var app = new Vue({
         this.dropdowns[0].isActive = false;
       }
       this.fetchProblem();
+    },
+    redirectToProblem(problemName) {
+      const formattedName = problemName.replace(/\s+/g, '-');
+      window.location.href = `/problem/${formattedName}/`;
     },
   },
 });
