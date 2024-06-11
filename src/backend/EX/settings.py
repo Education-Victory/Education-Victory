@@ -29,8 +29,12 @@ if ENVIRONMENT == 'LOCAL':
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'db.sqlite3',
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'postgres',
+            'USER': 'postgres',
+            'PASSWORD': 'test',
+            'HOST': 'localhost',
+            'PORT': '5432',
         }
     }
     STATIC_URL = 'static/'
