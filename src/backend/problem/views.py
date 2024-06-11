@@ -1,10 +1,11 @@
 from math import ceil
+from collections import defaultdict
 from datetime import timedelta
 from django.conf import settings
 from django.utils import timezone
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.db.models import F, Q, IntegerField, Sum, Case, When, Subquery, Count, Avg
+from django.db.models import ExpressionWrapper, F, Q, IntegerField, DurationField, Sum, Case, When, Subquery, Count, Avg
 from django.db.models.functions import Now, ExtractDay
 from django.dispatch import receiver
 from django.utils.timezone import now
@@ -62,18 +63,18 @@ class ProblemFrequencyViewSet(ModelViewSet):
     queryset = ProblemFrequency.objects.all().select_related('problem').prefetch_related('problem__tags')
     serializer_class = ProblemFrequencySerializer
 
-    def annotate_scores(self, queryset):
-        return queryset.annotate(
-            total_score=Case(
-                *[When(id=pf.id, then=int(100 / (1 + (now() - pf.created_at).days / 60))) for pf in queryset],
-                default=0,
-                output_field=IntegerField()
-            )
-        )
+    def annotate_scores(self, instance):
+        now = timezone.now()
+        days_since_created = (now - instance.created_at).days  # Calculate the number of days since creation
+
+        # Calculate the score using the extracted days
+        score = int(100 / (1 + days_since_created / 60))
+        return score
 
     def get_queryset(self):
-        queryset = super().get_queryset()  # Use the initial optimized queryset
+        queryset = super().get_queryset()
         company = self.request.query_params.get('company')
+        frequency = self.request.query_params.get('frequency')
         category = self.request.query_params.get('category')
         stage = self.request.query_params.get('stage')
         position_type = self.request.query_params.get('position_type')
@@ -88,19 +89,22 @@ class ProblemFrequencyViewSet(ModelViewSet):
         if position_type and position_type != 'All':
             queryset = queryset.filter(position_type=position_type)
 
-        # Calculate occurrences in the last year
-        one_year_ago = now() - timedelta(days=365)
-        queryset = queryset.annotate(
-            last_year_frequency=Count('id', filter=Q(created_at__gte=one_year_ago))
-        )
-
         queryset = queryset.annotate(
             difficulty=Avg('problem__tags__difficulty')
         )
-
-        queryset = self.annotate_scores(queryset)
-
-        return queryset.order_by('-total_score')
+        scores = defaultdict(int)
+        exist_queryset = dict()
+        # Iterate over the filtered queryset
+        annotated_queryset = []
+        for instance in queryset:
+            score = self.annotate_scores(instance)
+            if instance.problem.id not in exist_queryset:
+                exist_queryset[instance.problem.id] = instance
+                annotated_queryset.append(instance)
+                instance.total_score = score
+            else:
+                exist_queryset[instance.problem.id].total_score += score
+        return annotated_queryset
 
 class RecommendProblemView(APIView):
     def get(self, request, *args, **kwargs):

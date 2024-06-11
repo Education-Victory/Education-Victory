@@ -27,6 +27,13 @@
                 </div>
               </li>
             </ul>
+            <!-- Frequency filter -->
+            <p class="menu-label">Frequency</p>
+            <ul class="menu-list">
+              <li v-for="fre in ['All', 'Last 6 months', 'Last year', 'Last 3 years']" :key="fre">
+                <a :class="{'is-active': filters.frequency === fre}" @click="updateFilter('frequency', fre)">[[ fre ]]</a>
+              </li>
+            </ul>
             <!-- Category filter -->
             <p class="menu-label">Category</p>
             <ul class="menu-list">
@@ -34,7 +41,6 @@
                 <a :class="{'is-active': filters.category === cat}" @click="updateFilter('category', cat)">[[ cat ]]</a>
               </li>
             </ul>
-
             <!-- Position Type filter -->
             <p class="menu-label">Position Type</p>
             <ul class="menu-list">
@@ -61,27 +67,23 @@
                 <div class="timeline-marker"></div>
                 <div class="timeline-content">
                   <div class="card">
-                    <div class="card-content">
+                    <div class="problem-card card-content">
                       <span class="tag is-info top">New</span>
                       <div class="content is-flex is-justify-content-space-between is-align-items-center">
                         <div>
                           <!-- Display problem name -->
-                          <h2 class="title is-size-5 mb-2">[[ obj.problem.name ]]</h2>
+                          <h2 class="title truncate-multiline is-size-5 mb-2">[[ obj.problem.name ]]</h2>
                           <span v-for="tag in obj.problem.tags" :key="tag.id" class="tag is-light">[[ tag.name ]]</span>
                         </div>
                       </div>
                       <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
-                        <p class="mb-0 is-size-6">Popularity</p>
-                        <progress class="progress ml-4 is-primary practice-progress" :value="[[ obj.total_score ]]" max="100">[[ obj.total_score ]]</progress>
+                        <p class="mb-0 is-size-6">Diffculty</p>
+                        <progress class="progress ml-4 is-primary practice-progress" :value="[[ obj.difficulty ]]" max="100">[[ obj.difficulty ]]</progress>
                       </div>
                       <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
                         <!-- Calculate estimated time based on question types -->
-                        <p class="mb-0 is-size-6">Last Year Frequency</p>
+                        <p class="mb-0 is-size-6">Frequency</p>
                         <span class="tag is-warning is-light">[[ obj.last_year_frequency ]]</span>
-                      </div>
-                      <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
-                        <p class="mb-0 is-size-6">Diffculty</p>
-                        <span class="tag is-success is-light">[[ obj.difficulty ]] / 100</span>
                       </div>
                     </div>
                     <div class="card-footer">
@@ -116,7 +118,8 @@ var app = new Vue({
         category: 'All',
         position_type: 'All',
         stage: 'All',
-        company: 'All'
+        company: 'All',
+        frequency: 'All'
       },
       message: "",
       category: "recommend",
