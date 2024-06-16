@@ -13,15 +13,15 @@
             <ul class="menu-list">
               <li v-for="(dropdown, index) in dropdowns" :key="index" class="dropdown" :class="{'is-active': dropdown.isActive}">
                 <a class="dropdown-trigger" @click="toggleDropdown(index)">
-                  <span>[[ dropdown.label ]]</span>
-                  <span class="icon is-small">
-                    <i class="fa fa-angle-down" :class="{'is-active': dropdown.isActive}"></i>
-                  </span>
+                <span>[[ dropdown.label ]]</span>
+                <span class="icon is-small">
+                <i class="fa fa-angle-down" :class="{'is-active': dropdown.isActive}"></i>
+                </span>
                 </a>
                 <div class="dropdown-menu" role="menu">
                   <div class="dropdown-content">
                     <a href="#" v-for="item in dropdown.items" class="dropdown-item" @click.prevent="updateFilter('company', item)">
-                      [[ item ]]
+                    [[ item ]]
                     </a>
                   </div>
                 </div>
@@ -48,7 +48,6 @@
                 <a :class="{'is-active': filters.position_type === type}" @click="updateFilter('position_type', type)">[[ type ]]</a>
               </li>
             </ul>
-
             <!-- Stage filter -->
             <p class="menu-label">Stage</p>
             <ul class="menu-list">
@@ -60,46 +59,42 @@
         </div>
         <!-- Right column with the timeline -->
         <div class="column">
-          <ul class="timeline">
-            <!-- Dynamically create timeline items for each problem -->
-            <div class="columns is-multiline">
-              <li class="column is-4 timeline-item" v-for="obj in problems" :key="obj.id">
-                <div class="timeline-marker"></div>
-                <div class="timeline-content">
-                  <div class="card">
-                    <div class="problem-card card-content">
-                      <span class="tag is-info top">New</span>
-                      <div class="content is-flex is-justify-content-space-between is-align-items-center">
-                        <div>
-                          <!-- Display problem name -->
-                          <h2 class="title truncate-multiline is-size-5 mb-2">[[ obj.problem.name ]]</h2>
-                          <span v-for="tag in obj.problem.tags" :key="tag.id" class="tag is-light">[[ tag.name ]]</span>
-                        </div>
-                      </div>
-                      <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
-                        <p class="mb-0 is-size-6">Diffculty</p>
-                        <progress class="progress ml-4 is-primary practice-progress" :value="[[ obj.difficulty ]]" max="100">[[ obj.difficulty ]]</progress>
-                      </div>
-                      <div class="content mb-1 is-flex is-justify-content-space-between is-align-items-center">
-                        <!-- Calculate estimated time based on question types -->
-                        <p class="mb-0 is-size-6">Frequency</p>
-                        <span class="tag is-warning is-light">[[ obj.last_year_frequency ]]</span>
-                      </div>
-                    </div>
-                    <div class="card-footer">
-                      <div class="card-footer-item">
-                        <div class="is-flex" style="width: 100%;">
-                          <a class="button is-info ml-auto" @click="redirectToProblem(obj.problem.name)">Details</a>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- end card-footer -->
-                  </div>
-                  <!-- end card -->
-                </div>
-              </li>
-            </div>
-          </ul>
+          <table class="table is-fullwidth" style="table-layout: fixed;">
+            <thead>
+              <tr>
+                <th class="max-width-20" >Problem Name</th>
+                <th>Tags</th>
+                <th>Difficulty</th>
+                <th>Frequency</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="obj in problems" :key="obj.id">
+                <td class="max-width-20">
+                  <p class="truncate-multiline">[[ obj.problem.name ]]</p>
+                </td>
+                <td>
+                  <table class="table is-narrow is-fullwidth">
+                    <tbody>
+                      <tr v-for="tag in obj.problem.tags" :key="tag.id">
+                        <td class="tag is-light">[[ tag.name ]]</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+                <td>
+                  <progress class="progress is-primary practice-progress" :value="obj.difficulty" max="100">[[ obj.difficulty ]]</progress>
+                </td>
+                <td>
+                  <span class="tag is-warning is-light">[[ obj.last_year_frequency ]]</span>
+                </td>
+                <td>
+                  <a class="button is-info" @click="redirectToProblem(obj.problem.name)">Details</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -107,84 +102,83 @@
 </span>
 {% endblock %} {% block extra_script %}
 <script>
-var root = "{{ root }}";
-var app = new Vue({
-  delimiters: ["[[", "]]"],
-  el: "#vue-span",
-  data() {
-    return {
-      problems: [],
-      filters: {
-        category: 'All',
-        position_type: 'All',
-        stage: 'All',
-        company: 'All',
-        frequency: 'All'
-      },
-      message: "",
-      category: "recommend",
-      root: root,
-      dropdowns: [
-        {
-          label: "All",
-          isActive: false,
-          items: ["Google", "Meta", "Amazon", "TikTok"],
+  var root = "{{ root }}";
+  var app = new Vue({
+    delimiters: ["[[", "]]"],
+    el: "#vue-span",
+    data() {
+      return {
+        problems: [],
+        filters: {
+          category: 'All',
+          position_type: 'All',
+          stage: 'All',
+          company: 'All',
+          frequency: 'All'
         },
-      ],
-    };
-  },
-  mounted() {
-    this.fetchProblem();
-  },
-  methods: {
-    toggleDropdown(index) {
-      this.dropdowns[index].isActive = !this.dropdowns[index].isActive;
-      this.dropdowns.forEach((dropdown, idx) => {
-        if (idx !== index) dropdown.isActive = false;
-      });
+        message: "",
+        category: "recommend",
+        root: root,
+        dropdowns: [
+          {
+            label: "All",
+            isActive: false,
+            items: ["Google", "Meta", "Amazon", "TikTok"],
+          },
+        ],
+      };
     },
-    updateDropdownLabel(index, item) {
-      this.dropdowns[index].label = item;
-      this.dropdowns[index].isActive = false;
+    mounted() {
+      this.fetchProblem();
     },
-    fetchProblem() {
-      let queryParams = [];
-      Object.keys(this.filters).forEach(key => {
-        if (this.filters[key] !== 'All') {
-          queryParams.push(`${key}=${encodeURIComponent(this.filters[key])}`);
-        }
-      });
-
-      let queryString = queryParams.join('&');
-      let url = `${this.root}/api/problem_list/?${queryString}`;
-
-      axios.get(url)
-        .then(response => {
-          this.problems = response.data;
-        })
-        .catch(error => {
-          console.error("Error fetching problems:", error);
-          this.message = "Error fetching problems.";
+    methods: {
+      toggleDropdown(index) {
+        this.dropdowns[index].isActive = !this.dropdowns[index].isActive;
+        this.dropdowns.forEach((dropdown, idx) => {
+          if (idx !== index) dropdown.isActive = false;
         });
+      },
+      updateDropdownLabel(index, item) {
+        this.dropdowns[index].label = item;
+        this.dropdowns[index].isActive = false;
+      },
+      fetchProblem() {
+        let queryParams = [];
+        Object.keys(this.filters).forEach(key => {
+          if (this.filters[key] !== 'All') {
+            queryParams.push(`${key}=${encodeURIComponent(this.filters[key])}`);
+          }
+        });
+  
+        let queryString = queryParams.join('&');
+        let url = `${this.root}/api/problem_list/?${queryString}`;
+  
+        axios.get(url)
+          .then(response => {
+            this.problems = response.data;
+          })
+          .catch(error => {
+            console.error("Error fetching problems:", error);
+            this.message = "Error fetching problems.";
+          });
+      },
+      updateCategory(category) {
+        this.category = category;
+        this.fetchProblem();
+      },
+      updateFilter(filterType, filterValue) {
+        this.filters[filterType] = filterValue;
+        if (filterType === 'company') {
+          this.dropdowns[0].label = filterValue;
+          this.dropdowns[0].isActive = false;
+        }
+        this.fetchProblem();
+      },
+      redirectToProblem(problemName) {
+        const formattedName = problemName.replace(/\s+/g, '-');
+        window.location.href = `/problem/${formattedName}/`;
+      },
     },
-    updateCategory(category) {
-      this.category = category;
-      this.fetchProblem();
-    },
-    updateFilter(filterType, filterValue) {
-      this.filters[filterType] = filterValue;
-      if (filterType === 'company') {
-        this.dropdowns[0].label = filterValue;
-        this.dropdowns[0].isActive = false;
-      }
-      this.fetchProblem();
-    },
-    redirectToProblem(problemName) {
-      const formattedName = problemName.replace(/\s+/g, '-');
-      window.location.href = `/problem/${formattedName}/`;
-    },
-  },
-});
+  });
 </script>
 {% endblock %}
-

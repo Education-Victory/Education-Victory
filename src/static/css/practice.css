@@ -6,31 +6,6 @@
 .card.mb-4 {
   cursor: pointer;
 }
-.timeline::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 10px;
-  width: 2px;
-  background-color: #e5e5e5;
-}
-.timeline-item {
-  margin-bottom: 20px;
-}
-.timeline-marker {
-  display: block;
-  width: 12px;
-  height: 12px;
-  background-color: #3e8ed0;
-  border-radius: 50%;
-  position: absolute;
-  left: 4px;
-  top: 0;
-}
-.timeline-content {
-  padding-left: 30px;
-}
 
 .card .card-content .tag {
   font-size: 0.8rem;
@@ -40,7 +15,6 @@
   width: 50%;
   background-color: #257953;
 }
-
 
 .bd-hr-p {
     background-color: hsl(171, 100%, 41%);
@@ -86,4 +60,8 @@
   text-overflow: ellipsis;
   max-height: 3em;
   line-height: 1.5em;
+}
+
+.max-width-20 {
+  max-width: 20%;
 }
