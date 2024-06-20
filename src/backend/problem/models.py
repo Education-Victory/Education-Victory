@@ -8,15 +8,15 @@ def get_default_json():
 
 class Problem(models.Model):
     CATEGORY_CHOICE = (
-        ('algorithm', 'Algorithm'),
-        ('system-design', 'System Design'),
-        ('computer-science', 'Computer Science'),
-        ('behavioral', 'Behavioral'),
-        ('resume', 'Resume'),
+        ('Algorithm', 'Algorithm'),
+        ('System Design', 'System Design'),
+        ('Computer Science', 'Computer Science'),
+        ('Behavioral', 'Behavioral'),
+        ('Resume', 'Resume'),
     )
 
     name = models.CharField(max_length=100)
-    category = models.CharField(max_length=100, choices=CATEGORY_CHOICE, default='algorithm')
+    category = models.CharField(max_length=100, choices=CATEGORY_CHOICE, default='Algorithm')
     tags = models.ManyToManyField(Tag, through='TagProblem')
     desc = models.JSONField(default=get_default_json)
     upvote = models.IntegerField(default=1)
