@@ -65,3 +65,8 @@
 .max-width-20 {
   max-width: 20%;
 }
+
+.tag-container {
+    margin-bottom: 5px;
+    border: none !important;
+}

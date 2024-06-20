@@ -37,7 +37,7 @@
             <!-- Category filter -->
             <p class="menu-label">Category</p>
             <ul class="menu-list">
-              <li v-for="cat in ['All', 'Algorithm', 'System Design', 'Behavioural', 'Computer Science']" :key="cat">
+              <li v-for="cat in ['All', 'Algorithm', 'System Design', 'Behavioral', 'Computer Science']" :key="cat">
                 <a :class="{'is-active': filters.category === cat}" @click="updateFilter('category', cat)">[[ cat ]]</a>
               </li>
             </ul>
@@ -78,7 +78,9 @@
                   <table class="table is-narrow is-fullwidth">
                     <tbody>
                       <tr v-for="tag in obj.problem.tags" :key="tag.id">
-                        <td class="tag is-light">[[ tag.name ]]</td>
+                        <td class="tag-container">
+                          <span class="tag is-light">[[ tag.name ]]</span>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -87,7 +89,7 @@
                   <progress class="progress is-primary practice-progress" :value="obj.difficulty" max="100">[[ obj.difficulty ]]</progress>
                 </td>
                 <td>
-                  <span class="tag is-warning is-light">[[ obj.last_year_frequency ]]</span>
+                  <span class="tag is-warning is-light">[[ obj.frequency ]]</span>
                 </td>
                 <td>
                   <a class="button is-info" @click="redirectToProblem(obj.problem.name)">Details</a>
@@ -123,7 +125,7 @@
           {
             label: "All",
             isActive: false,
-            items: ["Google", "Meta", "Amazon", "TikTok"],
+            items: ["All", "Google", "Meta", "Amazon", "TikTok"],
           },
         ],
       };
