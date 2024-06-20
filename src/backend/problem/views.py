@@ -63,13 +63,6 @@ class ProblemFrequencyViewSet(ModelViewSet):
     queryset = ProblemFrequency.objects.all().select_related('problem').prefetch_related('problem__tags')
     serializer_class = ProblemFrequencySerializer
 
-    def annotate_scores(self, instance):
-        now = timezone.now()
-        days_since_created = (now - instance.created_at).days  # Calculate the number of days since creation
-
-        # Calculate the score using the extracted days
-        score = int(100 / (1 + days_since_created / 60))
-        return score
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -89,21 +82,38 @@ class ProblemFrequencyViewSet(ModelViewSet):
         if position_type and position_type != 'All':
             queryset = queryset.filter(position_type=position_type)
 
+        # Handle the frequency filter
+        if frequency and frequency != 'All':
+            now = timezone.now()
+            start_date = None
+            if frequency == 'Last 6 months':
+                start_date = now - timedelta(days=6*30)
+            elif frequency == 'Last year':
+                start_date = now - timedelta(days=365)
+            elif frequency == 'Last 3 years':
+                start_date = now - timedelta(days=3*365)
+            if start_date:
+                queryset = queryset.filter(created_at__gte=start_date)
+
         queryset = queryset.annotate(
             difficulty=Avg('problem__tags__difficulty')
         )
-        scores = defaultdict(int)
+
+        problem_frequency = defaultdict(int)
         exist_queryset = dict()
-        # Iterate over the filtered queryset
         annotated_queryset = []
-        for instance in queryset:
-            score = self.annotate_scores(instance)
-            if instance.problem.id not in exist_queryset:
-                exist_queryset[instance.problem.id] = instance
-                annotated_queryset.append(instance)
-                instance.total_score = score
-            else:
-                exist_queryset[instance.problem.id].total_score += score
+
+        for entry in queryset:
+            problem_frequency[entry.problem.id] += 1
+            if entry.problem.id not in exist_queryset:
+                exist_queryset[entry.problem.id] = entry
+
+        for key, entry in exist_queryset.items():
+            entry.frequency = problem_frequency[entry.problem.id]
+            annotated_queryset.append(entry)
+
+        annotated_queryset.sort(key=lambda x: x.frequency, reverse=True)
+
         return annotated_queryset
 
 class RecommendProblemView(APIView):

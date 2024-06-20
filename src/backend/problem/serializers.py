@@ -14,13 +14,12 @@ class ProblemSerializer(serializers.ModelSerializer):
 
 class ProblemFrequencySerializer(serializers.ModelSerializer):
     problem = ProblemSerializer(read_only=True)
-    total_score = serializers.FloatField(read_only=True)
-    last_year_frequency = serializers.IntegerField(read_only=True)
     difficulty = serializers.IntegerField(read_only=True)
+    frequency = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = ProblemFrequency
-        fields = ('problem', 'stage', 'position_type', 'last_year_frequency', 'difficulty', 'company', 'total_score')
+        fields = ('problem', 'stage', 'position_type', 'difficulty', 'company', 'frequency')
 
 
 class FutureProblemSerializer(serializers.ModelSerializer):
