@@ -44,19 +44,19 @@ class TagProblem(models.Model):
 
 class ProblemFrequency(models.Model):
     STAGE_CHOICES = (
-        ('phone', 'Phone'),
-        ('onsite', 'Onsite'),
+        ('Phone', 'Phone'),
+        ('Onsite', 'Onsite'),
     )
     POSITION_TYPE = (
-        ('swe', 'Software Engineer'),
-        ('fe', 'Frontend Engineer'),
-        ('mle', 'Machine Learning Engineer'),
-        ('ds', 'Data Scientist'),
+        ('Software Engineer', 'Software Engineer'),
+        ('Frontend Engineer', 'Frontend Engineer'),
+        ('Machine Learning', 'Machine Learning'),
+        ('Data Scientist', 'Data Scientist'),
     )
     problem = models.ForeignKey(
         Problem, on_delete=models.CASCADE, related_name='frequency_problem')
-    stage = models.CharField(max_length=20, choices=STAGE_CHOICES, default='onsite')
-    position_type = models.CharField(max_length=20, choices=POSITION_TYPE, default='swe')
+    stage = models.CharField(max_length=20, choices=STAGE_CHOICES, default='Onsite')
+    position_type = models.CharField(max_length=20, choices=POSITION_TYPE, default='Software Engineer')
     company = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=100, blank=True)
     origin_content = models.CharField(max_length=4000, blank=True)
