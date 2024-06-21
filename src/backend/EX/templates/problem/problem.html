@@ -16,6 +16,62 @@
             <div class="card-content"> <!-- start card-content -->
               <p class="title has-text-centered" v-if="problem">[[ problem.name ]]</p>
               <div class="content render-markdown mb-6" v-if="problem && problem.desc" v-html="renderMarkdown(problem.desc.text)"></div>
+              <!-- Bulma Messages -->
+              <article class="message" v-for="(message, index) in messages" :key="index">
+                <div class="message-header" @click="toggleMessage(index)">
+                  <p>[[ message.title ]]</p>
+                  <button class="delete" aria-label="delete" @click.stop="closeMessage(index)"></button>
+                </div>
+                <div class="message-body" v-show="message.visible">
+                  [[ message.body ]]
+                </div>
+              </article>
+            </div> <!-- end card-content -->
+          </div> <!-- end card -->
+        </div> <!-- end column is-6 -->
+        <div class="column is-6">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title is-centered" style="width: 100%; justify-content: center;">
+                Excellent Interviewee
+              </p>
+            </header>
+            <div class="card-content">
+              <!-- Tabs for Understand, Analyze, Implement -->
+              <div class="tabs is-centered">
+                <ul>
+                  <li :class="{'is-active': activeTab === 'understand'}">
+                    <a @click="setActiveTab('understand')">
+                      <span class="icon is-small"><i class="fas fa-lightbulb" aria-hidden="true"></i></span>
+                      Understand
+                    </a>
+                  </li>
+                  <li :class="{'is-active': activeTab === 'analyze'}">
+                    <a @click="setActiveTab('analyze')">
+                      <span class="icon is-small"><i class="fas fa-search" aria-hidden="true"></i></span>
+                      Analyze
+                    </a>
+                  </li>
+                  <li :class="{'is-active': activeTab === 'implement'}">
+                    <a @click="setActiveTab('implement')">
+                      <span class="icon is-small"><i class="fas fa-tools" aria-hidden="true"></i></span>
+                      Implement
+                    </a>
+                  </li>
+                  <li :class="{'is-active': activeTab === 'review'}">
+                    <a @click="setActiveTab('review')">
+                      <span class="icon is-small"><i class="fas fa-clipboard-check" aria-hidden="true"></i></span>
+                      Review
+                    </a>
+                  </li>
+                  <li :class="{'is-active': activeTab === 'other'}">
+                    <a @click="setActiveTab('other')">
+                      <span class="icon is-small"><i class="fas fa-clipboard-check" aria-hidden="true"></i></span>
+                      Others
+                    </a>
+                  </li>
+                </ul>
+              </div> <!-- end tabs -->
             </div> <!-- end card-content -->
           </div> <!-- end card -->
         </div> <!-- end column is-6 -->
