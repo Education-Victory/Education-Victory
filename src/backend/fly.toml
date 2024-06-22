@@ -1,0 +1,35 @@
+# fly.toml app configuration file generated for ev2-xiaxi on 2024-06-19T09:56:07-07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'ev2-xiaxi'
+primary_region = 'sea'
+console_command = '/code/manage.py shell'
+
+[build]
+
+[deploy]
+  release_command = 'python manage.py migrate --noinput'
+
+[env]
+  CSRF = "https://*.fly.dev"
+  ENVIRONMENT = "PLACEHOLDER_ENVIRONMENT"
+  PORT = "PLACEHOLDER_PORT"
+  ROOT = "PLACEHOLDER_ROOT"
+  HOST = "PLACEHOLDER_HOST"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  size = 'shared-cpu-1x'
+
+[[statics]]
+  guest_path = '/code/static'
+  url_prefix = '/static/'

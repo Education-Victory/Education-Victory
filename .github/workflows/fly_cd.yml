@@ -1,0 +1,59 @@
+name: Deploy main to Fly
+on:
+  push:
+    branches: [ main, staging, development]
+
+jobs:
+  deploy:
+    name: Deploy to Fly
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set environment variables for main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "FLY_API_TOKEN=${{ secrets.FLY_TOKEN }}" >> $GITHUB_ENV
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+          echo "EMAIL_BACKEND=${{ secrets.EMAIL_BACKEND }}" >> $GITHUB_ENV
+          echo "PORT=${{ secrets.PORT }}" >> $GITHUB_ENV
+          echo "ROOT=${{ secrets.ROOT }}" >> $GITHUB_ENV
+          echo "HOST=${{ secrets.HOST }}" >> $GITHUB_ENV
+          echo "DOCKER_SECRET_KEY=${{ secrets.DOCKER_SECRET_KEY }}" >> $GITHUB_ENV
+          echo "ENVIRONMENT=${{ secrets.ENVIRONMENT }}" >> $GITHUB_ENV          
+          echo "APP_NAME=ev2-xiaxi" >> $GITHUB_ENV
+
+      - name: Set environment variables for develop
+        if: github.ref == 'refs/heads/staging'
+        run: |
+          echo "FLY_API_TOKEN=${{ secrets.FLY_TOKEN }}" >> $GITHUB_ENV
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL_STAGING }}" >> $GITHUB_ENV
+          echo "EMAIL_BACKEND=${{ secrets.EMAIL_BACKEND }}" >> $GITHUB_ENV
+          echo "PORT=${{ secrets.PORT_STAGING }}" >> $GITHUB_ENV
+          echo "ROOT=${{ secrets.ROOT_STAGING }}" >> $GITHUB_ENV
+          echo "HOST=${{ secrets.HOST_STAGING }}" >> $GITHUB_ENV
+          echo "DOCKER_SECRET_KEY=${{ secrets.DOCKER_SECRET_KEY_STAGING }}" >> $GITHUB_ENV
+          echo "ENVIRONMENT=${{ secrets.ENVIRONMENT }}" >> $GITHUB_ENV          
+          echo "APP_NAME=ev2-xiaxi-staging" >> $GITHUB_ENV
+
+      - name: Replace secret key in Dockerfile
+        working-directory: ./src/backend
+        run: |
+          sed -i 's/PLACEHOLDER/$DOCKER_SECRET_KEY/g' Dockerfile
+
+      - name: Replace secrets in fly.toml
+        working-directory: ./src/backend
+        run: |
+          sed -i "s|PLACEHOLDER_PORT|"$PORT"|g" fly.toml
+          sed -i "s|PLACEHOLDER_ROOT|"$ROOT"|g" fly.toml
+          sed -i "s|PLACEHOLDER_HOST|"$HOST"|g" fly.toml
+          sed -i "s|PLACEHOLDER_ENVIRONMENT|"$ENVIRONMENT"|g" fly.toml
+
+
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy
+        run: flyctl deploy --app ${{ env.APP_NAME }}
+        working-directory: ./src/backend
