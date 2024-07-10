@@ -54,9 +54,13 @@ elif ENVIRONMENT in ('TEST', 'PRODUCTION'):
     STATIC_ROOT = os.path.join(STATIC_DIR, 'static')
     ALLOWED_HOSTS = [os.getenv('HOST')]
     CSRF_TRUSTED_ORIGINS = [os.getenv('CSRF')]
+    # ALLOWED_HOSTS = ['https://*', 'http://*', 'education-victory.fly.dev']
+    # CSRF_TRUSTED_ORIGINS = ['https://*', 'http://*']
+
     DATABASES = {
         'default': dj_database_url.parse(
             os.getenv('DATABASE_URL'),
+            # "postgres://postgres:b71JGJvwulPbiOf@ev-test-db.flycast:5432",
             conn_max_age=600,
             conn_health_checks=True,
             )
