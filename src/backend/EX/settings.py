@@ -61,7 +61,7 @@ elif ENVIRONMENT in ('TEST', 'PRODUCTION'):
             conn_health_checks=True,
             )
     }
-    STATIC_URL = 'https://cdn.jsdelivr.net/gh/Education-Victory/Education-Victory/src/static/'
+    STATIC_URL = os.getenv('STATIC_CDN')
 
 
 OPENAI_SECRET_KEY = os.getenv('OPENAI_SECRET_KEY')
