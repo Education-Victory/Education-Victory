@@ -16,16 +16,45 @@
             <div class="card-content"> <!-- start card-content -->
               <p class="title has-text-centered" v-if="problem">[[ problem.name ]]</p>
               <div class="content render-markdown mb-6" v-if="problem && problem.desc" v-html="renderMarkdown(problem.desc.text)"></div>
-              <!-- Bulma Messages -->
-              <article class="message" v-for="(message, index) in messages" :key="index">
-                <div class="message-header" @click="toggleMessage(index)">
-                  <p>[[ message.title ]]</p>
-                  <button class="delete" aria-label="delete" @click.stop="closeMessage(index)"></button>
-                </div>
-                <div class="message-body" v-show="message.visible">
-                  [[ message.body ]]
-                </div>
-              </article>
+                <!-- Constraints -->
+      <article class="message is-info">
+        <div class="message-header" @click="toggleVisibility('constraintsVisible')">
+          <p>Constraints</p>
+          <button class="delete" aria-label="delete" @click.stop="closeMessage('constraintsVisible')"></button>
+        </div>
+        <div class="message-body" v-show="visibility.constraintsVisible">
+          <ul>
+            <li v-for="(constraint, index) in problem.desc.constraint" :key="index">[[ constraint ]]</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Testcases -->
+      <article class="message is-warning">
+        <div class="message-header" @click="toggleVisibility('testcasesVisible')">
+          <p>Testcases</p>
+          <button class="delete" aria-label="delete" @click.stop="closeMessage('testcasesVisible')"></button>
+        </div>
+        <div class="message-body" v-show="visibility.testcasesVisible">
+          <div v-for="(testcase, index) in problem.desc.testcase" :key="index">
+            <p><strong>[[ testcase.type ]]</strong></p>
+            <p>Input: [[ testcase.input ]]</p>
+            <p>Output: [[ testcase.output ]]</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Follow Up -->
+      <article class="message is-success">
+        <div class="message-header" @click="toggleVisibility('followUpVisible')">
+          <p>Follow Up</p>
+          <button class="delete" aria-label="delete" @click.stop="closeMessage('followUpVisible')"></button>
+        </div>
+        <div class="message-body" v-show="visibility.followUpVisible">
+          <p><strong>[[ problem.desc.follow_up.question ]]</strong></p>
+          <p>[[ problem.desc.follow_up.solution ]]</p>
+        </div>
+      </article>
             </div> <!-- end card-content -->
           </div> <!-- end card -->
         </div> <!-- end column is-6 -->
@@ -33,7 +62,8 @@
           <div class="card">
             <header class="card-header">
               <p class="card-header-title is-centered" style="width: 100%; justify-content: center;">
-                Excellent Interviewee
+                <span class="icon is-small"><i class="fas fa-star" aria-hidden="true"></i></span>
+                &nbsp;How To Answer
               </p>
             </header>
             <div class="card-content">
@@ -66,7 +96,7 @@
                   </li>
                   <li :class="{'is-active': activeTab === 'other'}">
                     <a @click="setActiveTab('other')">
-                      <span class="icon is-small"><i class="fas fa-clipboard-check" aria-hidden="true"></i></span>
+                      <span class="icon is-small"><i class="fas fa-ellipsis-h" aria-hidden="true"></i></span>
                       Others
                     </a>
                   </li>

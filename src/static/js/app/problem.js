@@ -9,19 +9,11 @@ var app = new Vue({
       problem: {
         milestones: [] // Initialize milestones as an empty array
       },
-      messages: [
-        {
-          title: 'Can you tell me the length of this array?',
-          body: 'The length of the array is 1000.',
-          visible: false
-        },
-        {
-          title: 'What type of elements are in this array?',
-          body: 'The array contains integer elements.',
-          visible: false
-        }
-        // Add more messages as needed
-      ],
+      visibility: {
+        constraintsVisible: true,
+        testcasesVisible: true,
+        followUpVisible: true
+      },
       problemName: '',
       question: {},
       resource: {},
@@ -58,11 +50,8 @@ var app = new Vue({
     renderMarkdown(markdownText) {
       return marked.parse(markdownText);
     },
-    toggleMessage(index) {
-      this.messages[index].visible = !this.messages[index].visible;
-    },
-    closeMessage(index) {
-      this.messages.splice(index, 1);
+    toggleVisibility(section) {
+      this.visibility[section] = !this.visibility[section];
     },
     setActiveTab(tabName) {
       this.activeTab = tabName;
